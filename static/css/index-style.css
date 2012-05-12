@@ -1,0 +1,8 @@
+@charset "utf-8";
+/* CSS Document */
+
+.user-basicinfo img{width:5em; height:5em;}
+.tag-nav li{height;2em; line-height:2em;border-top:1px solid #000; text-align:center;}
+.tag-nav li a{font:1.2em;}
+.index-upload input{font:1.2em; height:2em; width:6em; margin:0 auto;}
+.freshthings li{ height:6em; border-top:1px solid #000; text-align:center; }
