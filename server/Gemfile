@@ -12,7 +12,7 @@ gem 'bootstrap-sass'
 gem 'bcrypt-ruby'
 gem 'jquery-rails'
 gem 'uuidtools'
-gem 'oauth'
+gem 'oauth2'
 
 gem 'json'
 

@@ -1,6 +1,6 @@
-class MetadatasController < ApplicationController
+class MetadataController < ApplicationController
   def index
-        result = User.first.search_metadatas params  # current_user
+        result = User.first.list_all_metadatas params  # current_user
         respond_to do |format| 
             format.html { head :no_content }
             format.json { 

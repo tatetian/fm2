@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Server</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
+  <meta charset="utf-8">
+  <title>FeastMind</title>
+  <%= stylesheet_link_tag    "reset", :media => "all" %>
+  <%= stylesheet_link_tag    params[:controller], :media => "all" %>
+  <%= javascript_include_tag "json2.js" %>
+  <%= javascript_include_tag "zepto.js" %>
+  <%= javascript_include_tag "underscore.js" %>
+  <%= javascript_include_tag "backbone.js" %>
+  <%= javascript_include_tag params[:controller] %>
+
   <%= csrf_meta_tags %>
 </head>
 <body>

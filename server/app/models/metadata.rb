@@ -11,5 +11,5 @@ class Metadata < ActiveRecord::Base
   has_many    :tags, :through => :collections
   belongs_to  :paper
 
-  default_scope :order => 'docs.created_at DESC'
+  default_scope :order => 'metadata.created_at DESC'
 end

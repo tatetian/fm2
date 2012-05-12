@@ -11,9 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120512124730) do
+ActiveRecord::Schema.define(:version => 20120512163733) do
 
-  create_table "docs", :force => true do |t|
+  create_table "collections", :force => true do |t|
+    t.integer  "tag_id"
+    t.integer  "metadata_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "metadata", :force => true do |t|
     t.string   "docid"
     t.string   "title"
     t.string   "authors"
@@ -40,6 +47,13 @@ ActiveRecord::Schema.define(:version => 20120512124730) do
 
   add_index "papers", ["docid"], :name => "index_papers_on_docid", :unique => true
 
+  create_table "tags", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "users", :force => true do |t|
     t.string   "uid"
     t.string   "name"
@@ -50,7 +64,7 @@ ActiveRecord::Schema.define(:version => 20120512124730) do
     t.datetime "updated_at",     :null => false
   end
 
-  add_index "users", ["remember_token"], :name => "index_users_on_remember_token"
-  add_index "users", ["uid"], :name => "index_users_on_uid"
+  add_index "users", ["remember_token"], :name => "index_users_on_remember_token", :unique => true
+  add_index "users", ["uid"], :name => "index_users_on_uid", :unique => true
 
 end

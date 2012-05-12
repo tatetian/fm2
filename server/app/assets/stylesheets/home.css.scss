@@ -1,0 +1,19 @@
+// Place all the styles related to the Home controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+html { font-size:62.5%; }
+html,body{height:100%;}
+
+.index-wrapper{height:100%; width:100%; position:relative; background-color:#666;}
+.sidebar-left {float:left; min-height:100%; width:30%; background-color:#999; }
+.sidebar-right {float:right; min-height:100%; width:70%; background-color: #CCC; }
+.user-basicinfo{ height:10em; }
+.tag-nav{border-bottom:1px solid #000;}
+.index-upload{ text-align:center;}
+.user-honorinfo{height:10em; text-align:center;}
+
+.user-basicinfo img{width:5em; height:5em;}
+.tag-nav li{height:2em; line-height:2em;border-top:1px solid #000; text-align:center;}
+.tag-nav li a{font:1.2em;}
+.index-upload input{font:1.2em; height:2em; width:6em; margin:0 auto;}
+.freshthings li{ height:6em; border-top:1px solid #000; text-align:center; }

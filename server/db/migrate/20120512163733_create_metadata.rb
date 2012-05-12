@@ -7,7 +7,7 @@ class CreateMetadata < ActiveRecord::Migration
       t.string :publication
       t.date :date
       t.string :abstract
-      t.int :paper_id
+      t.integer :paper_id
 
       t.timestamps
     end

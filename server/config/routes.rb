@@ -1,4 +1,6 @@
 Server::Application.routes.draw do
+  get "metas/new"
+
   get "metadatas/new"
 
   get "tags/new"
@@ -9,6 +11,9 @@ Server::Application.routes.draw do
 
   get "docs/new"
 
+  resources :metadata
+
+  match 'home'  => 'home#index'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -65,4 +70,9 @@ Server::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
+  #
+
+  # for easy test of static files
+  # this should be removed in production env
+  # match ':action' => 'static#:action'
 end

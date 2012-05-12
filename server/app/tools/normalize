@@ -1,0 +1,11 @@
+#/bin/sh
+# Normalize input string(e.g. remove ligature)
+#
+# For more information about unicode normalization, see
+#   http://unicode.org/reports/tr15/
+# This program is originally published on
+#   http://billposer.org/Linguistics/Computation/UnicodeNormalization.html
+perl -CSD -e 'use Unicode::Normalize;
+while ($line = <STDIN>) {
+    print NFKC($line)
+}'

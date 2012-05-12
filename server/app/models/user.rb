@@ -11,8 +11,7 @@ class User < ActiveRecord::Base
 
   validates :name, presence: true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-  validates :email, format:     { with: VALID_EMAIL_REGEX },
-                    uniqueness: { case_sensitive: false }
+  #validates :email, format:     { with: VALID_EMAIL_REGEX }
   def collect!(metadata)
     tag = self.tags.find_by_name "All"
     tag.collections.create!(metadata_id: metadata.id)
@@ -33,22 +32,21 @@ class User < ActiveRecord::Base
     limit ||= 10
     keywords ||= ""
     
-    sql="SELECT `metadatas`.`id`,IFNULL(metadatas.title,papers.title) as title,IFNULL(metadatas.author,papers.author) as author ,IFNULL(metadatas.date,papers.date) as date,metadatas.docid,metadatas.created_at FROM `metadatas`,papers,`collections`,tags where  `metadatas`.`id` = `collections`.`doc_id` and `metadatas`.`paper_id`=papers.id and tag_id=tags.id and tags.id ="+tag.id.to_s+" AND  (IFNULL(metadatas.title,papers.title) LIKE ('%"+keywords+"%') OR IFNULL(metadatas.author,papers.author) LIKE('%"+keywords+"%') ) LIMIT "+start.to_s+","+(start+limit).to_s
-    @result=Doc.find_by_sql(sql) 
+    sql="SELECT `metadata`.`id`,IFNULL(metadata.title,papers.title) as title,IFNULL(metadata.authors,papers.authors) as authors ,IFNULL(metadata.date,papers.date) as date,metadata.docid,metadata.created_at FROM `metadata`,papers,`collections`,tags where  `metadata`.`id` = `collections`.`metadata_id` and `metadata`.`paper_id`=papers.id and tag_id=tags.id and tags.id ="+tag.id.to_s+" AND  (IFNULL(metadata.title,papers.title) LIKE ('%"+keywords+"%') OR IFNULL(metadata.authors,papers.authors) LIKE('%"+keywords+"%') )"
+    @result=Metadata.find_by_sql(sql+" LIMIT "+start.to_s+","+(start+limit).to_s) 
     entries = 
       #tag.docs.offset(start)
       #        .limit(limit)
       #        .where("title LIKE '%#{keywords}%' OR "+
       #              "author LIKE '%#{keywords}%'")
       #        .select("docs.id,title,author,date,docid,docs.created_at")
-      @result.map { |doc| 
-                      d = doc.attributes
-                      d[:tags] = doc.tags.map { |t| t.name } 
+      @result.map { |metadata| 
+                      d = metadata.attributes
+                      d[:tags] = metadata.tags.map { |t| t.name } 
                       d
               }
     # total
-    total = tag.docs.where("title LIKE '%#{keywords}%' OR "+
-                            "author LIKE '%#{keywords}%'").count
+    total = Metadata.find_by_sql(sql).count
     # result
     { :total => total, :entries => entries }
   end
@@ -56,7 +54,7 @@ class User < ActiveRecord::Base
   def has_metadata?(params)
     if params.has_key?(:metadata_id)
       metadata_id = params[:metadata_id]
-      if self.tags.find_by_name("All").docs.find_by_id(metadata_id) != nil
+      if self.tags.find_by_name("All").metadatas.find_by_id(metadata_id) != nil
         return true
       else
         return false

@@ -30,6 +30,7 @@ GEM
       multi_json (~> 1.0)
     annotate (2.4.0)
     arel (3.0.2)
+    bcrypt-ruby (3.0.1)
     bcrypt-ruby (3.0.1-x86-mingw32)
     bootstrap-sass (2.0.2)
     builder (3.0.0)
@@ -44,7 +45,10 @@ GEM
     erubis (2.7.0)
     execjs (1.3.2)
       multi_json (~> 1.0)
+    faraday (0.8.0)
+      multipart-post (~> 1.1)
     hike (1.2.1)
+    httpauth (0.1)
     i18n (0.6.0)
     journey (1.0.3)
     jquery-rails (2.0.2)
@@ -57,8 +61,14 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.18)
     multi_json (1.3.5)
+    multipart-post (1.1.5)
+    mysql2 (0.3.11)
     mysql2 (0.3.11-x86-mingw32)
-    oauth (0.4.6)
+    oauth2 (0.7.1)
+      faraday (~> 0.8)
+      httpauth (~> 0.1)
+      multi_json (~> 1.0)
+      rack (~> 1.4)
     polyglot (0.3.3)
     rack (1.4.1)
     rack-cache (1.2)
@@ -119,6 +129,7 @@ GEM
     uuidtools (2.1.2)
 
 PLATFORMS
+  ruby
   x86-mingw32
 
 DEPENDENCIES
@@ -129,7 +140,7 @@ DEPENDENCIES
   jquery-rails
   json
   mysql2
-  oauth
+  oauth2
   rails (= 3.2.3)
   rspec-rails
   sass-rails (~> 3.2.3)

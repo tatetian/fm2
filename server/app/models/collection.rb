@@ -5,5 +5,5 @@ class Collection < ActiveRecord::Base
   validates   :metadata_id, presence: true
 
   belongs_to  :tag
-  belongs_to  :metadata
+  belongs_to  :metadata, class_name:"Metadata"
 end

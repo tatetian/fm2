@@ -8,7 +8,7 @@ class CreatePapers < ActiveRecord::Migration
       t.date :date
       t.string :abstract
       t.text :content
-      t.int :convert
+      t.integer :convert
 
       t.timestamps
     end
