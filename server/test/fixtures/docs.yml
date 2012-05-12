@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  docid: MyString
+  title: MyString
+  authors: MyString
+  publication: MyString
+  date: 2012-05-12
+  abstract: MyString
+  paper_id: 
+
+two:
+  docid: MyString
+  title: MyString
+  authors: MyString
+  publication: MyString
+  date: 2012-05-12
+  abstract: MyString
+  paper_id: 
