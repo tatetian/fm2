@@ -22,8 +22,7 @@ $(function(){
     // Reference to this collection's model.
     model: Paper,
 
-    // Save all of the todo items under the `"todos"` namespace.
-    localStorage: new Store("paper-list")
+    url: 'metadata'
   });
 
   var recentPapers = new PaperList(); 

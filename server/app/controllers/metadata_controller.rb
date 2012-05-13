@@ -1,16 +1,18 @@
 class MetadataController < ApplicationController
   def index
-        result = User.first.list_all_metadatas params  # current_user
-        respond_to do |format| 
-            format.html { head :no_content }
-            format.json { 
-              response = {
-                  :result => result 
-              }
-              json = ActiveSupport::JSON.encode response
-              render :json => json 
-            }
-        end            
+        #result = User.first.list_all_metadatas params  # current_user
+        #respond_to do |format| 
+        #    format.html { head :no_content }
+        #    format.json { 
+        #      response = {
+        #          :result => result 
+        #      }
+        #      json = ActiveSupport::JSON.encode response
+        #      render :json => json 
+        #    }
+        #end
+        result = User.first.list_recent_metadatas params
+        render :json => result
     end
 
     def create

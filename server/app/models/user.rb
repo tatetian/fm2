@@ -16,6 +16,12 @@ class User < ActiveRecord::Base
     tag = self.tags.find_by_name "All"
     tag.collections.create!(metadata_id: metadata.id)
   end
+
+  def list_recent_metadatas(params={}) 
+    result = list_all_metadatas params
+    result[:entries]
+  end
+
   def list_all_metadatas(params={})
     params[:tag] = "All"
     search_metadatas params 
