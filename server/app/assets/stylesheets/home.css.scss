@@ -7,13 +7,28 @@ html,body{height:100%;}
 .index-wrapper{height:100%; width:100%; position:relative; background-color:#666;}
 .sidebar-left {float:left; min-height:100%; width:30%; background-color:#999; }
 .sidebar-right {float:right; min-height:100%; width:70%; background-color: #CCC; }
-.user-basicinfo{ height:10em; }
-.tag-nav{border-bottom:1px solid #000;}
-.index-upload{ text-align:center;}
-.user-honorinfo{height:10em; text-align:center;}
+.user-basicinfo{position:relative; height:100px; }
+.tag-nav{ }
+.index-upload{ position:relative; height:100px; background-color:#09F;}
+.user-honorinfo{height:100px; position:relative; }
+.index-friends { position:absolute; bottom:0px; }
 
-.user-basicinfo img{width:5em; height:5em;}
-.tag-nav li{height:2em; line-height:2em;border-top:1px solid #000; text-align:center;}
-.tag-nav li a{font:1.2em;}
-.index-upload input{font:1.2em; height:2em; width:6em; margin:0 auto;}
-.freshthings li{ height:6em; border-top:1px solid #000; text-align:center; }
+.user-basicinfo img { position:absolute; top:0; bottom:0; margin:auto; left:10px; width:50px; height:50px; border:1px solid #fff; }
+.user-basicinfo a.username { position:absolute; top:0; bottom:0; margin:auto; left:70px; height:1em; font-size:14px; }
+.tag-nav { border-bottom:1px solid #fff; }
+.tag-nav li { border-top:1px solid #fff; }
+.tag-nav li a { display:block; height:30px; line-height:30px; font-size:14px; color:#fff; background-color:#CCC; text-align:left; }
+.user-honorinfo ul { margin:0 auto; width:700px; height:100%; }
+.user-honorinfo li { float:left; margin-left:50px; margin-top:10px; }
+.user-honorinfo li:last { margin-right:50px; }
+.user-honorinfo li img { height:60px; width:80px; }
+.user-honorinfo li a { display:block; margin-top:0.2em; height:1.5em; line-height:1.5em; color:#999; text-align:center; font-size:14px; }
+.freshthings li { height:60px; border-top:1px solid #000; text-align:center; }
+.index-friends { position:absolute; bottom:0px; }
+.index-friends ul { margin:0 auto; width:700px; height:100%; }
+.index-friends li { float:left; margin-left:50px; margin-top:10px; }
+.uindex-friends li:last {
+margin-right:50px;
+}
+.index-friends li img { height:60px; width:80px; }
+.index-friends li a { display:block; margin-top:0.2em; height:1.5em; line-height:1.5em; color:#999; text-align:center; font-size:14px; }
