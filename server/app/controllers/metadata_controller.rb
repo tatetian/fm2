@@ -45,56 +45,42 @@ class MetadataController < ApplicationController
         if @paper == nil
             @paper = Paper.new(docid: hash,title: parsed_meta["title"],authors: parsed_meta["authors"].join(", "),date: Date.parse(parsed_meta["date"]),content: doc_text, abstract: "", publication: "", convert: 0)
                 if !@paper.save!
-                    respond_to do |format| 
-                        format.html { head :no_content }
-                        format.json { render :json => '{"error":"failed1"}' }
-                     end
+                    render :json => '{"error":"failed1"}'
                     return 
                 end
         end
         if user.has_metadata? :docid=> hash
-            respond_to do |format| 
-                        format.html { head :no_content }
-                        format.json { render :json => '{"error":"failed2"}' }
-            end
+            render :json => '{"error":"failed2"}'
             return 
         else
           @metadata = Metadata.new(docid: hash,title: nil, publication: nil,authors: nil,date: nil, abstract:nil, paper_id: @paper.id)
-        if @metadata.save
-            flash[:success] = "Upload Success!"
-            respond_to do |format| 
-                format.html { head :no_content }
-                format.json { 
-                    response = { 
-                        :id     => @metadata.id,
-                        :docid  => @paper.docid, 
-                        :title  => @paper.title, 
-                        :author => @paper.author, 
-                        :date   => @paper.date,
-                        :created_at => @metadata.created_at
-                    }
-                    json = ActiveSupport::JSON.encode response
-                    render :json => json
-                }
-            end
-            # save PDF
-            final_dir = Rails.root.join 'public','uploads',hash
-            FileUtils.mv(tmp_dir, final_dir)
-            # add collection 
-            user.collect! @metadata
-            # save png
-            #%x[app/tools/pdf2png "#{tmp_pdf_file}" 150 "#{tmp_dir}"]
-            Process.spawn 'app/tools/pdf2png', (final_dir.to_s + "/uploaded.pdf"), "150", final_dir.to_s
-        else
-            respond_to do |format| 
-                format.html { head :no_content }
-                format.json { render :json => '{"error":"failed3"}' }
-            end
-        end
-        #userdoc.create();
-        # database
-        # Docs.save id, title, author, date
-        # UserDoc doc_id, user_id
+          if @metadata.save
+              flash[:success] = "Upload Success!"
+              response = { 
+                  :id     => @metadata.id,
+                  :docid  => @paper.docid, 
+                  :title  => @paper.title, 
+                  :authors => @paper.authors, 
+                  :date   => @paper.date,
+                  :created_at => @metadata.created_at
+              }
+              json = ActiveSupport::JSON.encode response
+              render :json => json
+              # save PDF
+              final_dir = Rails.root.join 'public','uploads',hash
+              FileUtils.mv(tmp_dir, final_dir)
+              # add collection 
+              user.collect! @metadata
+              # save png
+              #%x[app/tools/pdf2png "#{tmp_pdf_file}" 150 "#{tmp_dir}"]
+              Process.spawn 'app/tools/pdf2png', (final_dir.to_s + "/uploaded.pdf"), "150", final_dir.to_s
+          else
+            render :json => '{"error":"failed3"}'
+          end
+          #userdoc.create();
+          # database
+          # Docs.save id, title, author, date
+          # UserDoc doc_id, user_id
         end
     end
   

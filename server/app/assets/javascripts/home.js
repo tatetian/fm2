@@ -109,7 +109,7 @@ $(function(){
     // appending its element to the `<ul>`.
     addOne: function(paper) {
       var view = new TitleView({model: paper});
-      this.$("ul").append(view.render().el);
+      this.$(".tag-nav ul").append(view.render().el);
     },
 
     // Add all items in the **Todos** collection at once.
