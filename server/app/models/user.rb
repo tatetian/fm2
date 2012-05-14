@@ -1,6 +1,9 @@
 class User < ActiveRecord::Base
   attr_accessible :email, :headurl, :name, :remember_token, :uid
   has_many :tags, dependent: :destroy
+  has_many :comments, dependent: :destroy
+  has_many :notes, dependent: :destroy
+  has_many :highlights, dependent: :destroy
   
   after_save { |user|
     # create a default tag for every user

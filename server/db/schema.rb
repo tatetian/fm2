@@ -11,13 +11,31 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120512163733) do
+ActiveRecord::Schema.define(:version => 20120514054306) do
 
   create_table "collections", :force => true do |t|
     t.integer  "tag_id"
     t.integer  "metadata_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+  end
+
+  create_table "comments", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "paper_id"
+    t.text     "content"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "highlights", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "paper_id"
+    t.integer  "pagenum"
+    t.string   "posfrom"
+    t.string   "posto"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "metadata", :force => true do |t|
@@ -30,6 +48,16 @@ ActiveRecord::Schema.define(:version => 20120512163733) do
     t.integer  "paper_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+  end
+
+  create_table "notes", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "paper_id"
+    t.integer  "pagenum"
+    t.string   "position"
+    t.text     "content"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "papers", :force => true do |t|
