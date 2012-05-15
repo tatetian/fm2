@@ -14,8 +14,8 @@ html,body{height:100%; }
 .reading-tag ul{ position:relative; float:left; left:-50%; height:30px;  margin:0 auto; }
 .reading-tag li{float:left; margin-left:20px; line-height:30px; height:30px;}
 
-.reading-author, .reading-date { height:30px; border-bottom:1px solid #fff;  }
-.reading-author span, .reading-date span {  width:100px; height:30px; line-height:30px; float:left; text-align:right; }
-.reading-author em, .reading-date em { float:left; text-align:left; width:250px;height:30px; line-height:30px; }
+.reading-entries li { height:30px; border-bottom:1px solid #fff;  }
+.reading-entries li span {  width:100px; height:30px; line-height:30px; float:left; text-align:right; }
+.reading-entries li em { float:left; text-align:left; width:250px;height:30px; line-height:30px; }
 .reading-abstract h1{font-size:14px; height:2em; line-height:2em;}
 .reading-abstract p{border:1px solid #fff; min-height:100px; width:80%; margin:0 auto;}

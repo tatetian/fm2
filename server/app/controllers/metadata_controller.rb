@@ -26,9 +26,11 @@ class MetadataController < ApplicationController
                       d[:tags] = metadata.tags.map { |t| t.name } 
                       d
               }
-            render :json => result
-        else
-          render :json => {}
+            if result.length > 0
+              render :json => result[0]
+              return
+            end
+        render :json => {}
         end
     end
     

@@ -1,5 +1,5 @@
 <div class="reading-title">
-  <h1><a>论文题目</a></h1>
+  <!--  <h1><a>论文题目</a></h1> -->
 </div>
 <div class="reading-tag">
   <div class="wrapper">
@@ -10,18 +10,26 @@
   </div>
 </div>
 <div class="reading-profile" >
-  <h1 class="reading-author">
-    <span>作者：</span><em> 姓名</em>
-  </h1>
-  <h1 class="reading-date" >
-    <span>发表日期：</span><em> 日期</em>
-  </h1>
+  <ul class="reading-entries">
+    <li>
+      <span>作者：</span><em> 姓名</em>
+    </li>
+    <li>
+      <span>发表日期：</span><em> 日期</em>
+    </li>
+  </ul>
   <div class="reading-abstract">
     <h1>abstract</h1>
     <p>abstract 内容</p>
   </div>
 </div>
 <div class="reading-comments"> 论文评论 </div>
+<script type="text/template" id="title-template">
+  <h1><a><%%= title %></a></h1>
+</script>
 <script type="text/template" id="tag-template">
   <%%= name %>
+</script>
+<script type="text/template" id="reading-entry-template">
+  <span><%%= name %></span><em><%%= value %></em>
 </script>
