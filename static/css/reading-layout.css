@@ -1,0 +1,11 @@
+@charset "utf-8";
+/* CSS Document */
+html { font-size:62.5%; }
+html,body{height:100%; } 
+
+.reading-title{ width:100%; position:relative; text-align:center;background-color:#666; }
+.reading-tag{height:30px; width:100%;text-align:center;background-color: #09F; }
+.reading-profile{  float:left; height:100%; width:50%; text-align:center; background-color: #999;}
+.reading-comments{ float:right;height:100%;text-align:center; width:50%; text-align:center; background-color: #CCC;}
+
+

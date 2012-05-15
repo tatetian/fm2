@@ -1,0 +1,13 @@
+@charset "utf-8";
+/* CSS Document */
+/*需求最高的是未知宽度和高度的情况下的高度和宽度上的居中！实在不行就只能定义宽和高了,待解决,div套div，linheight就不管用了！*/
+.reading-title h1{ width:80%; height:40px; line-height:40px;  margin: 0 auto; font-size:}
+.reading-tag .wrapper{ position:relative; left:50%; float:left;}   
+.reading-tag ul{ position:relative; float:left; left:-50%; height:30px;  margin:0 auto; }
+.reading-tag li{float:left; margin-left:20px; line-height:30px; height:30px;}
+
+.reading-author, .reading-date { height:30px; border-bottom:1px solid #fff;  }
+.reading-author span, .reading-date span {  width:100px; height:30px; line-height:30px; float:left; text-align:right; }
+.reading-author em, .reading-date em { float:left; text-align:left; width:250px;height:30px; line-height:30px; }
+.reading-abstract h1{font-size:14px; height:2em; line-height:2em;}
+.reading-abstract p{border:1px solid #fff; min-height:100px; width:80%; margin:0 auto;}

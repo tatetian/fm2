@@ -16,7 +16,8 @@ abbr,acronym{border:0;font-variant:normal;}
 sup{vertical-align:baseline;}
 sub{vertical-align:baseline;}
 legend{color:#000;}
-input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;}
+input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit; border:0;}
+input,button,textarea,select,optgroup,option:hover{cursor:pointer;}
 input,button,textarea,select{*font-size:100%;}
 h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;} /*重定义标题字体大小样式*/
 a {text-decoration:none}/*清除默认超链接样式*/

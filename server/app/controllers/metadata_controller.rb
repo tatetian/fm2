@@ -1,6 +1,6 @@
 class MetadataController < ApplicationController
   def index
-        #result = User.first.list_all_metadatas params  # current_user
+        #result = current_user.list_all_metadatas params  # current_user
         #respond_to do |format| 
         #    format.html { head :no_content }
         #    format.json { 
@@ -11,8 +11,53 @@ class MetadataController < ApplicationController
         #      render :json => json 
         #    }
         #end
-        result = User.first.list_recent_metadatas params
+        result = current_user.list_recent_metadatas params
         render :json => result
+    end
+
+    def show 
+        u = current_user       
+        metadata_id = params[:id]
+        if u.has_metadata? :metadata_id=>metadata_id
+            sql="SELECT `metadata`.`id`,IFNULL(metadata.title,papers.title) as title,IFNULL(metadata.authors,papers.authors) as authors ,IFNULL(metadata.date,papers.date) as date,metadata.docid,metadata.created_at,paper_id FROM `metadata`,papers where `metadata`.`paper_id`=papers.id and metadata.id="+metadata_id
+            result=Metadata.find_by_sql(sql)
+            result = result.map { |metadata| 
+                      d = metadata.attributes
+                      d[:tags] = metadata.tags.map { |t| t.name } 
+                      d
+              }
+            render :json => result
+        else
+          render :json => {}
+        end
+    end
+    
+    def destroy
+        u = current_user       
+        metadata_id = params[:id]
+        if u.has_metadata? :metadata_id=>metadata_id
+            m = Metadata.find_by_id(metadata_id)
+            result = m.delete 
+            if m.destroyed?
+              render :json => result
+            else
+              render :json => {}
+            end
+        else
+          render :json => {}
+        end
+    end
+
+    def update
+        u = current_user       
+        metadata_id = params[:id]
+        if u.has_metadata? :metadata_id=>metadata_id
+            metadata = Metadata.find_by_id metadata_id
+            result = metadata.update_attributes(params[:metadata])
+            render :json => result
+        else
+          render :json => {}
+        end
     end
 
     def create
@@ -40,7 +85,7 @@ class MetadataController < ApplicationController
         # add metadata id
         parsed_meta = ActiveSupport::JSON.decode doc_meta
         #json_response = {:file_name => uploaded_io.original_filena                   
-        user = User.first #current_user
+        user = current_user #current_user
         @paper = Paper.find_by_docid hash
         if @paper == nil
             @paper = Paper.new(docid: hash,title: parsed_meta["title"],authors: parsed_meta["authors"].join(", "),date: Date.parse(parsed_meta["date"]),content: doc_text, abstract: "", publication: "", convert: 0)

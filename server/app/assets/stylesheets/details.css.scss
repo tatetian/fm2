@@ -1,0 +1,21 @@
+// Place all the styles related to the details controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+html { font-size:62.5%; }
+html,body{height:100%; } 
+
+.reading-title{ width:100%; position:relative; text-align:center;background-color:#666; }
+.reading-tag{height:30px; width:100%;text-align:center;background-color: #09F; }
+.reading-profile{  float:left; height:100%; width:50%; text-align:center; background-color: #999;}
+.reading-comments{ float:right;height:100%;text-align:center; width:50%; text-align:center; background-color: #CCC;}
+
+.reading-title h1{ width:80%; height:40px; line-height:40px;  margin: 0 auto;}
+.reading-tag .wrapper{ position:relative; left:50%; float:left;}   
+.reading-tag ul{ position:relative; float:left; left:-50%; height:30px;  margin:0 auto; }
+.reading-tag li{float:left; margin-left:20px; line-height:30px; height:30px;}
+
+.reading-author, .reading-date { height:30px; border-bottom:1px solid #fff;  }
+.reading-author span, .reading-date span {  width:100px; height:30px; line-height:30px; float:left; text-align:right; }
+.reading-author em, .reading-date em { float:left; text-align:left; width:250px;height:30px; line-height:30px; }
+.reading-abstract h1{font-size:14px; height:2em; line-height:2em;}
+.reading-abstract p{border:1px solid #fff; min-height:100px; width:80%; margin:0 auto;}

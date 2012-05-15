@@ -5,13 +5,12 @@ html,body{height:100%;}
 
 .index-wrapper{height:100%; width:100%; position:relative; background-color:#666;}
 .sidebar-left {float:left; min-height:100%; width:30%; background-color:#999; }
-.sidebar-right {float:right; min-height:100%; width:70%; background-color: #CCC; }
-.user-basicinfo{ height:10em; }
-.tag-nav{border-bottom:1px solid #000;}
-.index-upload{ text-align:center;}
-.user-honorinfo{height:10em; text-align:center;}
- 
-
+.sidebar-right { position:relative; float:right; min-height:100%; width:70%; background-color: #CCC; }
+.user-basicinfo{position:relative; height:100px;  }
+.index-upload{ position:relative; height:100px; background-color:#09F;}
+.user-honorinfo{ position:relative; overflow:hidden;background-color:#fff; clear:both;}
+.freshthings{position:relative; clear:both;}
+.index-friends {height:100px;position:fixed;;width:100%; bottom:0px;overflow:hidden; background-color: #09F; }
 
 
 

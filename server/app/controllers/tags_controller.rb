@@ -1,14 +1,6 @@
 class TagsController < ApplicationController
   def index
-    tags = current_user.list_all_tags
-    response = { :error => nil, :tags => tags }
-    json = ActiveSupport::JSON.encode response
-    respond_to do |format| 
-        format.html { head :no_content }
-        format.json { 
-            render :json => json 
-        }
-    end 
+    render :json => current_user.tags 
   end
 
   def create

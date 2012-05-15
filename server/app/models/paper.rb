@@ -23,7 +23,8 @@ class Paper < ActiveRecord::Base
       if params.has_key?(:user_id)
           user_id = params[:user_id]
           result = Highlight.all(:conditions=>{:paper_id=>self.id,:user_id=>user_id})
+      else
+         result = self.highlights
       end
-      nil
   end
 end

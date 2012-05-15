@@ -1,56 +1,70 @@
-<html lang="zh-CN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Feastmind V2.0</title>
 <link href="css/reset.css" rel="stylesheet" type="text/css" />
 <link href="css/index-layout.css" rel="stylesheet" type="text/css" />
 <link href="css/index-style.css" rel="stylesheet" type="text/css" />
+<script src="js/jquery-1.4.4.min.js"></script>
+<script src="js/hzb-index.js"></script>
 </head>
 <body>
 <div class="index-wrapper">
-  <div class="sidebar-left fl">
-      <div class="user-basicinfo" >
-          <img  src="#"  />
-          用户名
-      </div>
-      <div class="tag-nav">
-        <ul>
-          <li><a href="#">最近阅读</a></li>
-          <li><a href="#">论文</a></li>
-          <!--<li><a href="#">论文</a></li>
-          <li><a href="#">论文</a></li>
-          <li><a href="#">论文</a></li>
-          <li><a href="#">论文</a></li>
-          <li><a href="#">论文</a></li>
-          <li><a href="#">论文</a></li>
-          <li><a href="#">论文</a></li>-->
-        </ul>
-        <div class="index-upload">
-          <input type="file" value="上传论文"/>
-        </div>
-      </div>
-  </div>
-  <div class="sidebar-right fr">
-    <div class="user-honorinfo">
-    个人荣誉信息图表
-    </div>
-    <div class="freshthings">
+  <div class="sidebar-left ">
+    <div class="user-basicinfo" > <img   src="#"  /> <a class="username">用户名</a> </div>
+    <div class="tag-nav">
       <ul>
-        <li>新鲜事</li>
-        <li>新鲜事</li>
-        <li>新鲜事</li>
+        <li><a href="#">最近阅读</a></li>
+        <li><a href="#">论文</a></li>
+        <li><a href="#">论文</a></li>
+        <li><a href="#">论文</a></li>
+        <li><a href="#">论文</a></li>
+        <li><a href="#">论文</a></li>
+        <li><a href="#">论文</a></li>
+        <li><a href="#">论文</a></li>
+        <li><a href="#">论文</a></li>
+      </ul>
+    </div>
+    <div class="index-upload">
+      <input type="button" value="上传论文"/>
+    </div>
+  </div>
+  <div class="sidebar-right ">
+    <div class="user-honorinfo">
+     <div class="wrapper" >
+      <ul>
+        <li><img src="#" /><a href="#"> info1</a></li>
+        <li><img src="#" /><a href="#"> info2</a></li>
+        <li><img src="#" /><a href="#"> info3</a></li>
+        <li><img src="#" /><a href="#"> info4</a></li>
+        <li><img src="#" /><a href="#"> info5</a></li>
+      </ul>
+    </div>
+    <div style="clear:both"></div>
+  </div>
+  <div class="freshthings">
+    <ul>
+      <li>新鲜事</li>
+      <li>新鲜事</li>
+      <li>新鲜事</li>
+    </ul>
+  </div>
+  <div class="index-friends">
+    <div class="wrapper" >
+      <ul>
+        <li><img src="#" /><a href="#"> friends1</a></li>
+        <li><img src="#" /><a href="#"> friends2</a></li>
+        <li><img src="#" /><a href="#"> friends3</a></li>
+        <li><img src="#" /><a href="#"> friends4</a></li>
+        <li><img src="#" /><a href="#"> friends5</a></li>
+        <li><img src="#" /><a href="#"> friends1</a></li>
+        <li><img src="#" /><a href="#"> friends2</a></li>
+        <li><img src="#" /><a href="#"> friends2</a></li>
       </ul>
     </div>
   </div>
 </div>
-<script src="js/json2.js"></script>
-<script src="js/zepto.js"></script>
-<script src="js/underscore.js"></script>
-<script src="js/backbone.js"></script>
-<script src="js/index.js"></script>
-<script src="todos/backbone-localstorage.js"></script>
-<script type="text/template" id="title-template">
-    <a href="#"><%= title %></a>
-</script>
+</div>
 </body>
 </html>

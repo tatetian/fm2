@@ -1,4 +1,6 @@
 Server::Application.routes.draw do
+  get "details/index"
+
   get "metas/new"
 
   get "metadatas/new"
@@ -10,10 +12,24 @@ Server::Application.routes.draw do
   get "papers/new"
 
   get "docs/new"
+  
+  get "renren/login", :controller=>"renren",:action=>"login"
 
-  resources :metadata
-
+  resources :metadata do
+       resources :tags
+  end  
+  #resources :comments
+  #resources :notes
+  #resources :highlights
+  
+  resources :papers do
+       resources :comments
+       resources :highlights
+       resources :notes
+  end
+  
   match 'home'  => 'home#index'
+  match 'details' => 'details#index'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
