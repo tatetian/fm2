@@ -1,4 +1,6 @@
 Server::Application.routes.draw do
+  get "manage/index"
+
   get "details/index"
 
   get "metas/new"
@@ -15,6 +17,22 @@ Server::Application.routes.draw do
   
   get "renren/login", :controller=>"renren",:action=>"login"
 
+  get "tags" , :controller => "users", :action=>"getTags"
+  
+  match 'reader' => 'reader#index'
+  
+  match 'renren/logout', :controller=> 'renren', :action=>"logout"
+  
+  match '/signout', to: 'renren#destroy', via: :delete
+  
+  resources :renren, only: [:destroy]
+
+  resources :users
+
+  resources :friends
+
+  resources :logs  
+
   resources :metadata do
        resources :tags
   end  
@@ -29,7 +47,9 @@ Server::Application.routes.draw do
   end
   
   match 'home'  => 'home#index'
-  match 'details' => 'details#index'
+  match 'details/:metadata_id' => 'details#index'
+  match 'manage' => 'manage#index'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

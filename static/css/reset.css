@@ -1,5 +1,8 @@
 charset "utf-8";
 /* CSS Document */
+html { font-size:62.5%; }
+html,body{height:100%;}
+
 
 /*CSS reset*/
 html  {color:#000;background:#FFF;}
@@ -25,3 +28,4 @@ a:link { }
 a:visited { }
 a:hover {text-decoration:underline; cursor: pointer;}
 a:active { }
+.cb{clear:both;}

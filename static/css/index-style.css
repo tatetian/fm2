@@ -1,31 +1,33 @@
 @charset "utf-8";
 /* CSS Document */
 
-.user-basicinfo img { width:50px; height:50px; 
+.user-basicinfo img { width:40px; height:40px; 
 					position:absolute; top:0; bottom:0; left:10px; margin:auto; 
-					border:1px solid #fff; }
+					border:1px solid #fff; background-color:#DCDCDC}
 .user-basicinfo a.username { height:1em; 
-					position:absolute; left:70px; top:0; bottom:0; margin:auto; 
+					position:absolute; left:70px; bottom:5px;  
 					font-size:14px; }
 					
 .tag-nav { border-bottom:1px solid #fff; }
+.tag-nav h1{ border-top:1px solid #fff;background-color: #6D6D6D; height:35px; font-size:18px; line-height:35px; text-align:center;color:#fff; }
 .tag-nav li { border-top:1px solid #fff; }
-.tag-nav li a { display:block; height:30px; line-height:30px; font-size:14px; letter-spacing:1em; color:#fff; background-color:#CCC; text-align:center; }
+.tag-nav li a { display:block; height:30px; line-height:30px; font-size:14px;  color: #707070; background-color: #E2E2E2; text-align:left; text-indent:2em;}
 
-.index-upload input { height:30px; ; width:150px;
-					position:absolute; top:0; right:0px; bottom:0; left:0px; margin:auto; 
-					font-size:14px;  }
+.index-upload form{padding-top:10px;}
+.index-upload form input { display:block;line-height:30px;height:30px;  margin:0 auto; margin-top:10px;font-size:14px; text-align:center; }
+.index-upload form input.submit{background-color: #06F; width:120px; }
+.index-upload form input.upload{background-color: #fff; width:200px;}
 					
-.user-honorinfo .wrapper{position:relative; float:left; left:50%; top:50%; margin-top:-40px; }
-.user-honorinfo ul { position:relative; float:left;  left:-50%; overflow:hidden;  }
-.user-honorinfo li { float:left; margin-left:35px;  }
-.user-honorinfo li:last-child {margin-right:35px;}
-.user-honorinfo li img { height:60px; width:80px; }
-.user-honorinfo li a { display:block;  height:20px; line-height:20px; color:#999; text-align:center; font-size:14px; }
 
-.index-friends .wrapper{position:relative; float:left; left:50%; top:50%; margin-top:-40px; }
-.index-friends ul { position:relative; float:left;  left:-50%;   }
-.index-friends li { float:left; margin-left:6px; }
-.index-friends li:last-child {margin-right:6px;}
-.index-friends li img { height:60px; width:80px; }
-.index-friends li a { display:block;  height:20px; line-height:20px; color:#999; text-align:center; font-size:14px; }
+.user-honorinfo ul {  text-align:center; position:relative; left:50%; float:left;}
+.user-honorinfo li { float:left; position:relative; left:-50%;display:inline; margin-left:35px; margin-top:5px; margin-bottom:5px; }
+.user-honorinfo li:last-child {margin-right:35px;}
+.user-honorinfo li img { height:60px; width:80px; } 
+.user-honorinfo li a { display:block;  height:20px;width:80px; line-height:20px; color:#fff; text-align:center; font-size:14px;  background-color:#CCC;}
+
+
+.index-friends ul {text-align:center; position:relative; left:50%; float:left;   }
+.index-friends li {float:left; position:relative; left:-50%;display:inline; margin-left:25px; margin-top:5px; margin-bottom:5px; }
+.index-friends li:last-child {margin-right:25px;}
+.index-friends li img { height:60px; width:60px; }
+.index-friends li a { display:block;  height:20px; line-height:20px; color:#999; text-align:center; font-size:14px; color: #6F6F6F; }

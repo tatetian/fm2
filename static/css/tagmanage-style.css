@@ -1,0 +1,19 @@
+@charset "utf-8";
+/* CSS Document */
+
+.tag-man-head ul {  text-align:center; position:relative; left:50%; float:left; }
+.tag-man-head li { float:left; position:relative; left:-50%;display:inline; margin-left:15px;  margin-top:5px; margin-bottom:5px; }
+.tag-man-head li:last-child {margin-right:15px;}
+.tag-man-head li a { display:block;  height:30px;width:70px; line-height:30px; color:#fff; text-align:center; font-size:14px;  background-color: #09F;}
+
+.tag-man-search .search{min-width:250px;  height:25px; margin:5px 0; }
+.tag-man-search .search-btn{width:50px;  font-size:18px; margin:5px 0; }
+.tag-man-subcontent { border-bottom:1px solid #fff; margin-top:5px; color: #898989;}
+.tag-man-subcontent li { border-top:1px solid #fff; clear:both; position:relative; background-color: #DDD; }
+.tag-man-subcontent li>a { display:block; line-height:25px; margin-right:120px;font-size:16px;  text-align:left; margin-left:28px; letter-spacing:normal; }
+.tag-man-subcontent li>span{ display:block;position: absolute; float:right;right:5px; top:0px;; bottom:0px;margin-top:auto;margin-bottom:auto; height:20px; width:50px; line-height:20px; font-size:12px;  color:#fff; background-color: #09F; text-align:center;  }
+.tag-man-subcontent li>span.delete{right:60px;}
+.tag-man-subcontent li>span.icon{float:left;height:20px;width:20px; left:3px; color:#C00; font-size:20px; background-color:rgba(255,255,255,0);}
+.tag-man-subcontent li p{padding-left:28px; margin-right:120px;}
+.tag-man-subcontent li p.meta{font-size:14px;}
+.tag-man-subcontent li p span { display:block;float:left; padding:2px 5px; font-size:12px;  color: #fff;;  margin-right:10px;margin-bottom:5px; background-color:#B0B0B0;}

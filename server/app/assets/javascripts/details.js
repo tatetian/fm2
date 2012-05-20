@@ -6,7 +6,6 @@ $(function() {
         name: "New tag",
       };
     },
-
     initialize: function() {
       if (!this.get("name")) {
         this.set({"name": this.defaults().name});
@@ -15,7 +14,7 @@ $(function() {
   });
   var TagList = Backbone.Collection.extend({
     model: Tag,
-    url: '/metadata/1/tags'
+    url: '/metadata/' + metadata_id + '/tags'
   });
   var TagView = Backbone.View.extend({
     tagName:  "li",
@@ -55,15 +54,19 @@ $(function() {
   });
 //============================Metadata's model & view==========================
   var Metadata = Backbone.Model.extend({
-    url: '/metadata/1',
+    url: '/metadata/' + metadata_id,
     defaults: function() {
       return {
         title: "Empty title",
+        abstract: "This is a placeholder",
       };
     },
     initialize: function() {
       if (!this.get("title")) {
         this.set({"title": this.defaults().title});
+      }
+      if (!this.get("abstract")) {
+        this.set({"abstract": this.defaults().abstract});
       }
     }
   });
@@ -75,8 +78,32 @@ $(function() {
       this.model.bind('change', this.render, this);
     },
     render: function() {
-      alert(JSON.stringify(this.model.toJSON()));
       this.$el.html(this.template(this.model.toJSON()));
+    }
+  });
+  var AbstractView = Backbone.View.extend({
+    el: $(".reading-abstract"),
+    template: _.template($("#abstract-template").html()),
+    initialize: function() {
+      this.model.bind('change', this.render, this);
+    },
+    render: function() {
+      var metadata = this.model.toJSON();
+      if(metadata.abstract != undefined)
+        this.$el.html($(this.template(metadata)));
+    }
+  });
+  var AuthorView = Backbone.View.extend({
+    el: $(".reading-entries"),
+    template: _.template($("#detail-entry-template").html()),
+    initialize: function() {
+      this.model.bind('change', this.render, this);
+    },
+    render: function() {
+      var details = this.model.toJSON();
+      var authors = details.authors;
+      if(authors != undefined && authors != "")
+        this.$el.append(this.template({name: "Authors：", value: authors}));
     }
   });
 //=================================App's view==================================
@@ -88,6 +115,8 @@ $(function() {
       var tagList = new TagList();
       // views
       var titleView = new TitleView({model: metadata});
+      var authorView = new AuthorView({model: metadata});
+      var abstractView = new AbstractView({model: metadata});
       var tagListView = new TagListView({collection: tagList});
       // fetch
       metadata.fetch();

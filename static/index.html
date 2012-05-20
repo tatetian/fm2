@@ -6,16 +6,18 @@
 <link href="css/reset.css" rel="stylesheet" type="text/css" />
 <link href="css/index-layout.css" rel="stylesheet" type="text/css" />
 <link href="css/index-style.css" rel="stylesheet" type="text/css" />
-<script src="js/jquery-1.4.4.min.js"></script>
-<script src="js/hzb-index.js"></script>
+
 </head>
 <body>
 <div class="index-wrapper">
   <div class="sidebar-left ">
+  <div class="logo"> FeastMind</div>
     <div class="user-basicinfo" > <img   src="#"  /> <a class="username">用户名</a> </div>
+     <div class="log"> <form> <input type="submit" value="Log out"/></form></div>
     <div class="tag-nav">
+    <h1>Recent</h1>
       <ul>
-        <li><a href="#">最近阅读</a></li>
+        <li><a href="#">论文</a></li>
         <li><a href="#">论文</a></li>
         <li><a href="#">论文</a></li>
         <li><a href="#">论文</a></li>
@@ -27,27 +29,47 @@
       </ul>
     </div>
     <div class="index-upload">
-      <input type="button" value="上传论文"/>
+    <form >
+      <input class="upload" type="file" value="上传"/>
+      <input class="submit" type="submit" value="确定"/>
+          </form>
     </div>
   </div>
   <div class="sidebar-right ">
     <div class="user-honorinfo">
-     <div class="wrapper" >
+     
       <ul>
         <li><img src="#" /><a href="#"> info1</a></li>
         <li><img src="#" /><a href="#"> info2</a></li>
         <li><img src="#" /><a href="#"> info3</a></li>
         <li><img src="#" /><a href="#"> info4</a></li>
         <li><img src="#" /><a href="#"> info5</a></li>
+        <div style="clear:both"></div>
       </ul>
-    </div>
-    <div style="clear:both"></div>
+   
+    
   </div>
   <div class="freshthings">
     <ul>
-      <li>新鲜事</li>
-      <li>新鲜事</li>
-      <li>新鲜事</li>
+      <li><img class="header-img" src="" />
+      <div class="status"><span class="username" >用户名:</span> <span>个人状态，评价</span></div>
+      <div class="coment-content"> 我的评论</div>
+      <div class="coment-info"><span class="time">18分钟前</span><span class="action"><a>转发</a><a>收藏</a><a>评论</a></span></div>
+      <div class="cb"></div>
+      </li>
+      <li><img class="header-img" src="" />
+      <div class="status"><span class="username" >用户名:</span> <span>个人状态，评价</span></div>
+      <div class="coment-content"> 我的评论</div>
+      <div class="coment-info"><span class="time">18分钟前</span><span class="action"><a>转发</a><a>收藏</a><a>评论</a></span></div>
+      <div class="cb"></div>
+      </li>
+      <li><img class="header-img" src="" />
+      <div class="status"><span class="username" >用户名:</span> <span>个人状态，评价</span></div>
+      <div class="coment-content"> 我的评论</div>
+      <div class="coment-info"><span class="time">18分钟前</span><span class="action"><a>转发</a><a>收藏</a><a>评论</a></span></div>
+      <div class="cb"></div>
+      </li>
+      
     </ul>
   </div>
   <div class="index-friends">

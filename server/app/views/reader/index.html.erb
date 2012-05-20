@@ -1,0 +1,35 @@
+<div class="docid" data-docid= <%=@docid%> ></div>
+<div id="top-panel" style="z-index:10;" class="unselectable">
+    <div id="page-selector-wrapper" style="z-index:10;">
+        <table id="page-selector" style="z-index:10;">
+            <tr>
+                <td style="border-left: none;" pageId=1 >1</td>
+            </tr>
+        </table>
+        <div id="page-anchor" style="z-index:5;"></div>
+    </div>
+</div>
+<div id="viewport" class="h_center">
+    <ul id="page-container"></ul>
+</div>
+<!--<div id="toolbar" class="bottom-bar" style="z-index:20;">
+</div>
+<div id="searchbar" class="bottom-bar" style="z-index:20;">
+</div>-->
+<div id="next-page" style="z-index:10;">
+</div>
+<div id="pre-page" style="z-index:10;">
+</div>
+<div id="invisible-layer" style="z-index:-1;">
+    <!-- 
+    This workaround enables Ctrl+C to copy the selected text.
+    The input box always maintain the same content as the selected text.
+    When the user press Ctrl, the input box get the focus and the text in it get selected. 
+    Thus after the user press Ctrl+C, the selected text in the input box is copied to 
+    system clipboard. Note that the input box is small and positioned with a large offset 
+    so that it is invisible to the user.
+
+    For IE, the system clipboard is directly manipulated.
+    -->
+    <textarea id="clipboard-box"></textarea>
+</div>

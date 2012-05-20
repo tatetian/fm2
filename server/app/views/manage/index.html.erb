@@ -1,0 +1,37 @@
+<div class="tag-man-head">
+  <ul>
+    <li><a>+</a></li>
+  </ul>
+  <div style="clear:both;"></div>
+</div>
+<div class="tag-man-search">
+  <form >
+    <input type="text" class="search"/>
+    <input type="button" value="Search"  class="search-btn" />
+  </form>
+</div>
+<div class="tag-man-content">
+  <ul >
+    <!--one list start-->
+    <li>
+    <div class="tag-man-subcontent">
+      <ul>
+      </ul>
+    </div>
+    </li>
+  </ul>
+</div>
+<script type="text/template" id="tag-template">
+  <a><%%= name %></a>
+</script>
+<script type="text/template" id="metadata-template">
+  <a href="/details/<%%= id %>"><%%= title %></a>
+  <span class="resetname"><a>Rename</a></span>
+  <span class="delete"><a>Delete</a></span>
+  <p class="cb">
+    <%% _.each(tags, function(tag) { %>
+      <span><a><%%= tag %></a></span>    
+    <%%  }); %>
+    <div class="cb"></div>
+  </p>
+</script>

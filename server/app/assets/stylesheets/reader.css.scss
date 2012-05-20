@@ -1,0 +1,207 @@
+// Place all the styles related to the Reader controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+body {
+    background: transparent url(/assets/bg-tile-dark.png) repeat scroll center top;
+    overflow: auto;
+}
+#top-panel {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    height: 16px;
+    width: 100%;
+}
+#page-selector-wrapper {
+    position: relative;
+    height: 16px;
+    width: 100%;
+    background-color: black;
+    cursor: pointer;
+}
+.bottom-bar {
+    position: fixed;
+    bottom: 0px;
+    width: 29px;
+    height: 44px;
+    background-color: black;
+    opacity: 0.5;
+	filter: alpha(opacity=50) ;
+}
+.bottom-bar:hover {
+    width: 62%;
+    opacity: 0.8;
+	filter: alpha(opacity=80) ;
+}
+#invisible-layer {
+    position: relative;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+#viewport {
+    position: relative;
+    top: 8px;
+	text-align: left;
+	font-size: 10px ;
+    cursor: text;
+    overflow: hidden;
+    vertical-align: baseline;
+    border: black solid thin;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.597656) 0px 0px 2px 0px, rgba(0, 0, 0, 0.398438) 0px 0px 5px 0px;
+    -moz-box-shadow: rgba(0, 0, 0, 0.597656) 0px 0px 2px 0px, rgba(0, 0, 0, 0.398438) 0px 0px 5px 0px;
+    box-shadow: rgba(0, 0, 0, 0.597656) 0px 0px 2px 0px, rgba(0, 0, 0, 0.398438) 0px 0px 5px 0px;
+}
+#viewport ul {
+    margin-left: 0px;
+    position: relative;
+    list-style: none;
+}
+#viewport li {
+    position: relative;
+    display: list-item;
+    float: left;
+}
+.page-image {
+    left: 0px;
+    top: 0px;
+    width: 100%;
+	height: 100%;
+    display: block;
+}
+.unselectable {
+    -webkit-user-select: none; 
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+.selected-area {
+    position: absolute;
+    background-color: #6EB3D1;;
+    opacity: 0.4;
+    filter: alpha(opacity=40) ;
+    z-index:10;
+}
+.highlight-area {
+    position: absolute;
+    background-color: yellow;
+    opacity: 0.4;
+    filter: alpha(opacity=40) ;
+    z-index:5;
+}
+#clipboard-box {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 300px;
+    height: 24px;
+}
+#controls {
+    position: absolute;
+    width: 100%;
+}
+#toolbar ol {
+	width: 200px;
+	height: 24px;
+	margin: 0 auto;
+	text-align: center;
+	
+	list-style-type: none ;
+}
+#toolbar ol li {
+	float: left ;
+	display: block; 
+	color: #fff;
+	margin: 0 10px 10px 0;
+}
+.control {
+	width: 24px;
+	height: 24px;
+	display: block ;
+}
+#next-page, #pre-page {
+    top: 50%;
+    margin-top: -11px;
+    width: 16px;
+    height: 22px;
+    position: fixed;
+    overflow: hidden;
+    cursor: pointer;
+    opacity: 0.4;
+	filter: alpha(opacity=40) ;
+}
+#next-page {
+	right: 8px ;
+    background: transparent url(/assets/sprite-arrows.png) no-repeat scroll -16px -44px;
+}
+#pre-page {
+	left: 8px ;
+    background: transparent url(/assets/sprite-arrows.png) no-repeat scroll left -44px;
+}
+#next-page:hover {
+    background: transparent url(/assets/sprite-arrows.png) no-repeat scroll -16px 0px;
+    opacity: 1.0;
+	filter: alpha(opacity=100) ;
+}
+#pre-page:hover {
+    background: transparent url(/assets/sprite-arrows.png) no-repeat scroll left 0px;
+    opacity: 1.0;
+	filter: alpha(opacity=100) ;
+}
+#preloader {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    height: 100%;
+    width: 100%;
+    background-color: white;
+}
+#loadbar {
+    left: 0px;
+    top: 0px;
+    height: 8px;
+    width: 0%;
+    background-color: black;
+}
+#preloader_msg {
+    width: 200px;
+    height: 100px;
+    min-height: 10em;
+    position: relative;
+}
+.v_center {
+    display: table-cell;
+    vertical-align: middle;
+}
+.h_center {
+    margin-left: auto;
+    margin-right: auto;
+}
+#page-selector {
+    width: 100%;
+    height: 100%;
+    cellpadding: 0px;
+    cellspacing: 0px;
+    table-layout: fixed;
+    position: absolute;
+    z-index: 10;
+    oveflow: hidden;
+}
+#page-selector td {
+    border-left: 1px solid white;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 12px;
+    color: white;
+}
+#page-anchor {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 100%;
+    z-index:5;
+    background: transparent url(/assets/bg-tile-blue.png) repeat center top;
+}

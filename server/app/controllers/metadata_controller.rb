@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class MetadataController < ApplicationController
   def index
         #result = current_user.list_all_metadatas params  # current_user
@@ -118,6 +119,8 @@ class MetadataController < ApplicationController
               FileUtils.mv(tmp_dir, final_dir)
               # add collection 
               user.collect! @metadata
+              log = {:content=>user.name+"上传了论文", :paper_id=> @metadata.paper_id}
+              user.add_log! log
               # save png
               #%x[app/tools/pdf2png "#{tmp_pdf_file}" 150 "#{tmp_dir}"]
               Process.spawn 'app/tools/pdf2png', (final_dir.to_s + "/uploaded.pdf"), "150", final_dir.to_s

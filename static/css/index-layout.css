@@ -3,14 +3,16 @@
 html { font-size:62.5%; }
 html,body{height:100%;}
 
-.index-wrapper{height:100%; width:100%; position:relative; background-color:#666;}
-.sidebar-left {float:left; min-height:100%; width:30%; background-color:#999; }
-.sidebar-right { position:relative; float:right; min-height:100%; width:70%; background-color: #CCC; }
-.user-basicinfo{position:relative; height:100px;  }
-.index-upload{ position:relative; height:100px; background-color:#09F;}
-.user-honorinfo{ position:relative; overflow:hidden;background-color:#fff; clear:both;}
+.index-wrapper{height:100%; width:100%; position:relative; }
+.sidebar-left {float:left; min-height:100%; width:30%;  }
+.sidebar-right { position:relative; float:right; min-height:100%; width:70%; background-color: #F4F4F4; }
+.logo{font-family:Verdana, Geneva, sans-serif; font-size:40px; color:#2E2E2E; height:60px; line-height:60px;text-align:center; background-color: #D7D7D7;}
+.user-basicinfo{position:relative; height:50px; background-color: #D7D7D7;  }
+.log{position:relative; float:right; top:-20px; right:5px; background-color:;}
+.index-upload{ position:relative; height:100px; background-color: #DDD;}
+.user-honorinfo{ position:relative; overflow:hidden;background-color: #EBEBEB; clear:both;}
 .freshthings{position:relative; clear:both;}
-.index-friends {height:100px;position:fixed;;width:100%; bottom:0px;overflow:hidden; background-color: #09F; }
+.index-friends {position:absolute;;width:100%; bottom:0px;overflow:hidden; background-color: #D9D9D9 ; }
 
 
 

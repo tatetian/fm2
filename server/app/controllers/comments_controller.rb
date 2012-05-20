@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class CommentsController < ApplicationController
       def index
         comment = Comment.find_by_paper_id(params[:paper_id])
@@ -11,6 +12,9 @@ class CommentsController < ApplicationController
           comment = Comment.new(params[:comment])
           if comment.save
             render :json => comment
+            u = current_user
+            log ={:content => u.name+"评论了论文", :paper_id=> comment.paper_id}
+            u.add_log! log
           else
             render :json => {}
           end

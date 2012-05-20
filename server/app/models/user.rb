@@ -1,28 +1,109 @@
+# encoding: UTF-8
 class User < ActiveRecord::Base
   attr_accessible :email, :headurl, :name, :remember_token, :uid
   has_many :tags, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :notes, dependent: :destroy
   has_many :highlights, dependent: :destroy
+  has_many :logs, dependent: :destroy
+
+  has_many :relationships, foreign_key: "user1_id", dependent: :destroy
+  has_many :friends, through: :relationships, source: :user2
+
+  has_many :reverse_relationships, foreign_key: "user2_id",
+                                   class_name:  "Relationship",
+                                   dependent:   :destroy
+  has_many :haoyous, through: :reverse_relationships, source: :user1
   
-  after_save { |user|
+  
+  #after_save { |user|
     # create a default tag for every user
     # All tags will be tagged as All
-    Tag.create :name => "All", :user_id =>  user.id
-  }
+  #  Tag.create :name => "All", :user_id =>  user.id
+  #}
 
 
   validates :name, presence: true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   #validates :email, format:     { with: VALID_EMAIL_REGEX }
+  def add_log! (params={})
+    content  = params[:content]
+    if params.has_key? (:paper_id)
+        paper_id = params[:paper_id]
+        paper = Paper.find_by_id(paper_id)
+        metadata = self.has_paper? paper
+        if metadata != nil and metadata.title != nil and metadata.title != ""
+            logs.create!(:from_id=>self.id, :content=>content+"《"+metadata.title+"》")
+            friends.each do |f|
+                m = f.has_paper? paper
+                if m != nil and m.title != nil and m.title != ""
+                    f.logs.create!(:from_id=>self.id, :content=>content+"《"+m.title+"》")
+                else
+                    f.logs.create!(:from_id=>self.id, :content=>content+"《"+paper.title+"》")
+                end
+            end
+        else
+            logs.create!(:from_id=>self.id, :content=>content+ "《"+paper.title+"》")
+            friends.each do |f|
+                m = f.has_paper? paper
+                if m != nil and m.title != nil and m.title != ""
+                    f.logs.create!(:from_id=>self.id, :content=>content+"《"+m.title+"》")
+                else
+                    f.logs.create!(:from_id=>self.id, :content=>content+"《"+paper.title+"》")
+                end
+            end
+        end
+    else
+        logs.create!(:from_id=>self.id, :content=>content)
+        friends.each do |f|
+            f.logs.create!(:from_id=>self.id, :content=>content)
+        end
+    end
+  end
+  def has_paper? paper
+      tag = tags.find_by_name("All")
+      tag.metadatas.each do |m|
+            if m.paper.id == paper.id
+                  return m
+            end
+      end
+      nil
+  end
+  def papers
+      tag = tags.find_by_name("All")
+      result = tag.metadatas.map{
+                    |m|
+                    d = m.paper
+                    d
+                }
+  end
+  def is_friend?(other_user)
+    relationships.find_by_user2_id(other_user.id)
+  end
+
+  def add_friend!(other_user)
+    relationships.create!(user2_id: other_user.id)
+    other_user.relationships.create!(user2_id: self.id)
+  end
+
+  def del_friend!(other_user)
+    relationships.find_by_user2_id(other_user.id).delete
+    other_user.relationships.find_by_user2_id(self.id).delete
+  end
+
   def collect!(metadata)
     tag = self.tags.find_by_name "All"
     tag.collections.create!(metadata_id: metadata.id)
   end
 
-  def list_recent_metadatas(params={}) 
-    result = list_all_metadatas params
-    result[:entries]
+  def list_recent_metadatas(params={})
+    if params.has_key? (:tag)
+        result = search_metadatas params
+        result[:entries]
+    else 
+        result = list_all_metadatas params
+        result[:entries]
+    end
   end
 
   def list_all_metadatas(params={})
@@ -41,7 +122,7 @@ class User < ActiveRecord::Base
     limit ||= 10
     keywords ||= ""
     
-    sql="SELECT `metadata`.`id`,IFNULL(metadata.title,papers.title) as title,IFNULL(metadata.authors,papers.authors) as authors ,IFNULL(metadata.date,papers.date) as date,metadata.docid,metadata.created_at,metadata.paper_id FROM `metadata`,papers,`collections`,tags where  `metadata`.`id` = `collections`.`metadata_id` and `metadata`.`paper_id`=papers.id and tag_id=tags.id and tags.id ="+tag.id.to_s+" AND  (IFNULL(metadata.title,papers.title) LIKE ('%"+keywords+"%') OR IFNULL(metadata.authors,papers.authors) LIKE('%"+keywords+"%') )"
+    sql="SELECT `metadata`.`id`,IFNULL(metadata.title,papers.title) as title,IFNULL(metadata.authors,papers.authors) as authors ,IFNULL(metadata.date,papers.date) as date,metadata.docid,metadata.created_at,metadata.paper_id FROM `metadata`,papers,`collections`,tags where  `metadata`.`id` = `collections`.`metadata_id` and `metadata`.`paper_id`=papers.id and tag_id=tags.id and tags.id ="+tag.id.to_s+" AND  (IFNULL(metadata.title,papers.title) LIKE ('%"+keywords+"%') OR IFNULL(metadata.authors,papers.authors) LIKE('%"+keywords+"%') ) order by metadata.created_at desc"
     @result=Metadata.find_by_sql(sql+" LIMIT "+start.to_s+","+(start+limit).to_s) 
     entries = 
       #tag.docs.offset(start)

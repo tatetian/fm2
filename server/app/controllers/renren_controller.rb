@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class RenrenController < ApplicationController
     #require 'OAuth2'
     #require 'json'
@@ -14,29 +15,33 @@ class RenrenController < ApplicationController
             :code => params[:code],
             :grant_type=> "authorization_code"
         })
-        puts "access_token:"+access_token.token+"///"
+        #puts "access_token:"+access_token.token+"///"
         session[:renren_access_token]=access_token.token
         geturi=URI.parse(URI.encode("http://graph.renren.com/renren_api/session_key?oauth_token=#{session[:renren_access_token]}"))         
              
         res=JSON Net::HTTP.get(geturi)
-             
-        session[:renren_session_key]= res["renren_token"]["session_key"]
-             
-        session[:renren_expires_in]=Time.now.to_i+res["renren_token"]["expires_in"].to_i
+                  
+        session[:renren_expires_in]=Time.now+res["renren_token"]["expires_in"].to_i
         
-        puts res["renren_token"]["expires_in"]
+        #puts res["renren_token"]["expires_in"]
              
         session[:renren_refresh_token]=res["renren_token"]["refresh_token"]
              
         renren_user
         
-        user = User.find_by_uid(@ru["uid"].to_s)
+        user = User.find_by_uid(@ru[0]["uid"].to_s)
         if user==nil
-            user = User.create(:uid=>@ru["uid"].to_s,:name=>@ru["name"],:remember_token=>access_token.token,:headurl=>@ru["headurl"])
+            user = User.create(:uid=>@ru[0]["uid"].to_s,:name=>@ru[0]["name"],:remember_token=>access_token.token,:headurl=>@ru[0]["tinyurl"])
+            Tag.create :name => "All", :user_id =>  user.id
+        else
+            user.remember_token=access_token.token
+            user.save
         end
         
-        #sign_in user
+        sign_in user
         
+        add_friends user        
+
         redirect_to "/home"         
              
     end
@@ -46,7 +51,6 @@ class RenrenController < ApplicationController
         end
     end         
     def renren_user
-        session_key = session[:renren_session_key]
         str=""
         str<<"access_token=#{session[:renren_access_token]}"
         str<<"format=JSON"
@@ -62,7 +66,34 @@ class RenrenController < ApplicationController
                   :sig=>sig
                  }
         @ru = JSON Net::HTTP.post_form(URI.parse(URI.encode("http://api.renren.com/restserver.do")),query).body
+        #@ru = @ru[0]
         #@ru = ActiveSupport::JSON.decode @ru
+    end
+
+    def add_friends(user)
+        str=""
+        str<<"access_token=#{session[:renren_access_token]}"
+        str<<"format=JSON"
+        str<<"method=friends.get"
+        str<<"v=1.0"
+        str<<"#{api_secret}"
+        sig = Digest::MD5.hexdigest(str)
+        query = {
+                  :format=>'JSON',
+                  :method=>'friends.get',
+                  :access_token=>session[:renren_access_token],
+                  :v=>'1.0',
+                  :sig=>sig
+                 }
+        fuids = JSON Net::HTTP.post_form(URI.parse(URI.encode("http://api.renren.com/restserver.do")),query).body
+        #puts fuids
+        fuids.each do |f| 
+            friend = User.find_by_uid(f)
+            if friend!=nil and user.is_friend?(friend) == nil
+                user.add_friend! friend
+                Log.create(:user_id=>friend.id,:from_id=>user.id,:content=>"您的人人网好友 "+user.name+" 也来到了FeastMind")
+            end
+        end
     end
     
     def api_key
@@ -70,5 +101,9 @@ class RenrenController < ApplicationController
     end
     def api_secret
         "8f51301e3ea04562ac855a832126c7c6"
+    end
+    def logout
+        sign_out
+        redirect_to ""
     end
 end

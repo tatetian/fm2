@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120514054306) do
+ActiveRecord::Schema.define(:version => 20120515091143) do
 
   create_table "collections", :force => true do |t|
     t.integer  "tag_id"
@@ -34,6 +34,14 @@ ActiveRecord::Schema.define(:version => 20120514054306) do
     t.integer  "pagenum"
     t.string   "posfrom"
     t.string   "posto"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "logs", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "from_id"
+    t.text     "content"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -74,6 +82,17 @@ ActiveRecord::Schema.define(:version => 20120514054306) do
   end
 
   add_index "papers", ["docid"], :name => "index_papers_on_docid", :unique => true
+
+  create_table "relationships", :force => true do |t|
+    t.integer  "user1_id"
+    t.integer  "user2_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "relationships", ["user1_id", "user2_id"], :name => "index_relationships_on_user1_id_and_user2_id", :unique => true
+  add_index "relationships", ["user1_id"], :name => "index_relationships_on_user1_id"
+  add_index "relationships", ["user2_id"], :name => "index_relationships_on_user2_id"
 
   create_table "tags", :force => true do |t|
     t.integer  "user_id"
