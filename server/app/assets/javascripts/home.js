@@ -106,6 +106,18 @@ $(function(){
     },
     render: function() {
     },
+    postRender: function() {            
+        var noOfSlides = this.collection.size(); 
+        if(this.collection.size()<=8)
+            $('.index-friends').width(1000);
+        else
+            $('.index-friends').width(this.collection.size()*100);
+        this.scroller = new iScroll('navWrapper', {
+            snap: true,
+            momentum: false,
+            hScrollbar: false
+        });
+    },
     addOne: function(friend) {
       var view = new FriendView({model: friend});
       $(".index-friends ul").append(view.render().el);
@@ -116,7 +128,13 @@ $(function(){
   });
   var myFriends = new FriendList(); 
   var friendsView = new FriendsView({collection: myFriends});
-  myFriends.fetch();
+  myFriends.fetch({
+      success: function(){
+                  if (friendsView.postRender) {
+                        friendsView.postRender();
+                  }
+               }
+  });
 //==============================Logs View==================================
   var Log = Backbone.Model.extend({
   });
