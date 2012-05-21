@@ -47,10 +47,6 @@ var m = Math,
 	CANCEL_EV = hasTouch ? 'touchcancel' : 'mouseup',
 	WHEEL_EV = vendor == 'Moz' ? 'DOMMouseScroll' : 'mousewheel',
 
-	// Helpers
-	trnOpen = 'translate' + (has3d ? '3d(' : '('),
-	trnClose = has3d ? ',0)' : ')',
-
 	// Constructor
 	iScroll = function (el, options) {
 		var that = this,
@@ -94,6 +90,9 @@ var m = Math,
 			// Snap
 			snap: false,
 			snapThreshold: 1,
+			
+			//translate3d or not
+			force2D: false,
 
 			// Events
 			onRefresh: null,
@@ -113,6 +112,10 @@ var m = Math,
 		// User defined options
 		for (i in options) that.options[i] = options[i];
 		
+    // Force 2d
+    that.trnOpen = 'translate' + (has3d&&!that.options.force2D ? '3d(' : '(');
+    that.trnClose = has3d&&!that.options.force2D ? ',0)' : ')';
+    
 		// Set starting position
 		that.x = that.options.x;
 		that.y = that.options.y;
@@ -128,8 +131,8 @@ var m = Math,
 		// translate3d and scale doesn't work together! 
 		// Ignoring 3d ONLY WHEN YOU SET that.options.zoom
 		if ( that.options.zoom && isAndroid ){
-			trnOpen = 'translate(';
-			trnClose = ')';
+			that.trnOpen = 'translate(';
+			that.trnClose = ')';
 		}
 		
 		// Set some default styles
@@ -138,7 +141,7 @@ var m = Math,
 		that.scroller.style[vendor + 'TransformOrigin'] = '0 0';
 		if (that.options.useTransition) that.scroller.style[vendor + 'TransitionTimingFunction'] = 'cubic-bezier(0.33,0.66,0.66,1)';
 		
-		if (that.options.useTransform) that.scroller.style[vendor + 'Transform'] = trnOpen + that.x + 'px,' + that.y + 'px' + trnClose;
+		if (that.options.useTransform) that.scroller.style[vendor + 'Transform'] = that.trnOpen + that.x + 'px,' + that.y + 'px' + that.trnClose;
 		else that.scroller.style.cssText += ';position:absolute;top:' + that.y + 'px;left:' + that.x + 'px';
 
 		if (that.options.useTransition) that.options.fixedScrollbar = true;
@@ -227,7 +230,7 @@ iScroll.prototype = {
 			if (!that.options.scrollbarClass) {
 				bar.style.cssText = 'position:absolute;z-index:100;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.9);-' + vendor + '-background-clip:padding-box;-' + vendor + '-box-sizing:border-box;' + (dir == 'h' ? 'height:100%' : 'width:100%') + ';-' + vendor + '-border-radius:3px;border-radius:3px';
 			}
-			bar.style.cssText += ';pointer-events:none;-' + vendor + '-transition-property:-' + vendor + '-transform;-' + vendor + '-transition-timing-function:cubic-bezier(0.33,0.66,0.66,1);-' + vendor + '-transition-duration:0;-' + vendor + '-transform:' + trnOpen + '0,0' + trnClose;
+			bar.style.cssText += ';pointer-events:none;-' + vendor + '-transition-property:-' + vendor + '-transform;-' + vendor + '-transition-timing-function:cubic-bezier(0.33,0.66,0.66,1);-' + vendor + '-transition-duration:0;-' + vendor + '-transform:' + that.trnOpen + '0,0' + that.trnClose;
 			if (that.options.useTransition) bar.style.cssText += ';-' + vendor + '-transition-timing-function:cubic-bezier(0.33,0.66,0.66,1)';
 
 			that[dir + 'ScrollbarWrapper'].appendChild(bar);
@@ -262,7 +265,7 @@ iScroll.prototype = {
 		y = this.vScroll ? y : 0;
 
 		if (this.options.useTransform) {
-			this.scroller.style[vendor + 'Transform'] = trnOpen + x + 'px,' + y + 'px' + trnClose + ' scale(' + this.scale + ')';
+			this.scroller.style[vendor + 'Transform'] = this.trnOpen + x + 'px,' + y + 'px' + this.trnClose + ' scale(' + this.scale + ')';
 		} else {
 			x = mround(x);
 			y = mround(y);
@@ -306,7 +309,7 @@ iScroll.prototype = {
 
 		that[dir + 'ScrollbarWrapper'].style[vendor + 'TransitionDelay'] = '0';
 		that[dir + 'ScrollbarWrapper'].style.opacity = hidden && that.options.hideScrollbar ? '0' : '1';
-		that[dir + 'ScrollbarIndicator'].style[vendor + 'Transform'] = trnOpen + (dir == 'h' ? pos + 'px,0' : '0,' + pos + 'px') + trnClose;
+		that[dir + 'ScrollbarIndicator'].style[vendor + 'Transform'] = that.trnOpen + (dir == 'h' ? pos + 'px,0' : '0,' + pos + 'px') + that.trnClose;
 	},
 	
 	_start: function (e) {
@@ -409,7 +412,7 @@ iScroll.prototype = {
 			newX = this.originX - this.originX * that.lastScale + this.x,
 			newY = this.originY - this.originY * that.lastScale + this.y;
 
-			this.scroller.style[vendor + 'Transform'] = trnOpen + newX + 'px,' + newY + 'px' + trnClose + ' scale(' + scale + ')';
+			this.scroller.style[vendor + 'Transform'] = that.trnOpen + newX + 'px,' + newY + 'px' + that.trnClose + ' scale(' + scale + ')';
 
 			if (that.options.onZoom) that.options.onZoom.call(that, e);
 			return;
@@ -493,7 +496,7 @@ iScroll.prototype = {
 			that.y = that.originY - that.originY * that.lastScale + that.y;
 			
 			that.scroller.style[vendor + 'TransitionDuration'] = '200ms';
-			that.scroller.style[vendor + 'Transform'] = trnOpen + that.x + 'px,' + that.y + 'px' + trnClose + ' scale(' + that.scale + ')';
+			that.scroller.style[vendor + 'Transform'] = that.trnOpen + that.x + 'px,' + that.y + 'px' + that.trnClose + ' scale(' + that.scale + ')';
 			
 			that.zoomed = false;
 			that.refresh();
@@ -1061,7 +1064,7 @@ iScroll.prototype = {
 		that.y = that.y > that.minScrollY ? that.minScrollY : that.y < that.maxScrollY ? that.maxScrollY : that.y;
 
 		that.scroller.style[vendor + 'TransitionDuration'] = time + 'ms';
-		that.scroller.style[vendor + 'Transform'] = trnOpen + that.x + 'px,' + that.y + 'px' + trnClose + ' scale(' + scale + ')';
+		that.scroller.style[vendor + 'Transform'] = that.trnOpen + that.x + 'px,' + that.y + 'px' + that.trnClose + ' scale(' + scale + ')';
 		that.zoomed = false;
 	},
 	
