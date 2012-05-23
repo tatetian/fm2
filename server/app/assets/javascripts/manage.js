@@ -1,9 +1,9 @@
 $(function() {
-//===========================Tag's model & view===============================
+//================================== Tag's model ==============================
   var Tag = Backbone.Model.extend({
     defaults: function() {
       return {
-        name: "New tag",
+        name: "New folder",
       };
     },
     initialize: function() {
@@ -16,92 +16,75 @@ $(function() {
     model: Tag,
     url: '/tags'
   });
-  var TagView = Backbone.View.extend({
-    tagName:  "li",
-    template: _.template($('#tag-template').html()),
-    events: {
-      "dblclick li"         : "renameTag"
-    },
-    initialize: function() {
-      this.model.bind('change', this.render, this);
-    },
-    render: function() {
-      this.$el.html(this.template(this.model.toJSON()));
-      return this;
-    },
-    renameTag: function() {
-      alert('clicked');                
-    },
-    clear: function() {
-      this.model.clear();
-    }
-  });
-  var TagListView = Backbone.View.extend({
-    el: $(".tag-man-head"),
-    events: {
-    },
-    initialize: function() {
-      this.collection.bind('add',    this.addOne, this);
-      this.collection.bind('reset',  this.addAll, this);
-    },
-    addOne: function(tag) {
-      var view = new TagView({model: tag});
-      view.render().$el.insertBefore('.tag-man-head ul li:last-child');
-    },
-    addAll: function() {
-      this.collection.each(this.addOne);
-    }
-  });
-  var tagList = new TagList();
-  var tagListView = new TagListView({collection:tagList});
-  tagList.fetch();
-//===============================Paper's model & view==========================
-  var Metadata = Backbone.Model.extend({
-    defaults: function() {
-      return {
-        title: "Empty title",
-      };
-    },
-    initialize: function() {
-      if (!this.get("title")) {
-        this.set({"title": this.defaults().title});
-      }
-    } 
+//=============================== Metadata's model ============================
+  var Metadata = Backbone.Model.extend({ 
   });
   var MetadataList = Backbone.Collection.extend({
     model: Metadata,
     url: '/metadata?tags=All'
   });
-  var MetadataView = Backbone.View.extend({
-    tagName:  "li",
-    template: _.template($('#metadata-template').html()),
-    events: {
-    },
+//=============================== Title's View ================================
+  var Titles = Backbone.View.extend({
+    tagName: 'ul',
     initialize: function() {
-      this.model.bind('change', this.render, this);
+      this.folderName = this.options.folderName;
+      this.collection.bind('add', this.addOne, this);
+      this.collection.bind('reset', this.addAll, this);
     },
-    render: function() {
-      this.$el.html(this.template(this.model.toJSON()));
-      return this;
-    }
-  });
-  var MetadataListView = Backbone.View.extend({
-    el: $(".tag-man-subcontent"),
-    events: {
-    },
-    initialize: function() {
-      this.collection.bind('add',    this.addOne, this);
-      this.collection.bind('reset',  this.addAll, this);
-    },
-    addOne: function(tag) {
-      var view = new MetadataView({model: tag});
-      $('.tag-man-subcontent ul').append(view.render().el);
+    template: _.template($('#title-template').html()),
+    addOne: function(model) {
+      var json = model.toJSON();
+//      alert(this.folderName + '|' + JSON.stringify(json.tags));
+      if(json.tags.indexOf(this.folderName) >= 0)
+        this.$el.append(this.template(json));
     },
     addAll: function() {
-      this.collection.each(this.addOne);
+      this.collection.each(this.addOne, this);
     }
   });
-  var metadataList = new MetadataList();
-  var metadataListView = new MetadataListView({collection:metadataList});
-  metadataList.fetch();
+//=============================== Folder's view ===============================
+  var Folders = Backbone.View.extend({
+    el: '.all-tag ul',
+    initialize: function() {
+      this.metadataList = this.options.metadataList;
+      this.collection.bind('add', this.addOne, this);
+      this.collection.bind('reset', this.addAll, this);
+    },
+    template: _.template($('#folder-template').html()),
+    addOne: function(model, options) {
+      // add before '+' 
+      var json = model.toJSON();
+      var titles = new Titles({
+        collection: this.metadataList,
+        folderName: json.name
+      });
+      var $folder = $(this.template(json));
+      $folder.find('.titles').append(titles.$el);
+      $folder.insertBefore($('.all-tag ul li:last-child'));
+    },
+    addAll: function() {
+      this.collection.each(this.addOne, this);
+    }
+  }); 
+//=============================== Manager's view ==============================
+  var Manager = Backbone.View.extend({
+    el: '#wrapper',
+    initialize: function() {
+      var that = this;
+      // models
+      this.tagList = new TagList();
+      this.metadataList = new MetadataList();
+      // init sub views
+      this.folders = new Folders({
+        collection: this.tagList, 
+        metadataList: this.metadataList
+      });
+      // fetch
+      this.tagList.fetch();
+      this.metadataList.fetch();
+    },
+    render: function() {
+    }
+  });
+  var manager = new Manager();
 });
