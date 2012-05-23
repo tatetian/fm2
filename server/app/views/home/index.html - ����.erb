@@ -1,0 +1,59 @@
+<div class="index-wrapper">
+  <div class="sidebar-left ">
+    <div class="logo">FeastMind</div>
+    <div class="user-basicinfo" >
+      <img src="<%= @headurl %>" />
+      <a class="username"><%= @name %></a> 
+    </div>
+    <div class="log">
+      <a href="/renren/logout">Log out</a>
+    </div>
+    <div class="tag-nav">
+      <h1>Recent</h1>
+      <ul>
+      </ul>
+      <a href="/manage"><h1>More</h1></a>
+    </div>
+    <div class="index-upload">
+        <form action="metadata" method="post"enctype="multipart/form-data">
+            <input type="file" class="upload" name="file" value="Browse"/> 
+            <input type="submit" class="submit" name="submit" value="Upload"/>
+        </form>
+    </div>
+  </div>
+  <div class="sidebar-right ">
+    <div class="user-honorinfo">
+      <ul>
+        <!--        <li><img src="#" /><a href="#"> info1</a></li> -->
+      </ul>
+    </div>
+    <div class="freshthings" id="wrapper">
+      <ul>
+      </ul>
+      <div class="index-friends">
+        <ul>
+          <!--        <li><img src="#" /><a href="#"> friends1</a></li>-->
+        </ul>
+      </div>
+    </div>
+    <div id="navWrapper">
+      
+    </div>
+  </div>
+</div>
+<script type="text/template" id="title-template">
+  <a href="/details/<%%= id %>"><%%= title %></a>
+</script>
+<script type="text/template" id="friend-template">
+  <img src="<%%= headurl %>" /><a href="#"><%%= name %></a>
+</script>
+<script type="text/template" id="log-template">
+  <img class="header-img" src="<%%= User.find_by_id(from_id)[0].headurl %>" />
+  <div class="status"><span><%%= content %></span></div>
+  <div class="coment-content"> 我的评论</div>
+  <div class="coment-info">
+    <span class="time"><%%= created_at %></span>
+    <span class="action"><a>转发</a><a>收藏</a><a>评论</a></span>
+  </div>
+  <div class="cb"></div>
+</script>

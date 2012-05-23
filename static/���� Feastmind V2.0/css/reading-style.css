@@ -1,0 +1,24 @@
+@charset "utf-8";
+/* CSS Document */
+/*需求最高的是未知宽度和高度的情况下的高度和宽度上的居中！实在不行就只能定义宽和高了,待解决,div套div，linheight就不管用了！*/
+.reading-title h1{ width:80%; height:40px; line-height:40px;  margin: 0 auto; font-size:18px; color:#fff;}
+.reading-tag .wrapper{ position:relative; left:50%; float:left;}   
+.reading-tag ul{ position:relative; float:left; left:-50%; height:30px;  margin:0 auto; }
+.reading-tag li, .reading-tag span {float:left; margin-left:20px; line-height:30px; height:30px; color:#FFF; }
+.reading-tag li a ,.reading-tag li span a{ display:block; margin-top:4px;height:20px; width:45px; line-height:20px; background-color: #6E6E6E;}
+.reading-author, .reading-date { height:30px; border-bottom:1px solid #fff;  }
+.reading-author span, .reading-date span {  width:100px; height:30px; line-height:30px; float:left; text-align:right; }
+.reading-author em, .reading-date em { float:left; text-align:left; width:250px;height:30px; line-height:30px; }
+.reading-abstract h1{font-size:14px; height:2em; line-height:2em;}
+.reading-abstract p{border:1px solid #fff; min-height:100px; width:80%; margin:0 auto;}
+
+.freshthings ul{margin:8px 5px;}
+.freshthings li{ background-color: #E4E4E4; padding:4px; margin-top:5px;}
+.freshthings .header-img{ height:50px; width:50px; position:absolute; }
+.freshthings div{position:relative; margin-left:55px; font-size:14px; clear:both width:auto;} 
+.freshthings .status span{color:#999;}
+.freshthings .status .username{color:#06C; font-size:12px;}
+.freshthings .coment-content{top:5px;  min-height:35px; border:1px solid #CCC; padding:3px; text-indent:1em; color:#999; background-color:#E9E9E9; }
+.freshthings .coment-info{margin-top:10px;  color: #39C; font-size:12px;}
+.freshthings .action{float:right; display:inline;}
+.freshthings .action a{position:relative; margin-right:5px;}

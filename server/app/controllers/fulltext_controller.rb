@@ -1,4 +1,4 @@
-class ReaderController < ApplicationController
+class FulltextController < ApplicationController
   #before_filter :signed_in_user
   
   def index
@@ -11,5 +11,4 @@ class ReaderController < ApplicationController
   def signed_in_user
       redirect_to "", notice: "Please sign in." unless signed_in?
   end
-  
 end
