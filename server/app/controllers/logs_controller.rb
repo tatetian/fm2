@@ -1,9 +1,19 @@
 class LogsController < ApplicationController
     def index
         if params.has_key? (:start) and params.has_key? (:limit)
-            render :json => current_user.logs.order("created_at desc").offset(params[:start]).limit(params[:limit])
+            result = current_user.logs.order("created_at desc").offset(params[:start]).limit(params[:limit]).map { |log| 
+                      d = log.attributes
+                      d[:headurl] = User.find_by_id(log.from_id).headurl 
+                      d
+            }
+            render :json => result
         else
-            render :json => current_user.logs.order("created_at desc")
+            result = current_user.logs.order("created_at desc").map { |log| 
+                      d = log.attributes
+                      d[:headurl] = User.find_by_id(log.from_id).headurl 
+                      d
+            }
+            render :json => result
         end
     end
     def show

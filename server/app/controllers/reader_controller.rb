@@ -3,7 +3,7 @@ class ReaderController < ApplicationController
   
   def index
       @docid=params[:docid]
-      redirect_to home_path, notice: "You don't have this paper." unless current_user.has_metadata? params
+      #redirect_to home_path, notice: "You don't have this paper." unless current_user.has_metadata? params
   end 
   
   private

@@ -1,37 +1,175 @@
-<div class="tag-man-head">
-  <ul>
-    <li><a>+</a></li>
-  </ul>
-  <div style="clear:both;"></div>
-</div>
-<div class="tag-man-search">
-  <form >
-    <input type="text" class="search"/>
-    <input type="button" value="Search"  class="search-btn" />
-  </form>
-</div>
-<div class="tag-man-content">
-  <ul >
-    <!--one list start-->
-    <li>
-    <div class="tag-man-subcontent">
+<div class="top">
+  <div class="wrapper">
+    <div class="logo"> FeastMind</div>
+    <div class="user-basicinfo" > <img   src="<%= @headurl%>"  /> <a class="username"><%= @name%></a> </div>
+    <div class="user-honorinfo">
       <ul>
+        <li><img src="#" /><a href="#"> info1</a></li>
+        <li><img src="#" /><a href="#"> info2</a></li>
+        <li><img src="#" /><a href="#"> info3</a></li>
+        <li><img src="#" /><a href="#"> info4</a></li>
+        <li><img src="#" /><a href="#"> info5</a></li>
+        <div style="clear:both"></div>
       </ul>
     </div>
-    </li>
-  </ul>
+  </div>
 </div>
-<script type="text/template" id="tag-template">
-  <a><%%= name %></a>
-</script>
-<script type="text/template" id="metadata-template">
-  <a href="/details/<%%= id %>"><%%= title %></a>
-  <span class="resetname"><a>Rename</a></span>
-  <span class="delete"><a>Delete</a></span>
-  <p class="cb">
-    <%% _.each(tags, function(tag) { %>
-      <span><a><%%= tag %></a></span>    
-    <%%  }); %>
+<div id="wrapper">
+<div class="all-tag">
+<ul >
+  <li>
+    <div class="tag-sub-nav">
+      <div class="index-upload">
+        <form >
+          <input class="upload" type="file" value=""/>
+        </form>
+      </div>
+      <div id="a1">
+      <ul >
+        <li><span class="star"> <a><img src="assets/star-yellow.png" /></a></span><a href="#">论文</a><span class="tag-color"><a><img src="assets/tag-color1.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-white.png" /></a></span><a href="#">论文</a> <span class="tag-color"><a><img src="assets/tag-color2.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-yellow.png" /></a></span><a href="#">论文</a> <span class="tag-color"><a><img src="assets/tag-color1.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-white.png" /></a></span><a href="#">论文</a><span class="tag-color"><a><img src="assets/tag-color2.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-yellow.png" /></a></span><a href="#">论文</a><span class="tag-color"><a><img src="assets/tag-color2.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-yellow.png" /></a></span><a href="#">论文</a><span class="tag-color"><a><img src="assets/tag-color1.png" /></a></span></li>
+      </ul>
+      </div>
+    </div>
+    <div class="tag-box"> </span>
+      <h1>未命名文件夹</h1>
+    </div>
     <div class="cb"></div>
-  </p>
+  </li>
+  <li>
+    <div class="tag-sub-nav">
+      <div class="index-upload">
+        <form >
+          <input class="upload" type="file" value=""/>
+        </form>
+      </div>
+      <div id="a2">
+      <ul>
+        <li><span class="star"> <a><img src="assets/star-yellow.png" /></a></span><a href="#">论文</a><span class="tag-color"><a><img src="assets/tag-color1.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-white.png" /></a></span><a href="#">论文</a> <span class="tag-color"><a><img src="assets/tag-color2.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-yellow.png" /></a></span><a href="#">论文</a> <span class="tag-color"><a><img src="assets/tag-color1.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-white.png" /></a></span><a href="#">论文</a><span class="tag-color"><a><img src="assets/tag-color2.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-yellow.png" /></a></span><a href="#">论文</a><span class="tag-color"><a><img src="assets/tag-color2.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-yellow.png" /></a></span><a href="#">论文</a><span class="tag-color"><a><img src="assets/tag-color1.png" /></a></span></li>
+      </ul>
+      </div>
+    </div>
+    <div class="tag-box"> </span>
+      <h1>未命名文件夹</h1>
+    </div>
+    <div class="cb"></div>
+  </li>
+  <li>
+    <div class="tag-sub-nav">
+      <div class="index-upload">
+        <form >
+          <input class="upload" type="file" value=""/>
+        </form>
+      </div>
+      <div id="a3">
+      <ul>
+        <li><span class="star"> <a><img src="assets/star-yellow.png" /></a></span><a href="#">论文</a><span class="tag-color"><a><img src="assets/tag-color1.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-white.png" /></a></span><a href="#">论文</a> <span class="tag-color"><a><img src="assets/tag-color2.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-yellow.png" /></a></span><a href="#">论文</a> <span class="tag-color"><a><img src="assets/tag-color1.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-white.png" /></a></span><a href="#">论文</a><span class="tag-color"><a><img src="assets/tag-color2.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-yellow.png" /></a></span><a href="#">论文</a><span class="tag-color"><a><img src="assets/tag-color2.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-yellow.png" /></a></span><a href="#">论文</a><span class="tag-color"><a><img src="assets/tag-color1.png" /></a></span></li>
+      </ul>
+      </div>
+    </div>
+    <div class="tag-box"> </span>
+      <h1>未命名文件夹</h1>
+    </div>
+    <div class="cb"></div>
+  </li>
+  <li>
+    <div class="tag-sub-nav">
+      <div class="index-upload">
+        <form >
+          <input class="upload" type="file" value=""/>
+        </form>
+      </div>
+      <div id="a4">
+      <ul>
+        <li><span class="star"> <a><img src="assets/star-yellow.png" /></a></span><a href="#">论文</a><span class="tag-color"><a><img src="assets/tag-color1.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-white.png" /></a></span><a href="#">论文</a> <span class="tag-color"><a><img src="assets/tag-color2.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-yellow.png" /></a></span><a href="#">论文</a> <span class="tag-color"><a><img src="assets/tag-color1.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-white.png" /></a></span><a href="#">论文</a><span class="tag-color"><a><img src="assets/tag-color2.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-yellow.png" /></a></span><a href="#">论文</a><span class="tag-color"><a><img src="assets/tag-color2.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-yellow.png" /></a></span><a href="#">论文</a><span class="tag-color"><a><img src="assets/tag-color1.png" /></a></span></li>
+      </ul>
+      </div>
+    </div>
+    <div class="tag-box"> </span>
+      <h1>未命名文件夹</h1>
+    </div>
+    <div class="cb"></div>
+  </li>
+  <li>
+    <div class="tag-sub-nav">
+      <div class="index-upload">
+        <form >
+          <input class="upload" type="file" value=""/>
+        </form>
+      </div>
+      <div id="a5">
+      <ul>
+        <li><span class="star"> <a><img src="assets/star-yellow.png" /></a></span><a href="#">论文</a><span class="tag-color"><a><img src="assets/tag-color1.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-white.png" /></a></span><a href="#">论文</a> <span class="tag-color"><a><img src="assets/tag-color2.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-yellow.png" /></a></span><a href="#">论文</a> <span class="tag-color"><a><img src="assets/tag-color1.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-white.png" /></a></span><a href="#">论文</a><span class="tag-color"><a><img src="assets/tag-color2.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-yellow.png" /></a></span><a href="#">论文</a><span class="tag-color"><a><img src="assets/tag-color2.png" /></a></span></li>
+        <li><span class="star"> <a><img src="assets/star-yellow.png" /></a></span><a href="#">论文</a><span class="tag-color"><a><img src="assets/tag-color1.png" /></a></span></li>
+      </ul>
+      </div>
+    </div>
+    <div class="tag-box"> </span>
+      <h1>未命名文件夹</h1>
+    </div>
+    <div class="cb"></div>
+  </li>
+  <li>
+    <div class="add-tag"> <span><a href=""> <img  src="assets/upload-add.png"/></a></span> </div>
+  </li>
+
+</ul>
+
+</div>
+
+</div>
+<script type="text/javascript">
+var myScroll = new iScroll('a1',{
+  fadeScrollbar:true,
+  hideScrollbar:true,
+  lockDirection:true
+});
+var myScroll2 = new iScroll('a2',{
+  fadeScrollbar:true,
+  hideScrollbar:true,
+  lockDirection:true
+});
+var myScroll3 = new iScroll('a3',{
+  fadeScrollbar:true,
+  hideScrollbar:true,
+  lockDirection:true
+});
+var myScroll4 = new iScroll('a4',{
+  fadeScrollbar:true,
+  hideScrollbar:true,
+  lockDirection:true
+});
+var myScroll5 = new iScroll('a5',{
+  fadeScrollbar:true,
+  hideScrollbar:true,
+  lockDirection:true
+});
+var myScroll7 = new iScroll('wrapper',{
+  fadeScrollbar:true,
+  hideScrollbar:true,
+  lockDirection:true
+});
 </script>
