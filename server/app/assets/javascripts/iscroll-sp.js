@@ -96,7 +96,12 @@ var m = Math,
 
 			// Events
 			onRefresh: null,
-			onBeforeScrollStart: function (e) { e.preventDefault(); },
+			onBeforeScrollStart: function (e) { 
+          var target = e.target;
+          while (target.nodeType != 1) target = target.parentNode;
+          if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
+                      e.preventDefault(); 
+      }, 
 			onScrollStart: null,
 			onBeforeScrollMove: null,
 			onScrollMove: null,
@@ -453,7 +458,6 @@ iScroll.prototype = {
 		that._pos(newX, newY);
 		that.dirX = deltaX > 0 ? -1 : deltaX < 0 ? 1 : 0;
 		that.dirY = deltaY > 0 ? -1 : deltaY < 0 ? 1 : 0;
-
 		if (timestamp - that.startTime > 300) {
 			that.startTime = timestamp;
 			that.startX = that.x;
@@ -629,8 +633,8 @@ iScroll.prototype = {
 			deltaScale;
 
 		if ('wheelDeltaX' in e) {
-			wheelDeltaX = e.wheelDeltaX / 12;
-			wheelDeltaY = e.wheelDeltaY / 12;
+			wheelDeltaX = e.wheelDeltaX / 1;
+			wheelDeltaY = e.wheelDeltaY / 1;
 		} else if('wheelDelta' in e) {
 			wheelDeltaX = wheelDeltaY = e.wheelDelta / 12;
 		} else if ('detail' in e) {

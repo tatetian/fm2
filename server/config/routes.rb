@@ -20,7 +20,8 @@ Server::Application.routes.draw do
   get "tags" , :controller => "users", :action=>"getTags"
   
   match 'reader' => 'reader#index'
-  
+  match 'fulltext/:docid' => 'fulltext#index'
+ 
   match 'renren/logout', :controller=> 'renren', :action=>"logout"
   
   match '/signout', to: 'renren#destroy', via: :delete
