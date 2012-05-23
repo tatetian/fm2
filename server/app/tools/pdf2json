@@ -1,7 +1,4 @@
 #!/bin/bash
 # this script convert a pdf to its json format with metadata
 # $1 is the input PDF file
-SOURCE="${BASH_SOURCE[0]}"
-while [ -h "$SOURCE" ] ; do SOURCE="$(readlink "$SOURCE")"; done
-SCRIPT_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"/
-pdftojson $1 | ${SCRIPT_DIR}normalize
+pdftojson "$1" | ./normalize | ./extract_title.py
