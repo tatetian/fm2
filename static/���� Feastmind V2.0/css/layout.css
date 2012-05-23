@@ -1,14 +1,14 @@
 @charset "utf-8";
 /* CSS Document */
 html { font-size:62.5%;width:100%; height:100%; }
-html,body{position:relative; background:url(/assets/bg-light.png) top center no-repeat ,url(/assets/bg.png) ;   box-shadow:inset 2px 0px 100px rgba(0,0,0,0.4); width:100%; height:100%; }
-.top{ position:absolute; z-index:1000; width:100%; height:65px; padding-bottom:5px;margin-bottom:15px;  box-shadow: inset 0 0px 1px rgba(255,255,255, 1),  0 2px 12px rgba(0,0,0,0.6); background:url(/assets/bg.png);}
+html,body{position:relative; background:url(../images/bg-light.png) top center no-repeat ,url(../images/bg.png) ;   box-shadow:inset 2px 0px 100px rgba(0,0,0,0.4); width:100%; height:100%; }
+.top{ position:absolute; z-index:1000; width:100%; height:65px; padding-bottom:5px;margin-bottom:15px;  box-shadow: inset 0 0px 1px rgba(255,255,255, 1),  0 2px 12px rgba(0,0,0,0.6); background:url(../images/bg.png);}
 .top .wrapper{ position:relative;  margin-left:100px; margin-right:100px;}
 .user-basicinfo{position:relative; height:60px; width:342px;; float:left;}
 .user-honorinfo{ position:relative; overflow:hidden; float:right;  }
-.user-basicinfo img { 
+.user-basicinfo img { width:40px; height:40px; 
 					position:absolute; top:0; bottom:0; left:10px; margin:auto; 
-					border:1px solid #fff; }
+					border:2px solid #fff; }
 .user-basicinfo a.username { height:1em; font-size:14px; position:relative; left:65px; top:25px; color:#630; text-shadow:1px 1px 0px rgba(255,255,255,0.2);}
 .user-honorinfo ul {  text-align:center; position:relative; left:50%; float:left;}
 .user-honorinfo li { float:left; position:relative; left:-50%;display:inline; margin-left:20px; margin-top:5px; margin-bottom:5px;}
@@ -17,19 +17,19 @@ html,body{position:relative; background:url(/assets/bg-light.png) top center no-
 
 /*top --end!!templates*/
 
-.sidebar-left {float:left; position:absolute;   height:100%; width:369px;  left:100px;}
-.sidebar-right { position:relative;width:auto;    margin-left:500px;   height:100%;}
-.tag-nav{ position:absolute; bottom:169px; left:14px; width:342px;  margin:0 auto; }
+.sidebar-left {float:left; position:absolute;   height:100%; width:369px;  left:100px;  }
+.sidebar-right { position:relative;width:auto;  margin-right:100px;  margin-left:500px;   height:100%;}
+.tag-nav{ position:absolute; bottom:169px; left:14px; width:342px;  margin:0 auto;}
 .index-upload {position:relative; margin-top:90px;}
-.recent-box{ position:absolute; bottom:0px; width:369px; height:169px; background:url(/assets/box.png) no-repeat;-webkit-background-size:369px 169px; }
+.recent-box{ position:absolute; bottom:0px; width:369px; height:169px; background:url(../images/box.png) no-repeat;-webkit-background-size:369px 169px; }
 .freshthings{position:relative; clear:both; top:90px; bottom:100px; }
-.index-friends {position:absolute; bottom:0px; height:80px; width:100%;  }
+.index-friends {position:fixed;float:right; bottom:0px; right:5px; overflow:hidden; margin-right:100px;  }
 
 
 .logo{font-family:Verdana, Geneva, sans-serif; font-size:25px; color: #630; height:60px; line-height:60px;text-align:center; float:left; text-shadow:1px 1px 0px rgba(255,255,255,0.2); }
 
 .tag-nav li { position:relative;-webkit-box-shadow:  -5px 1px 5px rgba(120,120,120,0.5) ; background-color:rgba(120,120,120,0);}
-.tag-nav li>a { display:block; height:41px; line-height:41px; font-size:14px;  color: #707070;  text-align:left; text-indent:2.5em; background:url(/assets/recent-list-bg.png) no-repeat; -webkit-background-size:342px 41px;  }
+.tag-nav li>a { display:block; height:41px; line-height:41px; font-size:14px;  color: #707070;  text-align:left; text-indent:2.5em; background:url(../images/recent-list-bg.png) no-repeat; -webkit-background-size:342px 41px;  }
 .tag-nav ul{overflow:hidden;}
 .tag-nav li .tag-color{ position:absolute; float:right;top:-4px;right:-4px; height:36px; width:35px;}
 .tag-nav li .tag-color img{height:36px; width:35px;}
@@ -38,19 +38,19 @@ html,body{position:relative; background:url(/assets/bg-light.png) top center no-
 
 
 .index-upload form input { display:block; margin:0 auto; overflow:hidden;  }
-.index-upload form input.upload{ width:340px; height:55px; text-indent:-10000em; background:url(/assets/add.png) no-repeat;border:0px;   -webkit-background-size:340px 55px;}
+.index-upload form input.upload{ width:340px; height:55px; text-indent:-10000em; background:url(../images/add.png) no-repeat;border:0px;   -webkit-background-size:340px 55px;}
 
-.recent-box h1{position:relative; width:100%; top:75px; text-align:center; font-family:"é»‘ä½“"; font-size:16px; font-weight:200; color:#630 ;}
+.recent-box h1{position:relative; width:100%; top:75px; text-align:center; font-family:"ºÚÌå"; font-size:16px; font-weight:200; color:#630 ;}
 
 .tag-more a{ display:block;width:100%; text-align:center; position:relative; top:30px;}
 .tag-more a img{ width:28px;height:6px;}
 				
 .freshthings ul{margin:0px 5px;}
-.freshthings li{ margin-right:100px;background-color: #E4E4E4; padding:8px; margin-bottom:10px; border-radius:6px; background:rgba(255,255,255,0.77); box-shadow:1px 1px 4px rgba(0,0,0,0.3),inset 2px 2px 15px #FFF;}
-.freshthings .header-img{position:absolute; border-radius:6px; }
-.freshthings div{position:relative; margin-left:55px; font-size:14px; clear:both; width:auto;} 
-.freshthings .status span{color:#666; font-family:"å¾®è½¯é›…é»‘" arial; font-size:12px;}
-.freshthings .status .username{color: #630; font-size:14px; font-weight:200; font-family:"å¾®è½¯é›…é»‘" arial;}
+.freshthings li{ background-color: #E4E4E4; padding:8px; margin-bottom:10px; border-radius:6px; background:rgba(255,255,255,0.77); box-shadow:1px 1px 4px rgba(0,0,0,0.3),inset 2px 2px 15px #FFF;}
+.freshthings .header-img{ height:50px; width:50px; position:absolute; border-radius:6px; }
+.freshthings div{position:relative; margin-left:55px; font-size:14px; clear:both width:auto;} 
+.freshthings .status span{color:# 666; font-family:"Î¢ÈíÑÅºÚ" arial; font-size:12px;}
+.freshthings .status .username{color: #630; font-size:14px; font-weight:200; font-family:"Î¢ÈíÑÅºÚ" arial;}
 .freshthings .coment-content{top:5px;  min-height:35px; border:1px solid #CCC; padding:3px; text-indent:1em; color:#999; background-color:rgba(255,255,255,0.2); border-radius:4px; }
 .freshthings .coment-info{margin-top:10px;  color: #39C; font-size:12px;}
 .freshthings .action{float:right; display:inline;}
@@ -59,4 +59,5 @@ html,body{position:relative; background:url(/assets/bg-light.png) top center no-
 .index-friends ul {text-align:center; position:relative; left:50%; float:left;   }
 .index-friends li {float:left; position:relative; left:-50%;display:inline; margin-left:5px; margin-top:5px; margin-bottom:5px; }
 .index-friends li:last-child {margin-right:5px;}
+.index-friends li img { height:40px; width:40px; }
 .index-friends li a { display:block;  height:20px; line-height:20px; color:#999; text-align:center; font-size:12px; color: #fff; }

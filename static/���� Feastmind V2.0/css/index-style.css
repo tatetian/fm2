@@ -1,0 +1,35 @@
+@charset "utf-8";
+/* CSS Document */
+.tag-nav li { position:relative;-webkit-box-shadow:  -5px 1px 5px rgba(120,120,120,0.5) ; background-color:rgba(120,120,120,0);}
+.tag-nav li>a { display:block; height:41px; line-height:41px; font-size:14px;  color: #707070;  text-align:left; text-indent:2.5em; background:url(../images/recent-list-bg.png) no-repeat; -webkit-background-size:342px 41px;  }
+.tag-nav ul{overflow:hidden;}
+.tag-nav li .tag-color{ position:absolute; float:right;top:-4px;right:-4px; height:36px; width:35px;}
+.tag-nav li .tag-color img{height:36px; width:35px;}
+.tag-nav li .star{ position:absolute; float:left;top:10px;left:10px; height:36px; width:35px;}
+.tag-nav li .star img{height:20px; width:20px;}
+
+
+.index-upload form input { display:block; margin:0 auto; overflow:hidden;  }
+.index-upload form input.upload{ width:340px; height:55px; text-indent:-10000em; background:url(../images/add.png) no-repeat;border:0px;   -webkit-background-size:340px 55px;}
+
+.recent-box h1{position:relative; width:100%; top:75px; text-align:center; font-family:"黑体"; font-size:16px; font-weight:200; color:#630 ;}
+
+.tag-more a{ display:block;width:100%; text-align:center; position:relative; top:30px;}
+.tag-more a img{ width:28px;height:6px;}
+				
+.freshthings ul{margin:0px 5px;}
+.freshthings li{ background-color: #E4E4E4; padding:8px; margin-bottom:10px; border-radius:6px; background:rgba(255,255,255,0.77); box-shadow:1px 1px 4px rgba(0,0,0,0.3),inset 2px 2px 15px #FFF;}
+.freshthings .header-img{ height:50px; width:50px; position:absolute; border-radius:6px; }
+.freshthings div{position:relative; margin-left:55px; font-size:14px; clear:both width:auto;} 
+.freshthings .status span{color:# 666; font-family:"微软雅黑" arial; font-size:12px;}
+.freshthings .status .username{color: #630; font-size:14px; font-weight:200; font-family:"微软雅黑" arial;}
+.freshthings .coment-content{top:5px;  min-height:35px; border:1px solid #CCC; padding:3px; text-indent:1em; color:#999; background-color:rgba(255,255,255,0.2); border-radius:4px; }
+.freshthings .coment-info{margin-top:10px;  color: #39C; font-size:12px;}
+.freshthings .action{float:right; display:inline;}
+.freshthings .action a{position:relative; margin-right:5px;}
+
+.index-friends ul {text-align:center; position:relative; left:50%; float:left;   }
+.index-friends li {float:left; position:relative; left:-50%;display:inline; margin-left:5px; margin-top:5px; margin-bottom:5px; }
+.index-friends li:last-child {margin-right:5px;}
+.index-friends li img { height:40px; width:40px; }
+.index-friends li a { display:block;  height:20px; line-height:20px; color:#999; text-align:center; font-size:12px; color: #fff; }
