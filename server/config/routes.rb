@@ -21,6 +21,8 @@ Server::Application.routes.draw do
   
   match 'reader' => 'reader#index'
   
+  match 'fulltext' => 'fulltext#index'
+  
   match 'renren/logout', :controller=> 'renren', :action=>"logout"
   
   match '/signout', to: 'renren#destroy', via: :delete

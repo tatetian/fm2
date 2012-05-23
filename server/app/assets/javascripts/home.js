@@ -71,6 +71,17 @@ $(function(){
     },
     render: function() {
     },
+    postRender: function() {            
+        var noOfSlides = recentPapers.size(); 
+        if(recentPapers.size()<=10)
+            $('#papers').height(recentPapers.size()*41);
+        else $('#papers').height(410);
+        this.scroller = new iScroll('papers',{
+              hScroll:false,
+              vScrollbar:false,
+              lockDirection:true
+        });
+    },
     addOne: function(paper) {
       var view = new TitleView({model: paper});
       this.$(".tag-nav ul").append(view.render().el);
@@ -81,6 +92,9 @@ $(function(){
   });
 
   var recentPapersView = new RecentPapersView();
+  if (recentPapersView.postRender) {
+        recentPapersView.postRender();
+  }
 //==============================Friends View==================================
   var Friend = Backbone.Model.extend({
   });
@@ -109,10 +123,10 @@ $(function(){
     postRender: function() {            
         var noOfSlides = this.collection.size(); 
         if(this.collection.size()<=8)
-            $('.index-friends').width(1000);
+            $('.full-friends').width(900);
         else
-            $('.index-friends').width(this.collection.size()*110);
-        this.scroller = new iScroll('navWrapper', {
+            $('.full-friends').width(this.collection.size()*110);
+        this.scroller = new iScroll('index-friends', {
             snap: true,
             momentum: false,
             hScrollbar: false,
@@ -169,7 +183,7 @@ $(function(){
             $('.freshthings').height(450);
         else
             $('.freshthings').height(this.collection.size()*70);
-        this.scroller = new iScroll('wrapper',{
+        this.scroller = new iScroll('freshthings',{
               hScroll:false,
               fadeScrollbar:true,
               hideScrollbar:true,
