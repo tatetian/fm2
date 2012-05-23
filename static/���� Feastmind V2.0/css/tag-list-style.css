@@ -1,21 +1,24 @@
 @charset "utf-8";
 /* CSS Document */
-.all-tag{ margin-left:100px; margin-right:100px; margin-top:10px; overflow:hidden;}
-.all-tag >li{float:left; position: relative; bottom:0px; margin-right:25px; }
-.tag-nav li { position:relative;-webkit-box-shadow:  -5px 1px 5px rgba(120,120,120,0.5) ; background-color:rgba(120,120,120,0);}
-.tag-nav li>a { display:block; height:41px; line-height:41px; font-size:14px;  color: #707070;  text-align:left; text-indent:2.5em; background:url(../images/recent-list-bg.png) no-repeat; -webkit-background-size:342px 41px;  }
-.tag-nav li .tag-color{ position:absolute; float:right;top:-4px;right:-4px; height:36px; width:35px;}
-.tag-nav li .tag-color img{height:36px; width:35px;}
-.tag-nav li .star{ position:absolute; float:left;top:10px;left:10px; height:36px; width:35px;}
-.tag-nav li .star img{height:20px; width:20px;}
+#wrapper{height:100%}
+.all-tag{width:3000px; height:100%; position:relative;  margin-left:100px; margin-right:100px; }
+.all-tag ul{height:100%;}
+.all-tag>ul>li{width:369px; height:100%;float:left; position: relative; bottom:0px; margin-right:25px; }
+.tag-sub-nav{ position:absolute; bottom:169px; left:14px; }
+.tag-sub-nav ul{ width:340px;}
+.tag-sub-nav li {  position:relative;  -webkit-box-shadow:-5px 1px 5px rgba(120,120,120,0.3) ; background-color:rgba(120,120,120,0);}
+.tag-sub-nav li>a { display:block; height:41px; line-height:41px; font-size:14px;  color: #707070;  text-align:left; text-indent:2.5em; background:url(../images/recent-list-bg.png) no-repeat; -webkit-background-size:342px 41px;  }
+.tag-sub-nav li .tag-color{ position:absolute; float:right;top:-4px;right:-4px; height:36px; width:35px;}
+.tag-sub-nav li .tag-color img{height:36px; width:35px;}
+.tag-sub-nav li .star{ position:absolute; float:left;top:10px;left:10px; height:36px; width:35px;}
+.tag-sub-nav li .star img{height:20px; width:20px;}
 
-.index-upload form{  }
-.index-upload form input { display:block; margin:0 auto; overflow:hidden;  }
+.index-upload form{  }.index-upload form input { display:block; margin:0 auto; overflow:hidden;  }
 .index-upload form input.upload{ width:340px; height:55px; text-indent:-10000em; background:url(../images/add.png) no-repeat;border:0px;   -webkit-background-size:340px 55px;}
-.tag-box{ position:relative;width:369px; height:169px; background:url(../images/box.png) no-repeat; -webkit-background-size:369px 169px; }
+.tag-box{ position:absolute; bottom:0px; width:369px; height:169px; background:url(../images/box.png) no-repeat; -webkit-background-size:369px 169px; }
 .tag-box h1{position:relative; width:100%; top:75px; text-align:center; font-family:"黑体"; font-size:16px;  color:#630 ;}
 
 
-.add-tag { width:360px; height:106px; background:url(../images/tagadd-box.png) no-repeat;-webkit-background-size:360px 106px; }
+.add-tag { position:absolute; bottom:0px; width:360px; height:106px; background:url(../images/tagadd-box.png) no-repeat;-webkit-background-size:360px 106px; }
 .add-tag span{width:24px; height:23px;  position:relative; left:168px; top:45px;}
 .add-tag span a img{ width:24px; height:23px; }			
