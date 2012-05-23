@@ -111,11 +111,14 @@ $(function(){
         if(this.collection.size()<=8)
             $('.index-friends').width(1000);
         else
-            $('.index-friends').width(this.collection.size()*100);
+            $('.index-friends').width(this.collection.size()*110);
         this.scroller = new iScroll('navWrapper', {
             snap: true,
             momentum: false,
-            hScrollbar: false
+            hScrollbar: false,
+            vScroll:false,
+            fadeScrollbar:true,
+            lockDirection:true
         });
     },
     addOne: function(friend) {
@@ -160,6 +163,19 @@ $(function(){
     },
     render: function() {
     },
+    postRender: function() {    
+        var noOfSlides = this.collection.size(); 
+        if(this.collection.size()<=7)
+            $('.freshthings').height(450);
+        else
+            $('.freshthings').height(this.collection.size()*70);
+        this.scroller = new iScroll('wrapper',{
+              hScroll:false,
+              fadeScrollbar:true,
+              hideScrollbar:true,
+              lockDirection:true
+        });
+    },
     addOne: function(log) {
       var view = new LogView({model: log});
       $(".freshthings ul").append(view.render().el);
@@ -170,5 +186,11 @@ $(function(){
   });
   var myLogs = new LogList(); 
   var LogsView = new LogsView({collection: myLogs});
-  myLogs.fetch();
+  myLogs.fetch({
+      success: function(){
+                  if (LogsView.postRender) {
+                        LogsView.postRender();
+                  }
+               }
+  });
 });
