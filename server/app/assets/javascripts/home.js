@@ -67,7 +67,6 @@ $(function(){
     initialize: function() {
       recentPapers.bind('add',    this.addOne, this);
       recentPapers.bind('reset',  this.addAll, this);
-      recentPapers.fetch();
     },
     render: function() {
     },
@@ -81,6 +80,12 @@ $(function(){
               vScrollbar:false,
               lockDirection:true
         });
+        for(var i = 0; i< recentPapers.size(); i++){
+            var index = recentPapers.at(i).get("id");
+            $('#detail'+index).on('click', function(e){
+              TINY.box.show('/details/'+this.dataset["id"],1,778,650,1);
+            });
+        }
     },
     addOne: function(paper) {
       var view = new TitleView({model: paper});
@@ -91,10 +96,14 @@ $(function(){
     },
   });
 
-  var recentPapersView = new RecentPapersView();
-  if (recentPapersView.postRender) {
-        recentPapersView.postRender();
-  }
+  var recentPapersView = new RecentPapersView({collection: recentPapers});
+      recentPapers.fetch({
+          success: function(){
+                if (recentPapersView.postRender) {
+                      recentPapersView.postRender();
+                }
+             }
+      });
 //==============================Friends View==================================
   var Friend = Backbone.Model.extend({
   });

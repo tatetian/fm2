@@ -9,7 +9,7 @@ class Paper < ActiveRecord::Base
   validates   :title, presence: true
   
   def getComments
-      result = Comment.find_by_paper_id(self.id)
+      result = self.comments
   end
   def getNotes(params={}) 
       if params.has_key?(:user_id)
