@@ -1,21 +1,37 @@
-// Place all the styles related to the details controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
-html { font-size:100%; }
-html,body{height:100%; } 
+@charset "utf-8";
+/* CSS Document */
 
-.reading-title{ width:100%; position:relative; text-align:center;background-color:#666; }
-.reading-tag{height:30px; width:100%;text-align:center;background-color: #09F; }
-.reading-profile{  float:left; height:100%; width:50%; text-align:center; background-color: #999;}
-.reading-comments{ float:right;height:100%;text-align:center; width:50%; text-align:center; background-color: #CCC;}
 
-.reading-title h1{ width:80%; height:40px; line-height:40px;  margin: 0 auto;}
-.reading-tag .wrapper{ position:relative; left:50%; float:left;}   
-.reading-tag ul{ position:relative; float:left; left:-50%; height:30px;  margin:0 auto; }
-.reading-tag li{float:left; margin-left:20px; line-height:30px; height:30px;}
+.detail-wrapper{position:absolute;height:732px;width:778px;}
+.detail-title{height:81px; width:100%; position:relative; background:url(/assets/detail-title-bg.png) no-repeat;}
+.detail-title .detail-star{ width:45px; height:46px; display:block; position:absolute; margin:0 auto; left:0px; right:0px;top:-15px; background:url(/assets/detail-star.png) no-repeat;}
+.detail-title .title{ line-height:25px; width:500px; margin:0 auto; position:relative; top:25px; text-align:center; font-size:16px; font-weight:600; font-family:Arial, Helvetica, sans-serif; color:#333;}
+ .detail-friends{ position:absolute; z-index:1111; float:right; bottom:-5px; right:75px;}
+ .detail-friends li{float:left; margin-left:5px; }
+ .detail-friends li a{display:block; width:40px;height:40px;}
+  .detail-friends li a img{width:40px;height:40px;}
+.detail-tag{height:64px; width:100%; background:url(/assets/detail-tag-bg.png) no-repeat; position:relative; z-index:1222;}
+.detail-tag .wrapper{ left:50%; float:left; position:relative;}
+.detail-tag ul{ float:left;  left:-50%;position:relative; margin:0 auto; top:18px;}
+.detail-tag li{float:left; margin-left:15px; }
+.detail-tag li a{  padding:3px 10px;  font-family: Arial, Helvetica, sans-serif ; font-size:16px; color: #630;  background:url(/assets/detail-tag-subbg.png) no-repeat ; background-size:cover;  }
+.detail-tagadd{ top:15px; background:url(/assets/upload-add.png) no-repeat ; background-size:cover; width:24px; height:24px; float:left; position:relative;}
+.detail-content{height:544px; width:100%; background:url(/assets/detail-content-bg.png) repeat-y;}
 
-.reading-entries li { height:30px; border-bottom:1px solid #fff;  }
-.reading-entries li span {  width:100px; height:30px; line-height:30px; float:left; text-align:right; }
-.reading-entries li em { float:left; text-align:left; width:250px;height:30px; line-height:30px; }
-.reading-abstract h1{font-size:14px; height:2em; line-height:2em;}
-.reading-abstract p{border:1px solid #fff; min-height:100px; width:80%; margin:0 auto;}
+.detail-content ul{margin:0px 55px; position:relative; top:25px;}
+.detail-content li{ background-color: #E4E4E4; padding:8px; margin-bottom:10px; border-radius:6px; background:rgba(255,255,255,0.5); box-shadow:1px 1px 4px rgba(0,0,0,0.3),inset 1px 1px 5px rgba(0,0,0,0.1);}
+.detail-content .header-img{ height:50px; width:50px; position:absolute; border-radius:6px; }
+.detail-content div{position:relative; margin-left:55px; font-size:12px; clear:both; width:auto;} 
+.detail-content.status span{color:#666; font-family:"微软雅黑" arial; font-size:12px;}
+.detail-content .status .username{color:#630; font-size:14px; font-weight:200; font-family:"微软雅黑" arial;}
+.detail-content .coment-content{ min-height:35px; border:1px solid rgba(255,255,255,0.45); padding:3px; text-indent:1em; color:#630; background-color:rgba(89,56,14,0.2); border-radius:4px; box-shadow:inset 2px 2px 8px rgba(0,0,0,0.2); }
+.detail-content .coment-info{margin-top:10px;  color: #39C; font-size:12px;}
+.detail-content .action{float:right; width:auto;}
+.detail-content .time{ height:24px; line-height:24px; color:#630;}
+.detail-content .action a.comment{position:relative; display:block; float:left; height:24px; line-height:24px;  width:40px; margin-right:5px; background:url(/assets/detail-remark-icon.png) no-repeat left center; text-indent:28px; font-size:14px; color:#630;}
+.detail-content .action a.fav{position:relative; display:block; float:left;height:24px; line-height:24px;  width:40px;  background:url(/assets/detail-star-icon.png) no-repeat left center; text-indent:28px; font-size:14px; color:#630;}
+.detail-myresponse { position:relative; top:35px;}
+.detail-myresponse .header-img{ height:60px; width:60px; position:absolute; border-radius:6px; }
+.detail-myresponse .field1{ display:block; position:relative; left:15px; top:5px; height:65px; width:595px; background-color:rgba(89,56,14,0.3); box-shadow:inset 3px 3px 8px rgba(0,0,0,0.3); border-radius:6px; }
+.detail-myresponse .field2{ display:block; position: absolute; float:right;right:60px; top:85px; width:63px; height:33px; background:url(/assets/detail-btn-bg.png) no-repeat;} 
+.detail-bottom{height:43px; width:100%; background:url(/assets/detail-bottom-bg.png) no-repeat;}

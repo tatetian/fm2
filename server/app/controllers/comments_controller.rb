@@ -1,9 +1,14 @@
 # encoding: UTF-8
 class CommentsController < ApplicationController
       def index
-        comment = Comment.find_by_paper_id(params[:paper_id])
+        comment = Paper.find_by_id(params[:paper_id]).comments
         if comment != nil
-            render :json => comment
+             result = comment.map { |c| 
+                      d = c.attributes
+                      d[:headurl] = User.find_by_id(c.id).headurl
+                      d
+              }
+              render :json => result
         else
             render :json => {}
         end
