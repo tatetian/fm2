@@ -1,4 +1,7 @@
 $(function() {
+  metadata_id = $(".docid")[0].dataset["docid"];
+  paper_id = $(".docid")[0].dataset["paperid"];
+  //alert(metadata_id)
 //==============================Tag's model & view=============================
   var Tag = Backbone.Model.extend({
     defaults: function() {
@@ -37,7 +40,7 @@ $(function() {
     }
   });
   var TagListView = Backbone.View.extend({
-    el: $(".reading-tag"),
+    el: $(".detail-tag"),
     events: {
     },
     initialize: function() {
@@ -46,64 +49,76 @@ $(function() {
     },
     addOne: function(tag) {
       var view = new TagView({model: tag});
-      this.$(".reading-tag .wrapper ul").append(view.render().el);
+      this.$(".detail-tag .wrapper ul").append(view.render().el);
     },
     addAll: function() {
       this.collection.each(this.addOne);
     }
   });
-//============================Metadata's model & view==========================
-  var Metadata = Backbone.Model.extend({
-    url: '/metadata/' + metadata_id,
-    defaults: function() {
-      return {
-        title: "Empty title",
-        abstract: "This is a placeholder",
-      };
-    },
-    initialize: function() {
-      if (!this.get("title")) {
-        this.set({"title": this.defaults().title});
-      }
-      if (!this.get("abstract")) {
-        this.set({"abstract": this.defaults().abstract});
-      }
-    }
+  //==============================Comment's model & view=============================
+  var Comment = Backbone.Model.extend({
+    });
+  var CommentList = Backbone.Collection.extend({
+    model: Comment,
+    url: '/papers/' + paper_id + '/comments'
   });
-//================================Detail view==================================
-  var TitleView = Backbone.View.extend({
-    el: $(".reading-title"),
-    template: _.template($("#title-template").html()),
-    initialize: function() {
-      this.model.bind('change', this.render, this);
-    },
+  var CommentView = Backbone.View.extend({
+    tagName: 'li',
+    template: _.template($("#comment-template").html()),
     render: function() {
       this.$el.html(this.template(this.model.toJSON()));
+      return this;
     }
   });
-  var AbstractView = Backbone.View.extend({
-    el: $(".reading-abstract"),
-    template: _.template($("#abstract-template").html()),
+  var CommentListView = Backbone.View.extend({
+    el: $(".detail-content"),
+    events: {
+    },
     initialize: function() {
-      this.model.bind('change', this.render, this);
+      this.collection.bind('add',    this.addOne, this);
+      this.collection.bind('reset',  this.addAll, this);
     },
     render: function() {
-      var metadata = this.model.toJSON();
-      if(metadata.abstract != undefined)
-        this.$el.html($(this.template(metadata)));
+    },
+    addOne: function(comment) {
+      var view = new CommentView({model: comment});
+      this.$(".detail-content ul").append(view.render().el);
+    },
+    addAll: function() {
+      this.collection.each(this.addOne,this);
     }
   });
-  var AuthorView = Backbone.View.extend({
-    el: $(".reading-entries"),
-    template: _.template($("#detail-entry-template").html()),
+    //==============================Ower's model & view=============================
+  var Owner = Backbone.Model.extend({
+    });
+  var OwnerList = Backbone.Collection.extend({
+    model: Owner,
+    url: '/friends?paper_id=' + paper_id
+  });
+  var OwnerView = Backbone.View.extend({
+    tagName: 'li',
+    template: _.template($("#owner-template").html()),
+    render: function() {
+      this.$el.html(this.template(this.model.toJSON()));
+      return this;
+    }
+  });
+  var OwnerListView = Backbone.View.extend({
+    el: $(".detail-friends"),
+    events: {
+    },
     initialize: function() {
-      this.model.bind('change', this.render, this);
+      this.collection.bind('add',    this.addOne, this);
+      this.collection.bind('reset',  this.addAll, this);
     },
     render: function() {
-      var details = this.model.toJSON();
-      var authors = details.authors;
-      if(authors != undefined && authors != "")
-        this.$el.append(this.template({name: "Authors：", value: authors}));
+    },
+    addOne: function(owner) {
+      var view = new OwnerView({model: owner});
+      this.$(".detail-friends ul").append(view.render().el);
+    },
+    addAll: function() {
+      this.collection.each(this.addOne,this);
     }
   });
 //=================================App's view==================================
@@ -111,16 +126,17 @@ $(function() {
     el: $("body"),
     initialize: function() {
       // models
-      var metadata = new Metadata();
       var tagList = new TagList();
-      // views
-      var titleView = new TitleView({model: metadata});
-      var authorView = new AuthorView({model: metadata});
-      var abstractView = new AbstractView({model: metadata});
       var tagListView = new TagListView({collection: tagList});
+      var commentList = new CommentList();
+      var commentListView = new CommentListView({collection: commentList});
+      var ownerList = new OwnerList();
+      var ownerListView = new OwnerListView({collection: ownerList});
+      
       // fetch
-      metadata.fetch();
       tagList.fetch();
+      commentList.fetch();
+      ownerList.fetch();
     }
   });
   var appView = new AppView();

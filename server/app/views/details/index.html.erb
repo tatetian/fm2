@@ -1,41 +1,45 @@
-<div class="reading-title">
-  <!--  <h1><a>论文题目</a></h1> -->
-</div>
-<div class="reading-tag">
-  <div class="wrapper">
-    <ul >
-      <!--<li>tag3</li>-->
-    </ul>
-    <input class="add-btn" value="add" type="button" /> 
+<div class="docid" data-docid= <%=@metadata_id%> data-paperid= <%=@paper_id%> ></div>
+<div class="detail-wrapper">
+    <div class="detail-title">
+    <span class="detail-star"></span>
+      <h1 class="title"><%= @title%> </h1>
+      
+      <div class="detail-friends"> 
+      <ul> 
+     
+      </ul></div>
+    </div>
+    <div class="detail-tag"> 
+    <div class="wrapper">
+    <ul> 
+       
+      </ul>
+      <div class="detail-tagadd"> </div>
+    </div>
+     </div>
+    <div class="detail-content">
+     <ul> 
+      
+      </ul>
+       <div class="detail-myresponse">
+      <img class="header-img" src="<%= @headurl%>" />
+      <div class="content"> <form> <textarea class="field1"  /> </textarea> <input class="field2" type="button"/></form> </div>
+      </div>
+     
+       </div>
+    <div class="detail-bottom">  </div>
   </div>
 </div>
-<div class="reading-profile" >
-  <ul class="reading-entries">
-    <!--<li>
-      <span>作者：</span><em> 姓名</em>
-    </li>
-    <li>
-      <span>发表日期：</span><em> 日期</em>
-      </li>-->
-  </ul>
-  <div class="reading-abstract">
-    <h1>abstract</h1>
-  </div>
-</div>
-<div class="reading-comments"> Comments </div>
-<script>
-  var metadata_id = <%= @metadata_id %>;
-</script>
-<script type="text/template" id="title-template">
-  <h1><a href="/reader?docid=<%%= docid %>"><%%= title %></a></h1>
-</script>
 <script type="text/template" id="tag-template">
-  <%%= name %>
+  <a href=""><%%= name %></a>
 </script>
-<script type="text/template" id="abstract-template">
-  <h1>Abstracts</h1>
-  <p><%%= abstract %></p>
+<script type="text/template" id="comment-template">
+        <img class="header-img" src="<%%= headurl%>" />
+        <!--<div class="status"><span class="username" > Aaron</span> :<span>上传了Towards Elastic Transactional Cloud Storage with Range Query Support </span></div>-->
+        <div class="coment-content"> <%%= content%></div>
+        <div class="coment-info"><span class="time"><%%= created_at%></span><span class="action"><a class="comment">7</a><a class="fav">4</a></span></div>
+        <div class="cb"></div>
 </script>
-<script type="text/template" id="detail-entry-template">
-  <li><span><%%= name %></span><em><%%= value %></em></li>
+<script type="text/template" id="owner-template">
+<a><img src="<%%= headurl%>" /></a>
 </script>

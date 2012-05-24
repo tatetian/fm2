@@ -60,3 +60,7 @@ html,body{position:relative; background:url(/assets/bg-light.png) top center no-
 .index-friends li {float:left; position:relative; left:-50%;display:inline; margin-left:5px; margin-top:5px; margin-bottom:5px; }
 .index-friends li:last-child {margin-right:5px;}
 .index-friends li a { display:block;  height:20px; line-height:20px; color:#999; text-align:center; font-size:12px; color: #fff; }
+
+#tinybox{position:absolute; display:none; padding:10px; background:url(/assets/preload.gif) no-repeat 50% 50%; z-index:2000;}
+#tinymask{position:absolute; display:none; top:0; left:0; height:100%; width:100%; background:#000000; z-index:1500;}
+#tinycontent{background:#ffffff; font-size:1.1em;}
