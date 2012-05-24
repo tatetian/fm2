@@ -1,4 +1,6 @@
 Server::Application.routes.draw do
+  get "read/index"
+
   get "manage/index"
 
   get "details/index"
@@ -21,7 +23,8 @@ Server::Application.routes.draw do
   
   match 'reader' => 'reader#index'
   match 'fulltext/:docid' => 'fulltext#index'
- 
+  match 'read/:docid' => 'read#index'
+
   match 'renren/logout', :controller=> 'renren', :action=>"logout"
   
   match '/signout', to: 'renren#destroy', via: :delete

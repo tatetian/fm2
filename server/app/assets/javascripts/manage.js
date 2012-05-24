@@ -61,6 +61,18 @@ $(function() {
       var $folder = $(this.template(json));
       $folder.find('.titles').append(titles.$el);
       $folder.insertBefore($('.all-tag ul li:last-child'));
+
+      var myScroll = new iScroll('titles-'+json.name,{
+        fadeScrollbar:true,
+        hideScrollbar:true,
+        lockDirection:true
+      });
+/*var myScroll7 = new iScroll('wrapper',{
+  fadeScrollbar:true,
+  hideScrollbar:true,
+  lockDirection:true
+});*/
+
     },
     addAll: function() {
       this.collection.each(this.addOne, this);
@@ -71,6 +83,7 @@ $(function() {
     el: '#wrapper',
     initialize: function() {
       var that = this;
+      $('#wrapper').width($(window).width());
       // models
       this.tagList = new TagList();
       this.metadataList = new MetadataList();
@@ -81,7 +94,19 @@ $(function() {
       });
       // fetch
       this.tagList.fetch();
-      this.metadataList.fetch();
+      this.metadataList.fetch({
+        success: function() {
+          
+          $(".all-tag").width(370 * (that.metadataList.size() + 1) );
+          var myScroll7 = new iScroll('wrapper',{
+            vScroll:false,
+            fadeScrollbar:true,
+            hideScrollbar:true,
+            lockDirection:true
+          });
+
+        }
+      });
     },
     render: function() {
     }

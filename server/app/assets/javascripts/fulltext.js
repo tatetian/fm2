@@ -85,6 +85,7 @@ $(function(){
       var scroller = new iScroll('hwrapper',{
         fadeScrollbar:true,
         hideScrollbar:true,
+        hScroll:false,
         lockDirection:true,
         vScrollbar: false,
         hScroll:false//,
