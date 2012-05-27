@@ -1,3 +1,5 @@
+//== require plupload/plupload
+//== require plupload/plupload.html5
 $(function(){
   var Paper = Backbone.Model.extend({
     defaults: function() {
@@ -46,7 +48,17 @@ $(function(){
 
     // Re-render the titles of the todo item.
     render: function() {
-      this.$el.html(this.template(this.model.toJSON()));
+      var json = this.model.toJSON();
+      
+      if(Math.random() > 0.5)
+        json.yellow_or_white = 'yellow';
+      else
+        json.yellow_or_white = 'white';
+      if(Math.random() < 0.5)
+        json.colorid = 1;
+      else
+        json.colorid = 2;
+      this.$el.html(this.template(json));
       return this;
     },
 

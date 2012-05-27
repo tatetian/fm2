@@ -34,6 +34,14 @@ $(function() {
     template: _.template($('#title-template').html()),
     addOne: function(model) {
       var json = model.toJSON();
+      if(Math.random() > 0.5)
+        json.yellow_or_white = 'yellow';
+      else
+        json.yellow_or_white = 'white';
+      if(Math.random() < 0.5)
+        json.colorid = 1;
+      else
+        json.colorid = 2;
 //      alert(this.folderName + '|' + JSON.stringify(json.tags));
       if(json.tags.indexOf(this.folderName) >= 0)
         this.$el.append(this.template(json));
@@ -97,7 +105,7 @@ $(function() {
       this.metadataList.fetch({
         success: function() {
           
-          $(".all-tag").width(370 * (that.metadataList.size() + 1) );
+          $(".all-tag").width(350 * (that.metadataList.size() + 1) );
           var myScroll7 = new iScroll('wrapper',{
             vScroll:false,
             fadeScrollbar:true,

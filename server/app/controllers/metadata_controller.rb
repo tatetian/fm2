@@ -84,14 +84,20 @@ class MetadataController < ApplicationController
             file.write(doc_text)
         end
         # extract meta
-        doc_meta = %x[app/tools/json2meta #{tmp_text_file}]
+        #doc_meta = %x[app/tools/json2meta #{tmp_text_file}]
         # add metadata id
-        parsed_meta = ActiveSupport::JSON.decode doc_meta
+        parsed_meta = ActiveSupport::JSON.decode doc_text
         #json_response = {:file_name => uploaded_io.original_filena                   
         user = current_user #current_user
         @paper = Paper.find_by_docid hash
         if @paper == nil
-            @paper = Paper.new(docid: hash,title: parsed_meta["title"],authors: parsed_meta["authors"].join(", "),date: Date.parse(parsed_meta["date"]),content: doc_text, abstract: "", publication: "", convert: 0)
+            @paper = Paper.new(
+                        docid: hash,
+                        title: parsed_meta["title"],
+                        authors: "", #parsed_meta["authors"].join(", "),
+                        date: nil, #Date.parse(parsed_meta["date"]),
+                        content: doc_text, 
+                        abstract: "", publication: "", convert: 0)
                 if !@paper.save!
                     render :json => '{"error":"failed1"}'
                     return 
@@ -113,7 +119,8 @@ class MetadataController < ApplicationController
                   :created_at => @metadata.created_at
               }
               json = ActiveSupport::JSON.encode response
-              render :json => json
+              #render :json => json
+              redirect_to :controller => 'home', :action => 'index'
               # save PDF
               final_dir = Rails.root.join 'public','uploads',hash
               FileUtils.mv(tmp_dir, final_dir)

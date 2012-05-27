@@ -2,7 +2,7 @@
 <div class="detail-wrapper">
     <div class="detail-title">
     <span class="detail-star"></span>
-      <h1 class="title"><%= @title%> </h1>
+      <a href="/fulltext/<%= @docid %>"><h1 class="title"><%= @title%></h1></a>
       
       <div class="detail-friends"> 
       <ul> 
@@ -11,21 +11,23 @@
     </div>
     <div class="detail-tag"> 
     <div class="wrapper">
-    <ul> 
-       
+      <ul> 
+        <li><a>Database</a></li>
+        <li><a>RISC</a></li>
+        <li><a>Self-tuning</a></li>
       </ul>
       <div class="detail-tagadd"> </div>
     </div>
      </div>
     <div class="detail-content">
-     <ul> 
+      <ul> 
       
       </ul>
        <div class="detail-myresponse">
       <img class="header-img" src="<%= @headurl%>" />
       <div class="content"> <form> <textarea class="field1"  /> </textarea> <input class="field2" type="button"/></form> </div>
       </div>
-     
+        
        </div>
     <div class="detail-bottom">  </div>
   </div>

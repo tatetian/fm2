@@ -1,4 +1,5 @@
 $(function(){
+
 // reader
 // next, pre, go-to 
 // zoom in & out

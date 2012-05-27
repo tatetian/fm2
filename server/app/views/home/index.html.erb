@@ -17,14 +17,14 @@
 <div class="sidebar-left ">
   <div class="tag-nav">
     <div class="index-upload">
-      <form >
-        <input class="upload" type="file" value=""/>
+      <form action="/metadata" method="post"  enctype="multipart/form-data" >
+        <input class="upload" type="file" value="" onchange="this.form.submit();" name="file"/>
       </form>
     </div>
     <div id = "papers">
-    <ul>
-     
-    </ul></div>
+      <ul>
+      </ul>
+    </div>
     <div class="cb"></div>
   </div>
   <div class="recent-box"> <span class="tag-more"><a href="/manage"><img src="assets/more.png" /></a></span>
@@ -45,7 +45,7 @@
 </div>
 </div>
 <script type="text/template" id="title-template">
-  <span class="star"> <a><img src="assets/star-yellow.png" /></a></span><a class="ml20" href="#" id="detail<%%= id%>" data-id="<%%= id%>"><%%= title %></a><span class="tag-color"><a><img src="assets/tag-color1.png" /></a></span></li>
+  <span class="star"> <a><img src="assets/star-<%%= yellow_or_white %>.png" /></a></span><a class="ml20" href="#" id="detail<%%= id%>" data-id="<%%= id%>"><%%= title %></a><span class="tag-color"><a><img src="assets/tag-color<%%= colorid %>.png" /></a></span></li>
 </script>
 <script type="text/template" id="friend-template">
   <img src="<%%= headurl %>" /><a href="#"><%%= name %></a>

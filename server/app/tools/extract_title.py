@@ -27,6 +27,7 @@ def process(json_str):
     json_object['title'] = title
   else:
     json_object['title'] = ""
+  json_object['authors'] = []
   return json_object
 
 def _find_largest_font_pos(blocks):

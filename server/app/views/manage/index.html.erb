@@ -4,12 +4,6 @@
     <div class="user-basicinfo" > <img   src="<%= @headurl%>"  /> <a class="username"><%= @name%></a> </div>
     <div class="user-honorinfo">
       <ul>
-        <li><img src="#" /><a href="#"> info1</a></li>
-        <li><img src="#" /><a href="#"> info2</a></li>
-        <li><img src="#" /><a href="#"> info3</a></li>
-        <li><img src="#" /><a href="#"> info4</a></li>
-        <li><img src="#" /><a href="#"> info5</a></li>
-        <div style="clear:both"></div>
       </ul>
     </div>
   </div>
@@ -43,5 +37,5 @@
 </li>
 </script>
 <script type="template" id="title-template">
-  <li><span class="star"><a><img src="assets/star-yellow.png"/></a></span><a href="#"><%%= title %></a><span class="tag-color"><a><img src="assets/tag-color1.png" /></a></span></li>
+  <li><span class="star"><a><img src="assets/star-<%%= yellow_or_white %>.png"/></a></span><a href="#"><%%= title %></a><span class="tag-color"><a><img src="assets/tag-color<%%= colorid %>.png" /></a></span></li>
 </script>

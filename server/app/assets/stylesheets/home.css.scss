@@ -37,10 +37,10 @@ html,body{position:relative; background:url(/assets/bg-light.png) top center no-
 .tag-nav li .star img{height:20px; width:20px;}
 
 
-.index-upload form input { display:block; margin:0 auto; overflow:hidden;  }
+.index-upload form input { display:block; margin:0 auto; overflow:hidden; cursor: pointer; }
 .index-upload form input.upload{ width:340px; height:55px; text-indent:-10000em; background:url(/assets/add.png) no-repeat;border:0px;   -webkit-background-size:340px 55px;}
 
-.recent-box h1{position:relative; width:100%; top:75px; text-align:center; font-family:"黑体"; font-size:16px; font-weight:200; color:#630 ;}
+.recent-box h1{position:relative; width:100%; top:75px; text-align:center; font-family:"黑体"; font-size:20px; font-weight:200; color:#630 ;}
 
 .tag-more a{ display:block;width:100%; text-align:center; position:relative; top:30px;}
 .tag-more a img{ width:28px;height:6px;}

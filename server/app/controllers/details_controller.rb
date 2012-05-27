@@ -6,6 +6,7 @@ class DetailsController < ApplicationController
     @metadata_id = params[:metadata_id]
     metadata = Metadata.find_by_id(@metadata_id)
     @paper_id = metadata.paper.id
+    @docid = metadata.docid
     @title = metadata.title
     if @title == nil
         @title = metadata.paper.title
