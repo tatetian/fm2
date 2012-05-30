@@ -17,7 +17,7 @@
 
       
        
-<div id="container">    
+<div id="container" class="unselectable">    
     <div id="hwrapper">
        <ul class="multi-image">
 <!--<div class="highlight1"></div>
@@ -54,5 +54,17 @@
   var DOCID = <%= @docid %>;
 </script>
 <script type="text/template" id="pageview-template">
-  <img src=<%%= src %>>
+  <div class="highlight-pane"></div>
+  <img src=<%%= src %> style="display:none;">
+</script>
+<script type="text/template" id="selection-highlight-template">
+  <div class="selection-highlight" style="left:<%%= l %>em;top:<%%= t %>em;width:<%%= w %>em;height:<%%= h %>em;"></div>
+</script>
+<script type="text/template" id="selection-bar-template">
+  <div class="selection-bar <%%= barType %>" 
+       style="left:<%%= l %>em;top:<%%= t %>em;width:<%%= w %>em;height:<%%= h %>em;"  
+       data-type="<%%= barType %>" >
+    <div class="selection-bar-handler upper-handler"></div>
+    <div class="selection-bar-handler lower-handler"></div>
+  </div>
 </script>

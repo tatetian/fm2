@@ -2,22 +2,69 @@ body{
 background:url(/assets/bg.png);
 height:100%;
 width:100%;
+  overflow: hidden;
 }
 #container{
-    height:100%;
-    width:816px;
-    margin:0 auto;
-    overflow-y:hidden;
+  height:100%;
+  width:816px;
+  margin:0 auto;
+  overflow-y:hidden;
+  /* 16px is the base font size of everything in viewport*/
+  font-size: 16px;
 }
 .multi-image img{
-    height:1056px;
-    width:816px;
+  height:1056px;
+  width:816px;
 }
 #hwrapper{
     height: 100%;
 }
+.highlight-pane {
+  position: relative;
+  z-index: 10;
+}
+.selection-highlight {
+  position: absolute;
+  opacity: 0.20;
+  background-color: #28F;
+}
+.selection-bar {
+  position: absolute;
+  background-color: #28f;
+}
+.selection-bar-handler {
+  position: absolute;
+  background-color: #28f;
+  height: 1.0em;
+  width: 1.0em; 
+  display: none;
+
+  border-radius: 0.5em;
+}
+.upper-handler {
+  margin-top: -1.0em;
+  top: 0em;
+  left: -0.375em;
+}
+.begin-bar .upper-handler {
+  display: block;
+}
+.lower-handler {
+  bottom: 0em;
+  right: -0.375em;
+  margin-bottom: -1.0em;
+}
+.end-bar .lower-handler {
+  display: block;
+}
+.begin-bar {
+  
+}
+.end-bar {
+  
+}
 .multi-image{
-    width:100%;
+  width:100%;
 }
 .bottom-toolbar{
 position:absolute;	
@@ -162,3 +209,5 @@ width:650px;height:15px;
 top:335px; left:500px;
 border-top:1px solid red;
 z-index:10000;opacity:0.6;}
+
+.unselectable { -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -o-user-select: none; user-select: none; }
