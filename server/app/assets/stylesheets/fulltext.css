@@ -1,22 +1,21 @@
 body{
-background:url(/assets/bg.png);
+background:url(/assets/desk.png);
 height:100%;
 width:100%;
   overflow: hidden;
 }
 #container{
   height:100%;
-  width:816px;
+  width:100%;
   margin:0 auto;
   overflow-y:hidden;
   /* 16px is the base font size of everything in viewport*/
   font-size: 16px;
 }
 .multi-image img{
-  height:1056px;
-  width:816px;
 }
 #hwrapper{
+    margin: 0 auto;
     height: 100%;
 }
 .highlight-pane {
@@ -28,9 +27,53 @@ width:100%;
   opacity: 0.20;
   background-color: #28F;
 }
+.forever-highlight {
+  position: absolute;
+  opacity: 0.20;
+  background-color: yellow;
+}
+.float-bar{
+  position:absolute;
+  top:0px;
+  left:0px;
+  height:38px;
+  width:108px;
+  display:none;
+  z-index: 30;
+}
+.fbtn{
+height:38px;
+  width:50px;
+float:left;
+}
+.copy-btn{
+display:block;
+background:url(/assets/reading-edit-icon.png) no-repeat;
+width:35px;
+overflow:hidden;
+text-indent:-1000em;
+height:38px;
+}
+.hl-btn{
+display:block;
+background:url(/assets/reading-edit-icon.png) no-repeat -35px;
+width:35px;
+overflow:hidden;
+text-indent:-1000em;
+height:38px;
+}
+.note-btn{
+display:block;
+background:url(/assets/reading-edit-icon.png) no-repeat -70px;
+width:35px;
+overflow:hidden;
+text-indent:-1000em;
+height:38px;
+}
 .selection-bar {
   position: absolute;
   background-color: #28f;
+  	
 }
 .selection-bar-handler {
   position: absolute;
@@ -65,6 +108,7 @@ width:100%;
 }
 .multi-image{
   width:100%;
+  position:relative;
 }
 .bottom-toolbar{
 position:absolute;	
@@ -93,6 +137,14 @@ width:650px;
 background-color:#fff;
 border-radius:5px;
 box-shadow: inset 2px 2px 5px rgba(0,0,0,0.4);
+}
+.progress{
+position:absolute;
+height:10px;
+width:10px;
+background-color:#999999;
+border-radius:5px;
+text-align:center;
 }
 .pagination{
 position:absolute;
@@ -211,3 +263,5 @@ border-top:1px solid red;
 z-index:10000;opacity:0.6;}
 
 .unselectable { -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -o-user-select: none; user-select: none; }
+
+.highlight-forever { position: relative; z-index: 5; }

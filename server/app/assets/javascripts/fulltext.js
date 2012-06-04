@@ -3,6 +3,54 @@ $(function(){
 // next, pre, go-to 
 // zoom in & out
 // text selection, highlight
+  var Highlight = Backbone.Model.extend({
+    initialize: function() {
+      var pageNum   = this.get('pagenum');
+      var startPos  = this.get('posfrom');
+      var endPos    = this.get('posto');
+      var rects     = reader.fulltext.extractRects(pageNum, startPos, endPos);
+      $.map(rects, function(rect) {
+        rect.l /= 16; rect.r /= 16; rect.t /= 16; rect.b /= 16;
+        rect.w = rect.r - rect.l; rect.h = rect.b - rect.t;
+        return rect;
+      });
+      this.set('rects', rects);
+    }  
+  });
+  var HighlightList = Backbone.Collection.extend({
+    model: Highlight,
+    url: function(){ return '/papers/'+PAPERID+"/highlights";}
+  })
+  var HighlightView = Backbone.View.extend({
+    tagName: 'div',
+    template: _.template($("#highlight-forever-template").html()),
+    render: function() {
+      this.$el.html(this.template(this.model.toJSON()));
+      return this;
+    }
+  });
+  var HighlightsView = Backbone.View.extend({
+    events: {
+    },
+    initialize: function() {
+      this.pageNum = this.options.pageNum;
+      this.$container = this.options.$parent.find('.highlight-forever');
+      this.collection.bind('add',    this.addOne, this);
+      this.collection.bind('reset',  this.addAll, this);
+    },
+    render: function() {
+      
+    },
+    addOne: function(highlight) {
+      if(highlight.get('pagenum') != this.pageNum)
+        return;
+      var view = new HighlightView({model: highlight});
+      this.$container.append(view.render().el);
+    },
+    addAll: function() {
+      this.collection.each(this.addOne, this);      
+    }
+  });
 // notes -> 
 //========================== Fulltext Model ============================
   var FulltextModel = Backbone.Model.extend({
@@ -21,8 +69,16 @@ $(function(){
       return resp; 
     },
     // getter
-    getWidth: function() { return this.pages[this.currentPage].pageWidth; },
-    getHeight: function() { return this.pages[this.currentPage].pageHeight; },
+    getWidth: function(pageNum) { 
+      if(pageNum == undefined) 
+        pageNum = this.currentPage;
+      return this.pages[pageNum].pageWidth; 
+    },
+    getHeight: function(pageNum) { 
+      if(pageNum == undefined) 
+        pageNum = this.currentPage;
+      return this.pages[pageNum].pageHeight; 
+    },
     getNumPages: function() { return this.pages.length; },
     getCurrentPage: function() { return this.currentPage; },
     // setter
@@ -32,6 +88,7 @@ $(function(){
             this.currentPage != pageNum ) {
         this.trigger("changePage", pageNum, this.currentPage);
         this.currentPage = pageNum;
+        $(".progress").css('left', pageNum*650/this.getNumPages()+'px');
       }
     },
     // text selection
@@ -46,6 +103,7 @@ $(function(){
       var l       = line.q[2*indexes.wi];
       var r       = l + line.q[2*indexes.wi+1];
       this.trigger("selectWord", word, l, t, r, b);
+      this.startPos = this.endPos = indexes;
     }, 
     selectArea: function(l, t, r, b) {
       //alert([l, t, r, b].join(', '));
@@ -58,6 +116,8 @@ $(function(){
       var textRects = this._extractBetween(blocks, startPos, endPos);
       // construct text
       if(textRects) {
+        this.startPos = startPos;
+        this.endPos = endPos;
         console.debug(textRects.text);
         var rects = textRects.rects;
         l = rects[0].l; t = rects[0].t;
@@ -66,6 +126,17 @@ $(function(){
       }
       else
         this.trigger('selectArea', null, 0, 0, 0, 0, null);
+    },
+    extractRects: function(pageNum, startPos, endPos) {
+      var blocks = this.pages[pageNum].blocks;
+      startPos = this._convertStrPos(startPos);
+      endPos = this._convertStrPos(endPos); 
+      var rects = this._extractBetween(blocks, startPos, endPos).rects;
+      return rects;
+    },
+    _convertStrPos: function(strPos) {
+      var pos = strPos.split(',');
+      return { bi: parseInt(pos[0]), li: parseInt(pos[1]), wi: parseInt(pos[2]) };   
     },
     _printPos: function(blocks, pos) {
       if(pos == null)
@@ -281,10 +352,10 @@ $(function(){
       return this;
     },
     show: function() {
-      this.$el.find('img').show();
+      this.$el.children().show();
     },
     hide: function() {
-      this.$el.find('img').hide();
+      this.$el.children().hide();
     },
     highlight: function(l, t, r, b) {
       // l, t, r,b is in px
@@ -324,6 +395,7 @@ $(function(){
       // this.docid & this.numPages
       this.docid = this.options.docid;
       this.numPages = this.options.numPages; 
+      $(".progress").width(650/this.numPages);
       this.currentPage = 0;
       // init 
       this.updateDimensions();
@@ -332,19 +404,29 @@ $(function(){
     },
     events: {
       'dblclick': 'selectWord',
+      'doubleTap': 'selectWord',
       'click': 'unselect',
       'mousedown .selection-bar': 'startSelection',
       'mousemove': 'whileSelecting',
-      'mouseup': 'endSelection'
+      'mouseup': 'endSelection',
+      'click .hl-btn': 'hl'
     },
     render: function() {
       var that = this;
+      // highlight
+      var highlights = new HighlightList(); 
+      that.highlights = highlights;      
       // render pages
       var pages = new Array();
       for(var i = 0; i < this.numPages; ++i) {
+        var width   = reader.fulltext.getWidth(i)/16 + 'em';
+        var height  = reader.fulltext.getHeight(i)/16 + 'em';
         var pv = new PageView({model: new PageModel({ pageNum: i,
-                                                      docid: this.docid})});
+                                                      docid: this.docid,
+                                                      width: width,
+                                                      height: height } )});
         this.$el.append(pv.render().el);
+        var hlv = new HighlightsView({pageNum: i, $parent: pv.$el, collection: highlights});
         pages[i] = pv;
       }
       that.pages = pages;
@@ -352,7 +434,7 @@ $(function(){
       if(this.numPages > 0)
         pages[0].show();
       // render viewport
-      $('#hwrapper').width(816/16+'em');
+      $('#hwrapper').width(reader.fulltext.getWidth()/16+'em');
       $('#hwrapper').height($(window).height()/16+'em');
       // use iScroll
       this.scroller = new iScroll('hwrapper',{
@@ -364,6 +446,11 @@ $(function(){
         hScroll:false,
         force2D: true
       });
+      //
+      highlights.fetch({
+        success: function(){
+        }
+      });
       return this;
     },
     updateDimensions: function() {
@@ -374,6 +461,7 @@ $(function(){
       reader.fulltext.on('changePage', function(newPageNum, oldPageNum) {
         that.currentPage = newPageNum;
         that.pages[oldPageNum].hide();
+        that.pages[oldPageNum].reset();
         that.pages[newPageNum].show();
         that.scroller._pos(0, 0);
       });
@@ -381,6 +469,7 @@ $(function(){
       reader.fulltext.on('selectWord', function(word, l, t, r, b) {
         that.pages[that.currentPage].highlight(l, t, r, b);
         that.selectedArea = {l:l, t:t, r:r, b:b};
+        that.boundingBox = {l:l, t:t, r:r, b:b};
       });
       // show selected area
       reader.fulltext.on('selectArea', function(text, l, t, r, b, rects) {
@@ -394,13 +483,29 @@ $(function(){
           p.highlight2(rects);
           // update info about selected area
           that.selectedArea = {l:l, t:t, r:r, b:b};
+window.rects = rects;
+          that.boundingBox = that._decideBoundingBox(rects);
         }
       });
       // hide selected word
       reader.fulltext.on('unselect', function() {
         that.pages[that.currentPage].reset();
         that.selectedArea = null;
+        that.boundingBox = null;
       });
+    },
+    _decideBoundingBox: function(rects) {
+      var l = 10000, r = -10000, t = 100000, b = -100000;
+      $.each(rects, function(i) {
+        var rect = rects[i];
+        if(l > rect.l) l = rect.l;
+        if(r < rect.r) r = rect.r;
+        if(t > rect.t) t = rect.t;
+        if(b < rect.b) b = rect.b;
+      });
+      if(l > r) { var tmp = l; l = r; r = tmp;}
+      if(t > b) { var tmp = t; t = b; b = tmp;}
+      return {l:l, r:r, t:t, b:b};
     },
     startSelection: function(e) {
       this.selecting = true;
@@ -408,11 +513,13 @@ $(function(){
       this.$bar = $(e.target).closest('.selection-bar');
       this.barType = this.$bar.data('type');
       this.scroller.disable();
+      $(".float-bar").css({display:"none"});
     },
     endSelection: function() {
       if(this.selecting) {
         this.selecting = false;
         this.scroller.enable();
+        this.showFloatbar();
       }
     },
     whileSelecting: function(e) {
@@ -432,14 +539,21 @@ $(function(){
         }
       }
     },
+    showFloatbar: function(e){        
+      var sa = this.boundingBox;
+window.bb = this.boundingBox;
+      $(".float-bar").css({display:"block",top:sa.t-50+'px', left:(sa.l+sa.r)/2-54});
+    },
     selectWord: function(e) {
       var pos = this._get_pos(e)
       reader.fulltext.selectWord(pos.x, pos.y);
+      this.showFloatbar();
     },
     unselect: function(e) {
       var pos = this._get_pos(e);
       console.debug('clicked ' + e.x + ', ' + e.y);
-      reader.fulltext.unselect(e);
+      reader.fulltext.unselect(e);      
+      $(".float-bar").css({display:"none"});
     },
     _get_pos: function(e) {
       var offset = this.$el.offset();
@@ -449,6 +563,20 @@ $(function(){
         x: e.clientX - originX,
         y: e.clientY - originY
       }
+    },
+    hl: function() {
+      var ft = reader.fulltext;
+      var pagenum = ft.getCurrentPage();
+      var posfrom = [ft.startPos.bi,  ft.startPos.li, ft.startPos.wi].join(',');
+      var posto   = [ft.endPos.bi,    ft.endPos.li,   ft.endPos.wi].join(',');
+      console.debug('highlight==' + [pagenum, posfrom, posto].join(';'));
+      this.highlights.create({
+        paper_id: PAPERID,
+        pagenum: pagenum, 
+        posfrom:  window.ft.startPos["bi"]+','+window.ft.startPos["li"]+','+window.ft.startPos["wi"],
+        posto:    window.ft.endPos["bi"]+','+window.ft.endPos["li"]+','+window.ft.endPos["wi"]
+      });
+      window.ft.unselect();
     }
   });
   //================================ Reader ===================================
@@ -457,9 +585,6 @@ $(function(){
     initialize: function() {
       var that = this;
       // init variables
-      this.zoom = 1.0;
-      this.currentPage = 0;
-      this.numPages = 0;
       this.docid = this.options.docid;
       // fetch fulltext
       this.fulltext = new FulltextModel({docid: this.docid});
@@ -477,6 +602,10 @@ $(function(){
       // init event handlers
       this.initEventHandlers();
     }, 
+    events: {
+      'click .arrow1': 'pre',
+      'click .arrow2': 'next'
+    },
     initEventHandlers: function() {
        
     },
@@ -490,9 +619,15 @@ $(function(){
       return this;
     },
     pre: function() {
+      var pageNum = this.fulltext.getCurrentPage();
+      this.fulltext.setCurrentPage(pageNum-1);
     },
     next: function() {
-    }   
+      var pageNum = this.fulltext.getCurrentPage();
+      this.fulltext.setCurrentPage(pageNum+1);
+    }
   }) ;
   var reader = new Reader({docid: DOCID});  // DOCID is intialized by rails controller
+  // debug
+  window.reader = reader;
 });

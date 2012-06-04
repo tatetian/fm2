@@ -4,7 +4,12 @@ class HighlightsController < ApplicationController
         p = Paper.find_by_id(paper_id)
         if params.has_key?(:user_id)
             user_id = params[:user_id]
-            result = p.getHighlights :user_id=>user_id
+            if (current_user.is_friend?(user_id) || current_user.id==user_id.to_i)
+                result = p.getHighlights :user_id=>user_id
+            else
+                render :json => {"error"=>"not your friend"}
+                return
+            end
         else
             u = current_user
             result = p.getHighlights :user_id=>u.id
@@ -16,6 +21,8 @@ class HighlightsController < ApplicationController
         end
     end
     def create
+        highlight = params[:highlight]
+        highlight[:user_id] = current_user.id
         highlight = Highlight.new(params[:highlight])
         if highlight.save
           render :json => highlight
@@ -29,7 +36,7 @@ class HighlightsController < ApplicationController
         
         highlight_id = params[:id]
         highlight = p.highlights.find_by_id(highlight_id)
-        if highlight != nil
+        if highlight != nil && highlight.user_id == current_user.id
             render :json => highlight
         else
             render :json => {}

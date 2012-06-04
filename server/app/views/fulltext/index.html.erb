@@ -1,4 +1,4 @@
-<div class="myimg"><a><img src="/assets/user-head.png" width="60px" height="60px"/></a></div>
+<div class="myimg"><a><img src="<%= @headurl%>" width="60px" height="60px"/></a></div>
 <div class="friendsimg"><a><img src="/assets/head1.png" width="50px" height="50px"/></a><a><img src="/assets/head2.png" width="50px" height="50px"/></a> <a><img src="/assets/head3.png" width="50px" height="50px"/></a></div> 
 <!-- <div class="note-myself">
         <ul>
@@ -24,7 +24,7 @@
 <div class="highlight2"></div>
 <div class="guideline1"></div>
 <div class="guideline2"></div>-->
-<div class="note-myfriends">
+<!--<div class="note-myfriends">
 <ul>
 <li>
 <h1><span class="username">username</span> <span class="date">2012.05.21 2:00pm</span></h1>
@@ -36,29 +36,42 @@
 </li>
 </ul>
 </div>
-       
-        
+-->   
+        <div class="float-bar">
+            <span class="fbtn copy-btn">复制</span>
+            <span class="fbtn hl-btn">高亮</span>
+            <span class="fbtn note-btn">添加笔记</span>
+        </div>
         </ul>
+    
+        
     </div>
-</div>
-<div class="bottom-toolbar">
-  <div class="wrapper">
-    <span class="zoom1">&nbsp;</span>
-    <span class="zoom2">&nbsp;</span>
-    <span class="line"><div class="pagination">1</div></span>
-    <span class="arrow1">&nbsp;</span>
-    <span class="arrow2">&nbsp;</span>
+  <div class="bottom-toolbar">
+    <div class="wrapper">
+      <span class="zoom1">&nbsp;</span>
+      <span class="zoom2">&nbsp;</span>
+      <span class="line"><!--<div class="pagination">1</div>--><strong class="progress"></strong></span>
+      <span class="arrow1">&nbsp;</span>
+      <span class="arrow2">&nbsp;</span>
+    </div>
   </div>
 </div>
 <script>
+  var PAPERID = <%= @paper_id %>;
   var DOCID = <%= @docid %>;
 </script>
 <script type="text/template" id="pageview-template">
+  <div class="highlight-forever"></div>
   <div class="highlight-pane"></div>
-  <img src=<%%= src %> style="display:none;">
+  <img src=<%%= src %> style="display:none; width:<%%= width %>; height:<%%= height %>;">
 </script>
 <script type="text/template" id="selection-highlight-template">
   <div class="selection-highlight" style="left:<%%= l %>em;top:<%%= t %>em;width:<%%= w %>em;height:<%%= h %>em;"></div>
+</script>
+<script type="text/template" id="highlight-forever-template">
+  <%% _.each(rects, function(rect) { %>
+      <div class="forever-highlight" style="left:<%%= rect.l %>em;top:<%%= rect.t %>em;width:<%%= rect.w %>em;height:<%%= rect.h %>em;"></div>
+  <%% }); %>
 </script>
 <script type="text/template" id="selection-bar-template">
   <div class="selection-bar <%%= barType %>" 
