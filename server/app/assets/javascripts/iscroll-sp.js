@@ -54,7 +54,6 @@ var m = Math,
 			i;
 
 		that.wrapper = typeof el == 'object' ? el : doc.getElementById(el);
-		that.wrapper.style.overflow = 'hidden';
 		that.scroller = that.wrapper.children[0];
 
 		// Default options
@@ -71,6 +70,9 @@ var m = Math,
 			useTransition: false,
 			topOffset: 0,
 			checkDOMChanges: false,		// Experimental
+
+      // Hide overflowed content by default
+      overflowHidden: true,
 
 			// Scrollbar
 			hScrollbar: true,
@@ -117,6 +119,10 @@ var m = Math,
 		// User defined options
 		for (i in options) that.options[i] = options[i];
 		
+    // Hide overflow?
+    if(that.options.overflowHidden)
+		  that.wrapper.style.overflow = 'hidden';
+
     // Force 2d
     that.trnOpen = 'translate' + (has3d&&!that.options.force2D ? '3d(' : '(');
     that.trnClose = has3d&&!that.options.force2D ? ',0)' : ')';
