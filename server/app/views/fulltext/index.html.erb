@@ -42,10 +42,17 @@
             <span class="fbtn hl-btn">高亮</span>
             <span class="fbtn note-btn">添加笔记</span>
         </div>
+        <div class="note-bar">
+            <textarea class="nbtn text" rows="5" cols="30"></textarea>
+            <span class="nbtn cancel-btn">取消</span>
+            <span class="nbtn conf-btn">确定</span>
+        </div>
         </ul>
     
         
     </div>
+      <div class="note-pane">
+      </div>
   <div class="bottom-toolbar">
     <div class="wrapper">
       <span class="zoom1">&nbsp;</span>
@@ -58,7 +65,10 @@
 </div>
 <script>
   var PAPERID = <%= @paper_id %>;
-  var DOCID = <%= @docid %>;
+  var DOCID = "<%= @docid %>";
+</script>
+<script type="text/template" id="note-template">
+        <div class="note-area"> <%%= content.replace(/\n/g,"<br/>") %> </div>
 </script>
 <script type="text/template" id="pageview-template">
   <div class="highlight-forever"></div>

@@ -3,24 +3,6 @@ $(function(){
 // next, pre, go-to 
 // zoom in & out
 // text selection, highlight
-  var Highlight = Backbone.Model.extend({
-    initialize: function() {
-      var pageNum   = this.get('pagenum');
-      var startPos  = this.get('posfrom');
-      var endPos    = this.get('posto');
-      var rects     = reader.fulltext.extractRects(pageNum, startPos, endPos);
-      $.map(rects, function(rect) {
-        rect.l /= 16; rect.r /= 16; rect.t /= 16; rect.b /= 16;
-        rect.w = rect.r - rect.l; rect.h = rect.b - rect.t;
-        return rect;
-      });
-      this.set('rects', rects);
-    }  
-  });
-  var HighlightList = Backbone.Collection.extend({
-    model: Highlight,
-    url: function(){ return '/papers/'+PAPERID+"/highlights";}
-  })
   var HighlightView = Backbone.View.extend({
     tagName: 'div',
     template: _.template($("#highlight-forever-template").html()),
@@ -52,6 +34,54 @@ $(function(){
     }
   });
 // notes -> 
+ var Note = Backbone.Model.extend({
+    initialize: function() {
+      var pageNum   = this.get('pagenum');
+      var startPos  = this.get('posfrom')
+      var endPos    = this.get('posto')
+      var rects     = reader.fulltext.extractRects(pageNum, startPos, endPos);
+      $.map(rects, function(rect) {
+        rect.l /= 16; rect.r /= 16; rect.t /= 16; rect.b /= 16;
+        rect.w = rect.r - rect.l; rect.h = rect.b - rect.t;
+        return rect;
+      });
+      this.set('rects', rects);
+      this.set('boundingBox', reader.viewport._decideBoundingBox(rects));
+    }  
+  });
+  var NoteList = Backbone.Collection.extend({
+    model: Note,
+    url: function(){ return '/papers/'+PAPERID+"/notes";}
+  })
+  var NoteView = Backbone.View.extend({
+    tagName: 'li',
+    template: _.template($("#note-template").html()),
+    render: function() {
+      this.$el.html(this.template(this.model.toJSON()));
+      this.$el.css({top:(this.model.get("boundingBox")).t+'em'});
+      return this;
+    }
+  });
+  var NotesView = Backbone.View.extend({
+    tagName: 'ul',
+    events: {
+    },
+    initialize: function() {
+      this.pageNum = this.options.pageNum;
+      //this.$container = this.options.$parent.find('ul');
+      this.collection.bind('add',    this.addOne, this);
+      this.collection.bind('reset',  this.addAll, this);
+    },
+    addOne: function(note) {
+      if(note.get('pagenum') != this.pageNum || note.get("content")==null)
+        return;
+      var view = new NoteView({model: note});
+      this.$el.append(view.render().el);
+    },
+    addAll: function() {
+      this.collection.each(this.addOne, this);      
+    }
+  });
 //========================== Fulltext Model ============================
   var FulltextModel = Backbone.Model.extend({
     urlRoot: function() {
@@ -86,9 +116,11 @@ $(function(){
       if (  pageNum >= 0 && 
             pageNum < this.getNumPages() &&
             this.currentPage != pageNum ) {
+        $('#notes-'+this.currentPage).hide();
         this.trigger("changePage", pageNum, this.currentPage);
         this.currentPage = pageNum;
         $(".progress").css('left', pageNum*650/this.getNumPages()+'px');
+        $('#notes-'+this.currentPage).show();
       }
     },
     // text selection
@@ -130,7 +162,9 @@ $(function(){
     extractRects: function(pageNum, startPos, endPos) {
       var blocks = this.pages[pageNum].blocks;
       startPos = this._convertStrPos(startPos);
-      endPos = this._convertStrPos(endPos); 
+      endPos = this._convertStrPos(endPos);
+      window.startPos = startPos;
+      window.endPos = endPos;
       var rects = this._extractBetween(blocks, startPos, endPos).rects;
       return rects;
     },
@@ -405,17 +439,22 @@ $(function(){
     events: {
       'dblclick': 'selectWord',
       'doubleTap': 'selectWord',
+      'longTap': 'ltp',
+      'click .hl-btn': 'hl',
+      'click .note-btn': 'showNote',
       'click': 'unselect',
       'mousedown .selection-bar': 'startSelection',
       'mousemove': 'whileSelecting',
-      'mouseup': 'endSelection',
-      'click .hl-btn': 'hl'
+      'mouseup': 'endSelection'
+    },
+    ltp: function(e){
+        alert($(e.target).offset().top+" "+$(e.target).offset().left);
     },
     render: function() {
       var that = this;
       // highlight
-      var highlights = new HighlightList(); 
-      that.highlights = highlights;      
+      var notes = new NoteList(); 
+      that.notes = notes;      
       // render pages
       var pages = new Array();
       for(var i = 0; i < this.numPages; ++i) {
@@ -426,7 +465,9 @@ $(function(){
                                                       width: width,
                                                       height: height } )});
         this.$el.append(pv.render().el);
-        var hlv = new HighlightsView({pageNum: i, $parent: pv.$el, collection: highlights});
+        var hlv = new HighlightsView({pageNum: i, $parent: pv.$el, collection: notes});
+        var nv = new NotesView({pageNum: i, $parent: $(".note-pane"), collection: notes, id:"notes-"+i});
+        $('.note-pane').append(nv.$el);
         pages[i] = pv;
       }
       that.pages = pages;
@@ -435,19 +476,37 @@ $(function(){
         pages[0].show();
       // render viewport
       $('#hwrapper').width(reader.fulltext.getWidth()/16+'em');
-      $('#hwrapper').height($(window).height()/16+'em');
+      $('#hwrapper').height(($(window).height()-35)/16+'em');
+      $('.note-pane ul').height(reader.fulltext.getHeight()/16+'em');
       // use iScroll
       this.scroller = new iScroll('hwrapper',{
         fadeScrollbar:true,
         hideScrollbar:true,
-        hScroll:false,
-        lockDirection:true,
+        lockDirection:false,
         vScrollbar: false,
-        hScroll:false,
-        force2D: true
+        //hScroll:false,
+        force2D: true,
+        //overflowHidden: false,
+        zoom: true,
+        bounce:false,
+        onScrollStart: function(){
+            $("#notes-"+reader.fulltext.currentPage).css({"-webkit-transition-property": "-webkit-transform","-webkit-transform-origin-x": "0px", "-webkit-transform-origin-y": "0px", "-webkit-transition-duration": "0ms", "-webkit-transform": "translate(0px,"+this.y+"px) scale(1)"});
+        },
+        onBeforeScrollMove: function(){
+            $("#notes-"+reader.fulltext.currentPage).css({"-webkit-transition-property": "-webkit-transform","-webkit-transform-origin-x": "0px", "-webkit-transform-origin-y": "0px", "-webkit-transition-duration": "0ms", "-webkit-transform": "translate(0px,"+this.y+"px) scale(1)"});
+        },
+        onScrollMove: function(){
+            $("#notes-"+reader.fulltext.currentPage).css({"-webkit-transition-property": "-webkit-transform","-webkit-transform-origin-x": "0px", "-webkit-transform-origin-y": "0px", "-webkit-transition-duration": "0ms", "-webkit-transform": "translate(0px,"+this.y+"px) scale(1)"});
+        },
+        onBeforeScrollEnd:function(){
+            $("#notes-"+reader.fulltext.currentPage).css({"-webkit-transition-property": "-webkit-transform","-webkit-transform-origin-x": "0px", "-webkit-transform-origin-y": "0px", "-webkit-transition-duration": "0ms", "-webkit-transform": "translate(0px,"+this.y+"px) scale(1)"});
+        },
+        onScrollEnd: function(){
+            $("#notes-"+reader.fulltext.currentPage).css({"-webkit-transition-property": "-webkit-transform","-webkit-transform-origin-x": "0px", "-webkit-transform-origin-y": "0px", "-webkit-transition-duration": "0ms", "-webkit-transform": "translate(0px,"+this.y+"px) scale(1)"});
+        }
       });
       //
-      highlights.fetch({
+      notes.fetch({
         success: function(){
         }
       });
@@ -551,17 +610,20 @@ window.bb = this.boundingBox;
     },
     unselect: function(e) {
       var pos = this._get_pos(e);
-      console.debug('clicked ' + e.x + ', ' + e.y);
-      reader.fulltext.unselect(e);      
+      console.debug('clicked ' + e.x + ', ' + e.y); 
       $(".float-bar").css({display:"none"});
+      if($(e.target).attr('class')=="fbtn note-btn"||$(e.target).attr('class')=="nbtn text"||$(e.target).attr('class')=="note-bar")return;
+      else
+          $(".note-bar").css({display:"none"});
+      reader.fulltext.unselect(e);     
     },
     _get_pos: function(e) {
       var offset = this.$el.offset();
       var originX = offset.left;
       var originY = offset.top;
       return {
-        x: e.clientX - originX,
-        y: e.clientY - originY
+        x: (e.clientX - originX)/reader.scale,
+        y: (e.clientY - originY)/reader.scale
       }
     },
     hl: function() {
@@ -570,13 +632,19 @@ window.bb = this.boundingBox;
       var posfrom = [ft.startPos.bi,  ft.startPos.li, ft.startPos.wi].join(',');
       var posto   = [ft.endPos.bi,    ft.endPos.li,   ft.endPos.wi].join(',');
       console.debug('highlight==' + [pagenum, posfrom, posto].join(';'));
-      this.highlights.create({
+      this.notes.create({
         paper_id: PAPERID,
         pagenum: pagenum, 
         posfrom:  window.ft.startPos["bi"]+','+window.ft.startPos["li"]+','+window.ft.startPos["wi"],
         posto:    window.ft.endPos["bi"]+','+window.ft.endPos["li"]+','+window.ft.endPos["wi"]
       });
       window.ft.unselect();
+    },
+    showNote: function() {
+     var sa = this.boundingBox;
+      window.bb = this.boundingBox;
+      $("#notes-"+this.currentPage).append($(".note-bar").remove());
+      $(".note-bar").css({display:"block",top:sa.t+'px'});
     }
   });
   //================================ Reader ===================================
@@ -588,6 +656,7 @@ window.bb = this.boundingBox;
       this.docid = this.options.docid;
       // fetch fulltext
       this.fulltext = new FulltextModel({docid: this.docid});
+      this.scale = 1.0;
       // debug
       window.ft = this.fulltext;
       // fetch data
@@ -604,7 +673,11 @@ window.bb = this.boundingBox;
     }, 
     events: {
       'click .arrow1': 'pre',
-      'click .arrow2': 'next'
+      'click .arrow2': 'next',
+      'click .zoom1' : 'zoomOut',
+      'click .zoom2' : 'zoomIn',
+      'click .cancel-btn': 'hideNote',
+      'click .conf-btn': 'addNote'
     },
     initEventHandlers: function() {
        
@@ -625,6 +698,35 @@ window.bb = this.boundingBox;
     next: function() {
       var pageNum = this.fulltext.getCurrentPage();
       this.fulltext.setCurrentPage(pageNum+1);
+    },
+    zoomOut: function() {
+      this.viewport.scroller.zoom(0,0,this.scale+0.1,0);
+      this.scale += 0.1;
+    },
+    zoomIn: function() {
+      this.viewport.scroller.zoom(0,0,this.scale-0.1,0);
+      this.scale -= 0.1;
+    },
+    hideNote: function() {
+      $(".note-bar").css({display:"none"});
+    },
+    addNote:function() {
+      //alert($(".text").val());
+      var ft = this.fulltext;
+      var pagenum = ft.getCurrentPage();
+      var posfrom = [ft.startPos.bi,  ft.startPos.li, ft.startPos.wi].join(',');
+      var posto   = [ft.endPos.bi,    ft.endPos.li,   ft.endPos.wi].join(',');
+      console.debug('Note==' + [pagenum, posfrom, posto].join(';'));
+      this.viewport.notes.create({
+        paper_id: PAPERID,
+        content: $(".text").val(),
+        pagenum: pagenum, 
+        posfrom:  ft.startPos["bi"]+','+ft.startPos["li"]+','+ft.startPos["wi"],
+        posto: ft.endPos["bi"]+','+ft.endPos["li"]+','+ft.endPos["wi"]
+      });
+      ft.unselect();
+      $(".note-bar").css({display:"none"});
+      $(".text").val("");
     }
   }) ;
   var reader = new Reader({docid: DOCID});  // DOCID is intialized by rails controller

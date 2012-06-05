@@ -28,16 +28,6 @@ ActiveRecord::Schema.define(:version => 20120515091143) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "highlights", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "paper_id"
-    t.integer  "pagenum"
-    t.string   "posfrom"
-    t.string   "posto"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "logs", :force => true do |t|
     t.integer  "user_id"
     t.integer  "from_id"
@@ -62,7 +52,8 @@ ActiveRecord::Schema.define(:version => 20120515091143) do
     t.integer  "user_id"
     t.integer  "paper_id"
     t.integer  "pagenum"
-    t.string   "position"
+    t.string   "posfrom"
+    t.string   "posto"
     t.text     "content"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false

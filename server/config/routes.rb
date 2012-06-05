@@ -42,11 +42,9 @@ Server::Application.routes.draw do
   end  
   #resources :comments
   #resources :notes
-  #resources :highlights
   
   resources :papers do
        resources :comments
-       resources :highlights
        resources :notes
   end
   
