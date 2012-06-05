@@ -589,6 +589,7 @@ window.bb = this.boundingBox;
       // fetch fulltext
       this.fulltext = new FulltextModel({docid: this.docid});
       // debug
+      this.scale = 1.0;
       window.ft = this.fulltext;
       // fetch data
       this.fulltext.fetch({
@@ -604,7 +605,9 @@ window.bb = this.boundingBox;
     }, 
     events: {
       'click .arrow1': 'pre',
-      'click .arrow2': 'next'
+      'click .arrow2': 'next',
+      'click .zoom1' : 'zoomOut',
+      'click .zoom2' : 'zoomIn'
     },
     initEventHandlers: function() {
        
@@ -625,6 +628,14 @@ window.bb = this.boundingBox;
     next: function() {
       var pageNum = this.fulltext.getCurrentPage();
       this.fulltext.setCurrentPage(pageNum+1);
+    },
+    zoomOut:function() {
+      this.viewport.scroller.zoom(0,0,this.scale+0.1,0);
+      this.scale=this.scale+0.1;
+    },
+    zoomIn:function() {
+      this.viewport.scroller.zoom(0,0,this.scale-0.1,0);
+      this.scale=this.scale-0.1;
     }
   }) ;
   var reader = new Reader({docid: DOCID});  // DOCID is intialized by rails controller
