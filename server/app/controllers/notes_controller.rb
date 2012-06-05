@@ -4,7 +4,12 @@ class NotesController < ApplicationController
         p = Paper.find_by_id(paper_id)
         if params.has_key?(:user_id)
             user_id = params[:user_id]
-            result = p.getNotes :user_id=>user_id
+            if(current_user.is_friend?(user_id) || current_user.id == user_id.to_i)
+                result = p.getNotes :user_id=>user_id
+            else
+                render :json => {"error"=>"not your friend"}
+                return
+            end
         else
             result = p.getNotes :user_id=>current_user.id
         end
@@ -15,6 +20,8 @@ class NotesController < ApplicationController
         end
     end
     def create
+        note = params[:note]
+        note[:user_id] = current_user.id
         note = Note.new(params[:note])
         if note.save
           render :json => note
