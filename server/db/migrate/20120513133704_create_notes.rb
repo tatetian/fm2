@@ -4,7 +4,8 @@ class CreateNotes < ActiveRecord::Migration
       t.integer :user_id
       t.integer :paper_id
       t.integer :pagenum
-      t.string :position
+      t.string :posfrom
+      t.string :posto
       t.text :content
 
       t.timestamps
