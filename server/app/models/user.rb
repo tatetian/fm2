@@ -77,8 +77,8 @@ class User < ActiveRecord::Base
                     d
                 }
   end
-  def is_friend?(other_user)
-    relationships.find_by_user2_id(other_user.id)
+  def is_friend?(other_user_id)
+    relationships.find_by_user2_id(other_user_id)
   end
 
   def add_friend!(other_user)

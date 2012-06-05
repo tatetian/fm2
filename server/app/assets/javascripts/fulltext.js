@@ -317,7 +317,8 @@ $(function(){
       return { text: null, rects: rects };
     },
     unselect: function() {
-      this.trigger("unselect");
+     // if(this.selectArea!=null)
+          this.trigger("unselect");
     },
     _findWord: function(blocks, x, y) {
         var block;
@@ -435,20 +436,83 @@ $(function(){
       this.updateDimensions();
       // event handlers
       this.initEventHandlers();
+      this.touch = false;
     },
     events: {
       'dblclick': 'selectWord',
-      'doubleTap': 'selectWord',
+     // 'doubleTap': 'selectWord',
       'longTap': 'ltp',
       'click .hl-btn': 'hl',
       'click .note-btn': 'showNote',
       'click': 'unselect',
       'mousedown .selection-bar': 'startSelection',
       'mousemove': 'whileSelecting',
-      'mouseup': 'endSelection'
+      'mouseup': 'endSelection',
+     // 'tap' : 'clearltp',
+      'touchstart .selection-bar': 'touchsS',
+      'touchmove' : 'touchws',
+      'touchend' : 'touches'
     },
+    touchsS: function(e){
+      this.touch = true;
+      this.selecting = true;
+      this.lastSelectionTime = 0;
+      this.$bar = $(e.target).closest('.selection-bar');
+      this.barType = this.$bar.data('type');
+      this.scroller.disable();
+      $(".float-bar").css({display:"none"});
+      e.preventDefault();   
+    },
+    touchws: function(e){
+       if ( this.selecting ) { 
+        var pos = this._get_touchpos(e.touches[0]);
+        //alert([pos.x, pos.y].join(', '));
+        if(this.barType == 'begin-bar'){
+          reader.fulltext.selectArea(pos.x, pos.y,
+                                     this.selectedArea.r, 
+                                     this.selectedArea.b);
+        }
+        else if(this.barType == 'end-bar'){
+          reader.fulltext.selectArea(this.selectedArea.l,
+                                     this.selectedArea.t,
+                                     pos.x, pos.y);
+        }
+        e.preventDefault();
+      }
+
+    },
+    touches: function(e){ 
+      if(this.selecting) {
+        this.selecting = false;
+        this.scroller.enable();
+        this.showFloatbar();
+        this.touch = false;
+      }
+    },
+    _get_touchpos: function(e){
+        var offset = this.$el.offset();
+        return {
+          x : (e.pageX-offset.left)/this.scroller.scale,
+          y : (e.pageY-offset.top)/this.scroller.scale
+        };
+    },
+   /* clearltp: function(e){
+     // alert(this.touch);
+      this.touch = false;
+    },*/
     ltp: function(e){
-        alert($(e.target).offset().top+" "+$(e.target).offset().left);
+        //alert($(e.target).offset().top);
+       // alert(e.data.x+","+e.data.y);
+      // alert(2);
+        this.unselect(e);
+        var offset = $(e.target).closest(".multi-image").offset();
+       // window.off = offset;
+        var x = (e.data.x-offset.left)/this.scroller.scale;
+        var y = (e.data.y-offset.top)/this.scroller.scale;
+       // alert(x+','+y);
+        reader.fulltext.selectWord(x,y);
+        this.showFloatbar();
+        this.touch = true;
     },
     render: function() {
       var that = this;
@@ -611,19 +675,22 @@ window.bb = this.boundingBox;
     unselect: function(e) {
       var pos = this._get_pos(e);
       console.debug('clicked ' + e.x + ', ' + e.y); 
-      $(".float-bar").css({display:"none"});
-      if($(e.target).attr('class')=="fbtn note-btn"||$(e.target).attr('class')=="nbtn text"||$(e.target).attr('class')=="note-bar")return;
+      if(this.touch==false&&($(e.target).attr('class')=="fbtn note-btn"||$(e.target).attr('class')=="nbtn text"||$(e.target).attr('class')=="note-bar"))return;
       else
           $(".note-bar").css({display:"none"});
-      reader.fulltext.unselect(e);     
+      if(this.touch == false){ 
+          $(".float-bar").css({display:"none"});
+          reader.fulltext.unselect(e);
+      }
+      this.touch = false;      
     },
     _get_pos: function(e) {
       var offset = this.$el.offset();
       var originX = offset.left;
       var originY = offset.top;
       return {
-        x: (e.clientX - originX)/reader.scale,
-        y: (e.clientY - originY)/reader.scale
+        x: (e.clientX - originX)/this.scroller.scale,
+        y: (e.clientY - originY)/this.scroller.scale
       }
     },
     hl: function() {
