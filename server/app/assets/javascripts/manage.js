@@ -3,7 +3,7 @@ $(function() {
   var Tag = Backbone.Model.extend({
     defaults: function() {
       return {
-        name: "New folder",
+        name: "未命名",
       };
     },
     initialize: function() {
@@ -24,16 +24,15 @@ $(function() {
     url: '/metadata?tags=All'
   });
 //=============================== Title's View ================================
-  var Titles = Backbone.View.extend({
-    tagName: 'ul',
-    initialize: function() {
-      this.folderName = this.options.folderName;
-      this.collection.bind('add', this.addOne, this);
-      this.collection.bind('reset', this.addAll, this);
+  var TitleView = Backbone.View.extend({
+    tagName: 'li',
+    events: {  
     },
     template: _.template($('#title-template').html()),
-    addOne: function(model) {
-      var json = model.toJSON();
+    render: function() {
+      // model
+      var json = this.model.toJSON();
+      // fake color
       if(Math.random() > 0.5)
         json.yellow_or_white = 'yellow';
       else
@@ -42,45 +41,75 @@ $(function() {
         json.colorid = 1;
       else
         json.colorid = 2;
-//      alert(this.folderName + '|' + JSON.stringify(json.tags));
-      if(json.tags.indexOf(this.folderName) >= 0)
-        this.$el.append(this.template(json));
+      // append content
+      this.$el.append(this.template(json));
+      return this;
+    }
+  });
+  var TitlesView = Backbone.View.extend({
+    tagName: 'ul',
+    initialize: function() {
+      this.folder = this.options.folder;
+      this.collection.bind('add', this.addOne, this);
+      this.collection.bind('reset', this.addAll, this);
+    },
+    addOne: function(model) {
+      var json = model.toJSON();
+      var folderName = this.folder.getName();
+      if(json.tags.indexOf(folderName) >= 0) {
+        var titleView = new TitleView({model: model});
+        this.$el.append(titleView.render().el);
+      }
     },
     addAll: function() {
       this.collection.each(this.addOne, this);
     }
   });
 //=============================== Folder's view ===============================
-  var Folders = Backbone.View.extend({
+  var FolderView = Backbone.View.extend({
+    tagName: 'li',
+    events: {},
+    template: _.template($('#folder-template').html()),
+    initialize: function() {
+      // view to display titles in this folder
+      this.titles       = new TitlesView({
+                                collection: this.collection,//MetadataList
+                                folder: this});
+    },
+    getName: function() {
+      return this.model.get('name');
+    },
+    render: function() {
+      // render folder dom
+      var json      = this.model.toJSON();
+      this.$el.html(this.template(json));
+      // append titles to this folder
+      var $titles   = this.titles.render().$el;
+      this.$el.find('.titles').append($titles);
+      // iscroll
+      /*this.scroller = new iScroll('titles-'+json.id,{
+        fadeScrollbar:true,
+        hideScrollbar:true,
+        lockDirection:true
+      });*/
+      return this;        
+    }
+  });
+  var FoldersView = Backbone.View.extend({
     el: '.all-tag ul',
     initialize: function() {
       this.metadataList = this.options.metadataList;
       this.collection.bind('add', this.addOne, this);
       this.collection.bind('reset', this.addAll, this);
     },
-    template: _.template($('#folder-template').html()),
     addOne: function(model, options) {
-      // add before '+' 
-      var json = model.toJSON();
-      var titles = new Titles({
+      // Add a new folder given its model
+      var folder = new FolderView({
+        model:      model,
         collection: this.metadataList,
-        folderName: json.name
       });
-      var $folder = $(this.template(json));
-      $folder.find('.titles').append(titles.$el);
-      $folder.insertBefore($('.all-tag ul li:last-child'));
-
-      var myScroll = new iScroll('titles-'+json.name,{
-        fadeScrollbar:true,
-        hideScrollbar:true,
-        lockDirection:true
-      });
-/*var myScroll7 = new iScroll('wrapper',{
-  fadeScrollbar:true,
-  hideScrollbar:true,
-  lockDirection:true
-});*/
-
+      // render & insert new folder before '+'
+      folder.render().$el.insertBefore($('.all-tag ul li:last-child'));
     },
     addAll: function() {
       this.collection.each(this.addOne, this);
@@ -91,12 +120,11 @@ $(function() {
     el: '#wrapper',
     initialize: function() {
       var that = this;
-      $('#wrapper').width($(window).width());
       // models
       this.tagList = new TagList();
       this.metadataList = new MetadataList();
       // init sub views
-      this.folders = new Folders({
+      this.folders = new FoldersView({
         collection: this.tagList, 
         metadataList: this.metadataList
       });
@@ -104,15 +132,14 @@ $(function() {
       this.tagList.fetch();
       this.metadataList.fetch({
         success: function() {
-          
           $(".all-tag").width(350 * (that.metadataList.size() + 1) );
           var myScroll7 = new iScroll('wrapper',{
             vScroll:false,
             fadeScrollbar:true,
             hideScrollbar:true,
-            lockDirection:true
+            lockDirection:true,
+            snap: 'li'
           });
-
         }
       });
     },

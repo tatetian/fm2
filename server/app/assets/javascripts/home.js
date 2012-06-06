@@ -85,12 +85,14 @@ $(function(){
     postRender: function() {            
         var noOfSlides = recentPapers.size(); 
         if(recentPapers.size()<=10)
-            $('#papers').height(recentPapers.size()*41);
+          $('#papers').height(55+169+recentPapers.size()*48);
         else $('#papers').height(410);
-        this.scroller = new iScroll('papers',{
+          this.scroller = new iScroll('papers',{
               hScroll:false,
               vScrollbar:false,
-              lockDirection:true
+              lockDirection:true,
+              overflowHidden: false,
+              snap: 'li'
         });
         for(var i = 0; i< recentPapers.size(); i++){
             var index = recentPapers.at(i).get("id");
@@ -101,7 +103,7 @@ $(function(){
     },
     addOne: function(paper) {
       var view = new TitleView({model: paper});
-      this.$(".tag-nav ul").append(view.render().el);
+      this.$(".tag-nav ul ul").append(view.render().el);
     },
     addAll: function() {
       recentPapers.each(this.addOne);

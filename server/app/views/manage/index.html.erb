@@ -12,7 +12,7 @@
   <div class="all-tag">
     <ul>
       <li>
-        <div class="add-tag"> <span><a href=""> <img  src="assets/upload-add.png"/></a></span> </div>
+        <div class="add-tag"><span><a href=""><img src="assets/upload-add.png"/></a></span></div>
       </li>
     </ul>
   </div>
@@ -20,22 +20,20 @@
 <script type="text/javascript">
 </script>
 <script type="template" id="folder-template">
-<li>
   <div class="tag-sub-nav">
     <div class="index-upload">
       <form >
         <input class="upload" type="file" value=""/>
       </form>
     </div>
-    <div class="titles" id="titles-<%%= name %>">
+    <div class="titles" id="titles-<%%= id %>">
     </div>
   </div>
   <div class="tag-box"> </span>
   <h1><%%= name %></h1>
   </div>
   <div class="cb"></div>
-</li>
 </script>
 <script type="template" id="title-template">
-  <li><span class="star"><a><img src="assets/star-<%%= yellow_or_white %>.png"/></a></span><a href="#"><%%= title %></a><span class="tag-color"><a><img src="assets/tag-color<%%= colorid %>.png" /></a></span></li>
+  <span class="star"><a><img src="assets/star-<%%= yellow_or_white %>.png"/></a></span><a href="#"><%%= title %></a><span class="tag-color"><a><img src="assets/tag-color<%%= colorid %>.png" /></a></span>
 </script>

@@ -1284,12 +1284,12 @@ window.Zepto = Zepto
     return xDelta >= yDelta ? (x1 - x2 > 0 ? 'Left' : 'Right') : (y1 - y2 > 0 ? 'Up' : 'Down')
   }
 
-  var longTapDelay = 750, longTapTimeout
+  var longTapDelay = 600, longTapTimeout
 
   function longTap(){
     longTapTimeout = null
-    if (touch.last) {
-      touch.el.trigger('longTap')
+    if (touch.last){ 
+      touch.el.trigger('longTap', {x: touch.x1, y: touch.y1});
       touch = {}
     }
   }
