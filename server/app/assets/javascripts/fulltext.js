@@ -552,7 +552,7 @@ $(function(){
         force2D: true,
         //overflowHidden: false,
         zoom: true,
-        bounce:false,
+        bounce:true,
         onScrollStart: function(){
             $("#notes-"+reader.fulltext.currentPage).css({"-webkit-transition-property": "-webkit-transform","-webkit-transform-origin-x": "0px", "-webkit-transform-origin-y": "0px", "-webkit-transition-duration": "0ms", "-webkit-transform": "translate(0px,"+this.y+"px) scale(1)"});
         },

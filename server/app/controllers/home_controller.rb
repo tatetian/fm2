@@ -4,6 +4,8 @@ class HomeController < ApplicationController
       user = current_user
       @name = user.name
       @headurl = user.headurl
+      @papersNum = 0
+      @friendsNum = 2
     end
 private
   
