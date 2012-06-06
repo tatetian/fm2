@@ -84,15 +84,14 @@ $(function(){
     },
     postRender: function() {            
         var noOfSlides = recentPapers.size(); 
-        if(recentPapers.size()<=10)
-          $('#papers').height(55+169+recentPapers.size()*48);
-        else $('#papers').height(410);
-          this.scroller = new iScroll('papers',{
-              hScroll:false,
-              vScrollbar:false,
-              lockDirection:true,
-              overflowHidden: false,
-              snap: 'li'
+        $('#papers').height(48+48+recentPapers.size()*48+48);
+        $('#papers > ul').height(48+48+recentPapers.size()*48);
+        this.scroller = new iScroll('papers',{
+            hScroll:false,
+            vScrollbar:false,
+            lockDirection:true,
+            overflowHidden: false,
+            snap: 'li'
         });
         for(var i = 0; i< recentPapers.size(); i++){
             var index = recentPapers.at(i).get("id");
