@@ -1,4 +1,3 @@
- 
 <div class="users">
   <div class="users-me clicked">
     <img class="me-head"  src="<%= @headurl %>" >
@@ -16,12 +15,14 @@
   </div>
 </div>
 <div class="desktop">
-  <div id="my-folders" class="folders">
-    <ul>
-      <li class="folder add-folder">
-        <div class="add-tag"><span><a href=""><img src="assets/upload-add.png"/></a></span></div>
-      </li>
-    </ul>
+  <div id="my-folders-wrapper" class="folders-wrapper">
+    <div id="my-folders" class="folders">
+      <ul>
+        <li class="folder add-folder">
+          <div class="add-tag"><span><a href=""><img src="assets/upload-add.png"/></a></span></div>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 <script type="template" id="folder-template">

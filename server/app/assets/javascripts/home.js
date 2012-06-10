@@ -330,7 +330,6 @@ $(function(){
         vScrollbar: false
       });
       //setTimeout(200, function(){alert(200)});
-      
       return this;        
     },
     onResize: function() {
@@ -345,11 +344,14 @@ $(function(){
     }
   });
   var FoldersView = Backbone.View.extend({
-    el: '.folders > ul',
+    el: '.folders-wrapper',
+    optimalSize: 400,       /* optimal size for one folder */
     initialize: function() {
+      var that = this;
       this.metadataList = this.options.metadataList;
       this.collection.bind('add', this.addOne, this);
       this.collection.bind('reset', this.addAll, this);
+      $(window).resize(function() { that.resize(); });
     },
     addOne: function(model, options) {
       // Add a new folder given its model
@@ -358,10 +360,26 @@ $(function(){
         collection: this.metadataList,
       });
       // render & insert new folder before '+'
-      folder.render().$el.insertBefore($('.add-folder'));
+      folder.render().$el.insertBefore(this.$el.find('.add-folder'));
     },
     addAll: function() {
       this.collection.each(this.addOne, this);
+      this.resize();
+    },
+    resize: function(e) {
+      var wrapperWidth  = this.$el.width() + 1;
+      var numFolders    = this.collection.size() + 1; 
+      var numFoldersPerScreen = Math.round(wrapperWidth / this.optimalSize);
+      var folderMargin  = 0; // 1.5em
+      var folderWidth   = ( wrapperWidth - 2 * folderMargin * numFolders ) / numFoldersPerScreen;
+      this.$el.find('.folder').css({
+        width: folderWidth + 'px', 
+        margin: '0 ' + folderMargin/16 + 'em'
+      });
+      this.$el.find('.folders').css({
+//        padding: ,
+        width: (folderWidth + 2 * folderMargin) * numFolders + 'px' 
+      });
     }
   }); 
 //=============================== Manager's view ==============================
@@ -381,14 +399,17 @@ $(function(){
       this.tagList.fetch();
       this.metadataList.fetch({
         success: function() {
-          that.scroller = new iScroll('my-folders',{
+//          that.tagList.length
+          that.scroller = new iScroll('my-folders-wrapper',{
             vScroll:false,
             fadeScrollbar:true,
             hideScrollbar:true,
             lockDirection:true,
             hScrollbar: false,
             bounce: true,
-            snap: 'li'
+            snap: 'li',
+            overflowHidden: false,
+            force2D: true
           });
         }
       });

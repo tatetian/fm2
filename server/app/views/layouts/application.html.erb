@@ -3,8 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,
-                                 maximum-scale=1.0" />
-
+  initial-scale=1, minimum-scale=1, maximum-scale=1,
+  user-scalable=no" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>FeastMind</title>
   <%= stylesheet_link_tag    "reset", :media => "all" %>
   <%= stylesheet_link_tag    params[:controller], :media => "all" %>

@@ -5,11 +5,6 @@ $users-width:   210px;
 /* CSS Document */
 html, body { 
   position:   relative; 
-  background: url(/assets/bg-light.png) top center no-repeat,  
-              url(/assets/bg-shadow.png) bottom no-repeat, 
-              url(/assets/desk.png); 
-  background-size: auto,cover,auto;
-  box-shadow: inset 2px 0px 100px rgba(0,0,0,0.4); 
   width: 100%; 
   height:100%; 
   overflow:   hidden; 
@@ -100,12 +95,18 @@ html, body {
 #tinymask{position:absolute; display:none; top:0; left:0; height:100%; width:100%; background:#000000; z-index:1500;}
 #tinycontent{background:#ffffff; font-size:1em;}
 
-.desktop { position: absolute; left: 180px; top: 0px; right: 0px; height: 100%; ; overflow: hidden;}
-.folders { width: 100%; height: 100%; overflow: hidden; }
-.folders > ul { height: 100%; width: 101%;}
-.folder { float:left; height:100%; width: 47.5%; position:relative; margin: 0 1.25% 0 1.25%;}
-.folder:first { margin-left: 2.5%;}
+.desktop { position: absolute; left: 180px; top: 0px; right: 0px; height: 100%; ; overflow: hidden;
+  background: url(/assets/bg-light.png) top center no-repeat,  
+              url(/assets/bg-shadow.png) bottom no-repeat, 
+              url(/assets/desk.png); 
+  background-size: auto,cover,auto;
+  box-shadow: inset 2px 0px 100px rgba(0,0,0,0.4); 
+}
+.folders-wrapper { width: 89%; height: 100%; margin: 0 auto; }
+.folders { float: left; width: 101%; height: 100%; overflow: hidden; } /* the width will be determined at runtime*/
+.folders > ul { height: 100%; width: 100%; display: block; float: left; width: 100%; height: 100%;}
+.folder { display: block; float:left; height:100%; width: 47.5%; position: relative; margin: 0 1.25% 0 1.25%;}
 
-.add-tag { position:absolute; bottom:0px; width: 100%; height:96px; background:url(/assets/tagadd-box.png) no-repeat center bottom; background-size: 90% 90%; }
+.add-tag { position:absolute; bottom:0px; width: 100%; height:96px; background:url(/assets/new/tagadd-box.png) no-repeat center bottom; background-size: 90% 90%; }
 .add-tag span{width:24px; height:23px;  position:relative; left: 50%; top: 50%; margin: 0 0 0 -12px;}
 .add-tag span a img{ width:24px; height:23px; }
