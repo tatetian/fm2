@@ -54,12 +54,12 @@ html, body {
         .index-upload form input.upload{ width:100%; height:3em; font-size:1em;text-indent:-10000em; background:url(/assets/new/upload-bg.png) center no-repeat; background-size:100% 100%;border:0px;   cursor: pointer; }
     .papers{position:absolute; bottom:0px; width:100%; height: 320px;}
     .papers > ul{position:absolute; top:0px; width:100%; }
-    .tag-nav li { width:100%; position:relative;height:3em; margin:0px; margin-top:-3px;}
-    .tag-nav li>a { padding-left:11.5%; padding-right:11%; padding-top:0.3em;padding-bottom:0.3em;display:block;  line-height:1.2em; font-size:1em;height:2.4em; text-align:center; font-family:"arial";  color: #707070; background:url(/assets/new/tag-list-bg.png) no-repeat center top; background-size:100% 100%;word-wrap:break-word; overflow:hidden; text-shadow:0px 1px 1px rgba(0,0,0,0.3);}
-    .tag-nav li .tag-color{height:2.5em; width:2.375em; position:absolute;float:right; top:-0.3em;right:5.4%; }
+    .tag-nav li { width:100%; position:relative;height:3em; margin:0px; margin-top:-3px; background:url(/assets/new/tag-list-bg.png) no-repeat center top; background-size:100% 100%;}
+    .tag-nav li > div > a { padding: 0.3em 2.5em; display:block;  line-height:1.2em; font-size:1em;height:2.4em; text-align: left; font-family:"arial";  color: #707070; word-wrap:break-word; overflow:hidden; text-shadow:0px 1px 1px rgba(0,0,0,0.3);}
+    .tag-nav li .tag-color{height:2.5em; width:2.375em; position:absolute;float:right; top:-0.3em;right: 0px; }
     .tag-nav li .tag-color img{height:100%; width:100%; }
-    .tag-nav li .star{ left:7.5%; top:0.8em; height:1.375em; width:1.375em; position:absolute; float:left; font-size:1em;}
-    .tag-nav li .star img{height:100%; width:100%; }
+    .tag-nav li .star { top:0.8em; height:1.375em; width:1.375em; position:absolute; float:left; font-size:1em; margin: 0 0.5em; }
+    .tag-nav li .star img {height:100%; width:100%; }
     .more-bg{ width:100%;height:148px;; position:relative;margin-top:-3px;}
     .more-bg img{height:100%; position:relative; width:100%;}
 .recent-box{ position:absolute; bottom:0px;  width:100%; height:96px; background:url(/assets/new/tag-box.png) no-repeat center top;
@@ -103,7 +103,7 @@ html, body {
   box-shadow: inset 2px 0px 100px rgba(0,0,0,0.4); 
 }
 .folders-wrapper { width: 89%; height: 100%; margin: 0 auto; }
-.folders { float: left; width: 101%; height: 100%; overflow: hidden; } /* the width will be determined at runtime*/
+.folders { float: left; width: 100%; height: 100%; overflow: hidden; } /* the width will be determined at runtime*/
 .folders > ul { height: 100%; width: 100%; display: block; float: left; width: 100%; height: 100%;}
 .folder { display: block; float:left; height:100%; width: 47.5%; position: relative; margin: 0 1.25% 0 1.25%;}
 

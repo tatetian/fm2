@@ -327,7 +327,10 @@ $(function(){
         hideScrollbar:true,
         lockDirection:true,
         overflowHidden: false,
-        vScrollbar: false
+        vScrollbar: false,
+        useTransition: true,
+        //momentum: false,
+        overflowHidden: false
       });
       //setTimeout(200, function(){alert(200)});
       return this;        
@@ -345,12 +348,13 @@ $(function(){
   });
   var FoldersView = Backbone.View.extend({
     el: '.folders-wrapper',
-    optimalSize: 400,       /* optimal size for one folder */
+    optimalSize: 380,       /* optimal size for one folder */
     initialize: function() {
       var that = this;
       this.metadataList = this.options.metadataList;
       this.collection.bind('add', this.addOne, this);
       this.collection.bind('reset', this.addAll, this);
+      this.$items = new Array();
       $(window).resize(function() { that.resize(); });
     },
     addOne: function(model, options) {
@@ -361,17 +365,19 @@ $(function(){
       });
       // render & insert new folder before '+'
       folder.render().$el.insertBefore(this.$el.find('.add-folder'));
+      this.$items.push(folder.$el);
     },
     addAll: function() {
       this.collection.each(this.addOne, this);
+      this.$items.push(this.$el.find('.add-folder'));
       this.resize();
     },
     resize: function(e) {
-      var wrapperWidth  = this.$el.width() + 1;
-      var numFolders    = this.collection.size() + 1; 
-      var numFoldersPerScreen = Math.round(wrapperWidth / this.optimalSize);
-      var folderMargin  = 0; // 1.5em
-      var folderWidth   = ( wrapperWidth - 2 * folderMargin * numFolders ) / numFoldersPerScreen;
+      var wrapperWidth  = this.$el.width() + 1,
+          numFolders    = this.collection.size() + 1,
+          numFoldersPerScreen = Math.round(wrapperWidth / this.optimalSize),
+          folderMargin  = 0,
+          folderWidth   = ( wrapperWidth - 2 * folderMargin * numFolders ) / numFoldersPerScreen;
       this.$el.find('.folder').css({
         width: folderWidth + 'px', 
         margin: '0 ' + folderMargin/16 + 'em'
@@ -379,6 +385,29 @@ $(function(){
       this.$el.find('.folders').css({
 //        padding: ,
         width: (folderWidth + 2 * folderMargin) * numFolders + 'px' 
+      });
+      this.N   = numFolders;
+      this.n = numFoldersPerScreen;
+      this.w  = folderWidth;
+      this.W = wrapperWidth; 
+    },
+    updateOpacity: function(x) {
+      var that = this;
+      _.forEach(that.$items, function($item, index) {
+        // width of a item
+        var w = that.w,
+          // width of container    
+          W = that.W - w,
+          // left of this item shifted by x
+          l = index * that.w + x,
+          // percentage of overflow
+          // p = 0      => no overflow          => opacity = 1
+          // 0 < p < 1  => partial overflow     => opacity = 1-p
+          // p > 1      => completed overflow   => opacity = 0
+          p = (l < 0) ? -l/w : 
+              (l > W) ? (l-W)/w : 0; 
+        //console.debug(['x', x, 'w', w, 'W', W, 'l', l, 'p', p].join(','));
+        $item.css('opacity', ( (p < 1) ? (1 - p) : 0 ) + '' );
       });
     }
   }); 
@@ -400,17 +429,27 @@ $(function(){
       this.metadataList.fetch({
         success: function() {
 //          that.tagList.length
+          //debug
           that.scroller = new iScroll('my-folders-wrapper',{
             vScroll:false,
             fadeScrollbar:true,
             hideScrollbar:true,
             lockDirection:true,
             hScrollbar: false,
-            bounce: true,
+            //bounce: true,
+            useTransition: true,
             snap: 'li',
+            //momentum: false,
             overflowHidden: false,
-            force2D: true
+            onPos: function(step) {
+//              console.debug('onPos');
+
+             that.folders.updateOpacity(that.scroller.x);
+            }
+            //force2D: true
           });
+
+          window.scroller = that.scroller;
         }
       });
     },

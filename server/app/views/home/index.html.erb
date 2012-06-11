@@ -46,9 +46,11 @@
   </div>
 </script>
 <script type="text/template" id="title-template">
-  <span class="star"> <a><img src="assets/star-<%%= yellow_or_white %>.png" /></a></span>
-  <a class="ml20" href="/fulltext/<%%= docid %>" id="detail<%%= id %>" data-id="<%%= id%>"><%%= title %></a>
-  <span class="tag-color"><a><img src="assets/tag-color<%%= colorid %>.png" /></a></span>
+  <div style="position: relative; width: 87.5%; height: 100%; margin: 0 5.5% 0 7%;">
+    <span class="star"><a><img src="assets/star-<%%= yellow_or_white %>.png" /></a></span>
+    <a class="ml20" href="/fulltext/<%%= docid %>" id="detail<%%= id %>" data-id="<%%= id%>"><%%= title %></a>
+    <span class="tag-color"><a><img src="assets/tag-color<%%= colorid %>.png" /></a></span>
+  </div>
 </script>
 <script type="text/template" id="user-me-template">
   <img class="me-head"  src="<%%= headurl %>" />
