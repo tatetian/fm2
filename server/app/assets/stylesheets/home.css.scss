@@ -52,16 +52,16 @@ html, body {
     .index-upload {position:relative;   cursor: pointer; width:100%;}
         .index-upload form input { display:block; margin:0 auto; overflow:hidden;  }
         .index-upload form input.upload{ width:100%; height:3em; font-size:1em;text-indent:-10000em; background:url(/assets/new/upload-bg.png) center no-repeat; background-size:100% 100%;border:0px;   cursor: pointer; }
-    .papers{position:absolute; bottom:0px; width:100%; height: 320px;}
+    .papers{position:absolute; bottom:84px; width:100%; height: 320px;}
     .papers > ul{position:absolute; top:0px; width:100%; }
-    .tag-nav li { width:100%; position:relative;height:3em; margin:0px; margin-top:-3px; background:url(/assets/new/tag-list-bg.png) no-repeat center top; background-size:100% 100%;}
+    .tag-nav li { width:100%; position:relative;height:3em; margin:0px; margin-top:-2px; background:url(/assets/new/tag-list-bg.png) no-repeat center top; background-size:100% 100%;}
     .tag-nav li > div > a { padding: 0.3em 2.5em; display:block;  line-height:1.2em; font-size:1em;height:2.4em; text-align: left; font-family:"arial";  color: #707070; word-wrap:break-word; overflow:hidden; text-shadow:0px 1px 1px rgba(0,0,0,0.3);}
     .tag-nav li .tag-color{height:2.5em; width:2.375em; position:absolute;float:right; top:-0.3em;right: 0px; }
     .tag-nav li .tag-color img{height:100%; width:100%; }
     .tag-nav li .star { top:0.8em; height:1.375em; width:1.375em; position:absolute; float:left; font-size:1em; margin: 0 0.5em; }
     .tag-nav li .star img {height:100%; width:100%; }
-    .more-bg{ width:100%;height:148px;; position:relative;margin-top:-3px;}
-    .more-bg img{height:100%; position:relative; width:100%;}
+    .more-bg{ width:100%;height:148px; position: absolute; bottom: -146px;}
+    .more-bg img{height:100%; position: relative; width:100%; }
 .recent-box{ position:absolute; bottom:0px;  width:100%; height:96px; background:url(/assets/new/tag-box.png) no-repeat center top;
  background-size: 100% 100%;}
     .recent-box h1{position:relative; width:100%; top:75px; text-align:center; font-family:"黑体"; font-size:16px; font-weight:200; color:#630 ;}

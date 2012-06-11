@@ -295,6 +295,7 @@ $(function(){
     },
     addAll: function() {
       this.collection.each(this.addOne, this);
+      this.folder.resize();
     } 
   });
 //=============================== Folder's view ===============================
@@ -335,12 +336,12 @@ $(function(){
       //setTimeout(200, function(){alert(200)});
       return this;        
     },
-    onResize: function() {
+    resize: function() {
       // height of window
       //var windowH = $(window).height();
       // height of content in folder
       var size = this.$el.find('.papers .titles > ul > li').length;
-      var folderContentH = 48+48+size*48;
+      var folderContentH = 48+size*46;
       // pick the 
       //console.debug(folderContentH);
       this.$el.find('.papers').height(folderContentH);
@@ -354,7 +355,7 @@ $(function(){
       this.metadataList = this.options.metadataList;
       this.collection.bind('add', this.addOne, this);
       this.collection.bind('reset', this.addAll, this);
-      this.$items = new Array();
+      this.items = new Array();
       $(window).resize(function() { that.resize(); });
     },
     addOne: function(model, options) {
@@ -365,11 +366,11 @@ $(function(){
       });
       // render & insert new folder before '+'
       folder.render().$el.insertBefore(this.$el.find('.add-folder'));
-      this.$items.push(folder.$el);
+      this.items.push(folder);
     },
     addAll: function() {
       this.collection.each(this.addOne, this);
-      this.$items.push(this.$el.find('.add-folder'));
+      this.items.push({$el: this.$el.find('.add-folder'), resize: function() {}});
       this.resize();
     },
     resize: function(e) {
@@ -386,6 +387,7 @@ $(function(){
 //        padding: ,
         width: (folderWidth + 2 * folderMargin) * numFolders + 'px' 
       });
+      _.forEach(this.items, function(item) { item.resize(); });
       this.N   = numFolders;
       this.n = numFoldersPerScreen;
       this.w  = folderWidth;
@@ -393,7 +395,7 @@ $(function(){
     },
     updateOpacity: function(x) {
       var that = this;
-      _.forEach(that.$items, function($item, index) {
+      _.forEach(that.items, function(item, index) {
         // width of a item
         var w = that.w,
           // width of container    
@@ -405,9 +407,9 @@ $(function(){
           // 0 < p < 1  => partial overflow     => opacity = 1-p
           // p > 1      => completed overflow   => opacity = 0
           p = (l < 0) ? -l/w : 
-              (l > W) ? (l-W)/w : 0; 
+              (l > W) ? (l-W)/w : 0;
         //console.debug(['x', x, 'w', w, 'W', W, 'l', l, 'p', p].join(','));
-        $item.css('opacity', ( (p < 1) ? (1 - p) : 0 ) + '' );
+        item.$el.css('opacity', ( (p < 1) ? (1 - p) : 0 ) + '' );
       });
     }
   }); 
