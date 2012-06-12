@@ -470,7 +470,7 @@ $(function(){
       'touchend' : 'touches'
     },
     enableScroller: function(e){
-       if(!this.scroller.enabled){
+       if(!this.scroller.enabled && !this.selecting){
               e.preventDefault();
               this.scroller.enable();
        }
