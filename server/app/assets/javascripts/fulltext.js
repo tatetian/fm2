@@ -1,3 +1,4 @@
+//== require ZeroClipboard.js
 $(function(){
 // reader
 // next, pre, go-to 
@@ -149,6 +150,7 @@ $(function(){
       var b       = line.b;
       var l       = line.q[2*indexes.wi];
       var r       = l + line.q[2*indexes.wi+1];
+      this.word = word;
       this.trigger("selectWord", word, l, t, r, b);
       this.startPos = this.endPos = indexes;
     }, 
@@ -165,10 +167,11 @@ $(function(){
       if(textRects) {
         this.startPos = startPos;
         this.endPos = endPos;
-        console.debug(textRects.text);
+        console.debug("text:"+textRects.text);
         var rects = textRects.rects;
         l = rects[0].l; t = rects[0].t;
         r = rects[rects.length - 1].r; b = rects[rects.length - 1].b;
+        this.word = textRects.text;
         this.trigger('selectArea', textRects.text, l, t, r, b, textRects.rects);
       }
       else
@@ -329,11 +332,12 @@ $(function(){
       }
       if(texts.length == 0)
         return null;
-      return { text: null, rects: rects };
+      return { text: texts.join(""), rects: rects };
     },
     unselect: function() {
      // if(this.selectArea!=null)
           this.trigger("unselect");
+          this.word = "";
     },
     _findWord: function(blocks, x, y) {
         var block;
@@ -483,6 +487,7 @@ $(function(){
       this.barType = this.$bar.data('type');
       this.scroller.disable();
       $(".float-bar").css({display:"none"});
+      clip.hide();
       e.preventDefault();   
     },
     touchws: function(e){
@@ -576,7 +581,18 @@ $(function(){
         //hScroll:false,
         force2D: true,
         //overflowHidden: false,
-        zoom: false
+        zoom: false,
+        onScrollMove:function(){
+            var sa = that.boundingBox;
+            if(sa!=null)
+                clip.repos2(((sa.l+sa.r)/2-54)*reader.scale+$(".multi-image").offset(),(sa.t-50)*reader.scale+that.scroller.y);
+        
+        },
+        onScrollEnd: function(){
+            var sa = that.boundingBox;
+            if(sa!=null)
+                clip.repos2(((sa.l+sa.r)/2-54)*reader.scale+$(".multi-image").offset(),(sa.t-50)*reader.scale+that.scroller.y);
+        }
       });
       //
       notes.fetch({
@@ -652,6 +668,7 @@ window.rects = rects;
       this.barType = this.$bar.data('type');
       this.scroller.disable();
       $(".float-bar").css({display:"none"});
+      clip.hide();
     },
     endSelection: function(e) {
       if(this.selecting) {
@@ -662,6 +679,7 @@ window.rects = rects;
     },
     whileSelecting: function(e) {
       // select text every 0.25 seconds
+      
       if ( this.selecting ) { 
         var pos = this._get_pos(e);
         //alert([pos.x, pos.y].join(', '));
@@ -681,6 +699,7 @@ window.rects = rects;
       var sa = this.boundingBox;
 window.bb = this.boundingBox;
       $(".float-bar").css({display:"block",top:(sa.t-50)*reader.scale+'px', left:((sa.l+sa.r)/2-54)*reader.scale});
+      clip.myshow(((sa.l+sa.r)/2-54)*reader.scale+$(".multi-image").offset().left,(sa.t-50)*reader.scale+this.scroller.y);
     },
     selectWord: function(e) {
       var pos = this._get_pos(e)
@@ -700,6 +719,7 @@ window.bb = this.boundingBox;
       }
       if(this.touch == false){ 
           $(".float-bar").css({display:"none"});
+          clip.hide();
           reader.fulltext.unselect(e);
       }
       this.touch = false;      
@@ -772,7 +792,7 @@ window.bb = this.boundingBox;
       'click .cancel-btn': 'hideNote',
       'click .conf-btn': 'addNote',
       'mousedown': 'ctrScroll',
-      'mouseup': 'ctrScroll',
+      'mouseup': 'ctrScroll'
     },
     initEventHandlers: function() {
        
@@ -803,6 +823,7 @@ window.bb = this.boundingBox;
       this.zoom(this.scale);
       $(".note-bar").css({display:"none"});
       $(".float-bar").css({display:"none"});
+      clip.hide();
       this.viewport.scroller.enable();
     },
     next: function() {
@@ -811,6 +832,7 @@ window.bb = this.boundingBox;
       this.zoom(this.scale);
       $(".note-bar").css({display:"none"});
       $(".float-bar").css({display:"none"});
+      clip.hide();
       this.viewport.scroller.enable();
     },
     zoom : function(scale){
@@ -898,6 +920,7 @@ window.bb = this.boundingBox;
       }
       $(".note-bar").css({display:"none"});
       $(".float-bar").css({display:"none"});
+      clip.hide();
       ft.unselect();
       $(".text").val("");
       this.adjNote(); 
@@ -915,4 +938,19 @@ window.bb = this.boundingBox;
   var reader = new Reader({docid: DOCID});  // DOCID is intialized by rails controller
   // debug
   window.reader = reader;
+
+  ZeroClipboard.setMoviePath("/assets/ZeroClipboard10.swf");
+  var clip = new ZeroClipboard.Client(); 
+  clip.setText( '' ); // will be set later on mouseDown
+  clip.setHandCursor( true );
+  clip.setCSSEffects( true );
+  clip.glue("copy");
+  clip.addEventListener( 'onMouseUp', function(client) { 
+      clip.setText(reader.fulltext.word);
+      $(".float-bar").css({display:"none"});
+      reader.fulltext.unselect();
+      clip.hide();
+  } );
+  
+  $(".float-bar").hide();
 });
