@@ -1,0 +1,10 @@
+// Place all the styles related to the Pages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+html {width:100%; height:100%; }
+html,body{position:relative; background:url(/assets/bg-light.png) top center no-repeat ,  url(/assets/bg-shadow.png) bottom no-repeat , url(/assets/desk.png); -webkit-background-size: auto,cover,auto;  box-shadow:inset 2px 0px 100px rgba(0,0,0,0.4); width:100%; height:100%; overflow:hidden; }
+.index-logo { width:546px  ; height:132px  ; margin:50px  auto 50px ; text-indent:-1000em; overflow:hidden; background:url(/assets/new/logo.png) no-repeat; -webkit-background-size:546px 132px  ;}
+.index-slogan{width:540px  ; height:192px  ; margin:0  auto 50px ; text-indent:-1000em; overflow:hidden; background:url(/assets/new/slogan.png) no-repeat; -webkit-background-size:540px 192px  ;  }
+.renrenlogin{ width:120px; height:25px; margin:20px auto; }
+.renrenlogin form { height:100%; width:100%;}
+.renrenlogin a {border:0px; display:block; width:120px; height:25px; background:url(/assets/new/renrenlogin.png) no-repeat; -webkit-background-size:125px 25px ; text-indent:-1000em;}
