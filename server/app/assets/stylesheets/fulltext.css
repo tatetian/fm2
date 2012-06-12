@@ -14,9 +14,10 @@ width:100%;
 }
 .multi-image img{
 }
+#wholewrapper{
+}
 #hwrapper{
-    margin: 0 auto;
-    height: 100%;
+    float:left;
 }
 .highlight-pane {
   position: relative;
@@ -38,7 +39,6 @@ width:100%;
   left:0px;
   height:38px;
   width:108px;
-  display:none;
   z-index: 30;
 }
 .fbtn{
@@ -75,7 +75,7 @@ height:38px;
   top:0px;
   left:0px;
   height:145px;
-  width:280px;
+  width:260px;
   display:none;
   background-color:green;
   border-radius: 0.5em;
@@ -138,25 +138,48 @@ margin-right:10px;
 .end-bar {
   
 }
+textarea {
+	resize: none;
+}
 .multi-image{
   width:100%;
- 
+  position: relative;
 }
 .note-pane{
-  position:absolute;
+  position:relative;
   right:0px;
   top:0px;
   height:100%;
-  overflow:hidden;
+  width: 260px;
+  //overflow:hidden;
+  float:left;
 }
 .note-pane ul{
   position:relative;
-  width:280px;
-  height: 1059px;
+  width:260px;
+  height: 100%;
 }
 .note-pane li{
+  position: absolute;
+  width:260px;
+}
+.others-note-pane{
+  position:relative;
+  right:0px;
+  top:0px;
+  height: 1059px;
+  width: 260px;
+  overflow:hidden;
+  float:left;
+}
+.others-note-pane ul{
+  position:relative;
+  width:260px;
+  height: 1059px;
+}
+.others-note-pane li{
   position: relative;
-  width:280px;
+  width:260px;
   float:left;
 }
 .note-area {
@@ -218,6 +241,7 @@ background:url(/assets/reading-pagination-icon.png) no-repeat;
 display:block;
 width:45px;
 height:25px;
+cursor:pointer;
 }
 .zoom1,.zoom2{
 margin-right:25px;

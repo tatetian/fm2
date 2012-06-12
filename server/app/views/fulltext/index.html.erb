@@ -18,8 +18,11 @@
       
        
 <div id="container" class="unselectable">    
+  <div id="wholewrapper">
+    <div class="others-note-pane">
+    </div>
     <div id="hwrapper">
-       <ul class="multi-image">
+       <ul id="multiimage" class="multi-image">
 <!--<div class="highlight1"></div>
 <div class="highlight2"></div>
 <div class="guideline1"></div>
@@ -38,21 +41,20 @@
 </div>
 -->   
         <div class="float-bar">
-            <span class="fbtn copy-btn">复制</span>
+            <span id="copy" class="fbtn copy-btn">复制</span>
             <span class="fbtn hl-btn">高亮</span>
             <span class="fbtn note-btn">添加笔记</span>
         </div>
         <div class="note-bar">
-            <textarea class="nbtn text" rows="5" cols="30"></textarea>
+            <textarea class="nbtn text" rows="5" cols="28"></textarea>
             <span class="nbtn cancel-btn">取消</span>
             <span class="nbtn conf-btn">确定</span>
         </div>
         </ul>
-    
-        
     </div>
       <div class="note-pane">
       </div>
+  </div>
   <div class="bottom-toolbar">
     <div class="wrapper">
       <span class="zoom1">&nbsp;</span>
@@ -68,7 +70,7 @@
   var DOCID = "<%= @docid %>";
 </script>
 <script type="text/template" id="note-template">
-        <div class="note-area"> <%%= content.replace(/\n/g,"<br/>") %> </div>
+        <div class="note-area" data-t = "<%%= boundingBox.t*16 %>" > <%%= content.replace(/\n/g,"<br/>") %> </div>
 </script>
 <script type="text/template" id="pageview-template">
   <div class="highlight-forever"></div>
