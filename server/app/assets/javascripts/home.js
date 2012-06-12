@@ -303,7 +303,8 @@ $(function(){
       return this;
     },
     viewPaper: function() {
-      alert('viewPaper: this is ' + this);
+  //    alert('viewPaper: this is ' + this);
+      window.open('/fulltext/' + this.model.get('docid'), '_newtab');
     },
     clickStar: function() {
       alert('clickStar: this is ' + this);
