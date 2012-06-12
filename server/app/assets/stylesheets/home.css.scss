@@ -15,7 +15,6 @@ html, body {
   top: 0px;
   left: 0px;
   width: 100%;
-  padding: 0 5.5%;
   height: 56px;
   //background: url(/assets/desk.png), url(/assets/new/light.png)  no-repeat center center; 
   background: url(/assets/new/light.png) top center no-repeat,  
@@ -23,15 +22,20 @@ html, body {
   background-size: cover, auto;
   box-shadow: inset 2px 0px 100px rgba(0,0,0,0.4); 
   z-index: 5000;
+  box-shadow: 0px 0px 30px 5px rgba(93, 13, 9, 0.47), 
+              inset 0px -4px 5px 1px rgba(255, 199, 139, 0.55),
+              0px 5px 10px 2px rgba(248, 126, 97, 0.1);
 }
-.one-column { height: 100%; float: left;}
-.topbar > .one-column > .wrapper { margin: 3px auto; width: 94%; height: 50px; position: relative;}
+.topbar > .wrapper  { width: 89%; margin: 0 auto; }
+.one-column { height: 100%; float: left;  }
+//.topbar > .one-column:first-child { margin-left: 5.5%; }
+.topbar .one-column > .wrapper { margin: 3px auto; width: 94%; height: 50px; position: relative;}
   .my-head {
     position: absolute;
     left: 0px;
     top: 2px;
-    width: 48px;
-    height: 48px;
+    width: 46px;
+    height: 46px;
   }
   .my-head > img {
     height: 100%;
@@ -41,7 +45,7 @@ html, body {
   .my-info {
     position: absolute;
     top: 0px;
-    left: 4.25em;
+    left: 3.75em;
     right: 1em;
     height: 16px;
   }
@@ -71,7 +75,7 @@ html, body {
   .my-search {
     position: absolute;
     top: 14px;
-    left: 3.5em;
+    left: 3em;
     right: 3px;
     height: 38px;
   }
@@ -251,7 +255,7 @@ html, body {
 .folders-wrapper { width: 89%; height: 100%; margin: 0 auto; }
 .folders { float: left; width: 100%; height: 100%; overflow: hidden; } /* the width will be determined at runtime*/
 .folders > ul { height: 100%; width: 100%; display: block; float: left; width: 100%; height: 100%;}
-.folder { display: block; float:left; height:100%; width: 47.5%; position: relative; margin: 0 1.25% 0 1.25%;}
+.folder { display: block; float:left; height:100%; width: 47.5%; position: relative;}
 
 .add-tag { position:absolute; bottom:0px; width: 100%; height:96px; background:url(/assets/new/tagadd-box.png) no-repeat center bottom; background-size: 90% 90%; }
 .add-tag span{width:24px; height:23px;  position:relative; left: 50%; top: 50%; margin: 0 0 0 -12px;}

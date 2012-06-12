@@ -264,9 +264,11 @@ $(function(){
   });
 //=============================== Metadata's model ============================
   var Metadata = Backbone.Model.extend({
-    defaults: {
-      id: -1,
-      docid: 'null'
+    defaults: function() {
+      return {
+        docid: 'null',
+        progress: -1
+      };
     }
   });
   var MetadataList = Backbone.Collection.extend({
@@ -280,6 +282,8 @@ $(function(){
       addMyClick(this, 'a.ml20',  this.viewPaper);
       addMyClick(this, '.star',   this.clickStar);
       addMyClick(this, '.tag-color',  this.clickColor);
+
+      this.model.bind('change', this.change, this);
     },
     template: _.template($('#title-template').html()),
     render: function() {
@@ -306,6 +310,10 @@ $(function(){
     },
     clickColor: function() {
       alert('clickColor: this is ' + this);
+    },
+    change: function() {
+      var json = this.model.toJSON();
+      this.$el.empty().append(this.template(json));        
     }
   });
   var TitlesView = Backbone.View.extend({
@@ -315,17 +323,22 @@ $(function(){
       this.collection.bind('add', this.addOne, this);
       this.collection.bind('reset', this.addAll, this);
     },
-    addOne: function(model) {
+    addOne: function(model, that, options) {
       var json = model.toJSON();
       var folderName = this.folder.getName();
       if(json.tags.indexOf(folderName) >= 0) {
-        var titleView = new TitleView({model: model});
-        this.$el.append(titleView.render().el);
+        var titleView = new TitleView({model: model}),
+            newEl     = titleView.render().el;
+        if(options != undefined && options.at == 0)
+          this.$el.prepend(newEl);
+        else 
+          this.$el.append(newEl);
       }
       //this.folder.trigger('resize');
       //$('.papers > ul').height(48+48+recentPapers.size()*48);
     },
     addAll: function() {
+      this.$el.empty();
       this.collection.each(this.addOne, this);
       this.folder.resize();
     } 
@@ -414,14 +427,13 @@ $(function(){
       this.resize();
     },
     resize: function(e) {
-      var wrapperWidth  = this.$el.width() + 1,
+      var wrapperWidth  = this.$el.width(),
           numFolders    = this.collection.size() + 1,
           numFoldersPerScreen = Math.round(wrapperWidth / this.optimalSize),
           folderMargin  = 0,
           folderWidth   = ( wrapperWidth - 2 * folderMargin * numFolders ) / numFoldersPerScreen;
       $('.one-column').css({
         width: folderWidth + 'px', 
-        margin: '0 ' + folderMargin/16 + 'em'
       });
       this.$el.find('.folders').css({
 //        padding: ,
@@ -484,12 +496,29 @@ $(function(){
       that.uploader.init();
       uploader.bind('FilesAdded', function(up, files) {
         $.each(files, function(i, file) {
-          manager.metadataList.add({
-            title: file.name, 
+          manager.metadataList.unshift({
+            id: file.id,
+            title: file.name,
+            progress: 0,
+            yellow_or_white: 'yellow',
+            colorid: 1,
             tags:[that.folder.getName()]
           });
           that.folder.resize();
+          that.uploader.start();
         });
+      });
+      uploader.bind('UploadProgress', function(up, file) {
+        console.debug([file.id, file.percent].join(','));
+        var metadata = manager.metadataList.get(file.id);
+        metadata.set('progress', Math.round(file.percent) );
+        metadata.change();
+      });
+      uploader.bind('FileUploaded', function(up, file) {
+        console.debug([file.id, file.percent].join(','));
+        var metadata = manager.metadataList.get(file.id);
+        metadata.set('progress', -1 );
+        metadata.change();
       });
     },
   }); 
@@ -518,7 +547,8 @@ $(function(){
             hideScrollbar:true,
             lockDirection:true,
             hScrollbar: false,
-            //bounce: true,
+            bounce: true,
+            bounceLock: true,
             useTransition: true,
             snap: 'li',
             //momentum: false,
@@ -539,6 +569,7 @@ $(function(){
     }
   });
   var manager = new Manager();
+  window.manager = manager;
 //=========================== Friend Model & View ============================+
   var Friend = Backbone.Model.extend({
   });
