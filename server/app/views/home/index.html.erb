@@ -1,4 +1,4 @@
-<div class="users">
+<!--<div class="users">
   <div class="users-me clicked">
     <img class="me-head"  src="<%= @headurl %>" >
     <div class="me-info">
@@ -9,16 +9,38 @@
   </div>  
   <div class="users-myfriends">
      <ul>
-   <!--    <li><img src="assets/head1.png" /><span>name </span></li>
-   <li><img src="assets/head1.png" /> <span>name</span></li>-->
-     </ul>
+      </ul>
+  </div>
+</div>-->
+<div class="topbar">
+  <div class="me one-column">
+    <div class="wrapper">
+      <div class="my-head"><img src="<%= @headurl %>"/></div>
+      <div class="my-info">
+        <div class="my-info-name"><%= @name %></div>
+        <div class="my-info-papers">1<%= @papersnum %></div>
+        <div class="my-info-friends">2<%= @friendsnum %></div>
+      </div>
+      <div class="my-search">
+        <div class="my-search-corner left"></div>
+        <div class="my-search-body"><input placeholder=''></input></div>
+        <div class="my-search-corner right"></div>
+        <div class="my-search-icon"></div>
+      </div>
+    </div>
+  </div>
+  <div class="friends one-column">
+    <div class="wrapper">
+      <ul>
+      </ul>
+    </div>
   </div>
 </div>
 <div class="desktop">
   <div id="my-folders-wrapper" class="folders-wrapper">
     <div id="my-folders" class="folders">
       <ul>
-        <li class="folder add-folder">
+        <li class="folder one-column add-folder">
           <div class="add-tag"><span><a href=""><img src="assets/upload-add.png"/></a></span></div>
         </li>
       </ul>
@@ -29,10 +51,7 @@
   <div class="tag-nav">
     <div id="papers-<%%= id %>" class="papers">
       <ul>
-        <div class="index-upload">
-          <form action="/metadata" method="post"  enctype="multipart/form-data" >
-            <input class="upload" type="file" value="" onchange="this.form.submit();" name="file"/>
-          </form>
+        <div id="uploader-<%%= id %>"class="index-upload">
         </div>
         <div class="titles">
         </div>
@@ -48,7 +67,7 @@
 <script type="text/template" id="title-template">
   <div style="position: relative; width: 87.5%; height: 100%; margin: 0 5.5% 0 7%;">
     <span class="star"><a><img src="assets/star-<%%= yellow_or_white %>.png" /></a></span>
-    <a class="ml20" href="/fulltext/<%%= docid %>" id="detail<%%= id %>" data-id="<%%= id%>"><%%= title %></a>
+    <div class="title"><a class="ml20" href="#" data-href="/fulltext/<%%= docid %>" id="detail<%%= id %>" data-id="<%%= id%>"><%%= title %></a></div>
     <span class="tag-color"><a><img src="assets/tag-color<%%= colorid %>.png" /></a></span>
   </div>
 </script>
@@ -61,5 +80,5 @@
   </div>
 </script>
 <script type="text/template" id="friend-template">
-  <li><img src="<%%= headurl %>" /><span><%%= name %></span></li>
+  <img src="<%%= headurl %>"/><div class="friend-name"><%%= name %></div>
 </script>

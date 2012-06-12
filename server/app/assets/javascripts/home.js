@@ -229,6 +229,22 @@ $(function(){
                   }
                }
   });*/
+//================================== Helpers ==================================
+// Add a cutom click event to specific element of a view
+// The default click event is not useful since it can't distinguish between 
+// a drag click and a single click
+  function addMyClick(view, selector, callback) {
+    if(!view.events) view.events = {};
+    var x, y;
+    view.events['mousedown ' + selector] = function(e) {
+      x = e.screenX;
+      y = e.screenY;
+    };
+    view.events['mouseup ' + selector] = function(e) {
+      if (x == e.screenX && y == e.screenY)
+        callback.apply(this);
+    };
+  }
 //================================== Tag's model ==============================
   var Tag = Backbone.Model.extend({
     defaults: function() {
@@ -247,16 +263,23 @@ $(function(){
     url: '/tags'
   });
 //=============================== Metadata's model ============================
-  var Metadata = Backbone.Model.extend({ 
+  var Metadata = Backbone.Model.extend({
+    defaults: {
+      id: -1,
+      docid: 'null'
+    }
   });
   var MetadataList = Backbone.Collection.extend({
     model: Metadata,
     url: '/metadata?tags=All'
   });
-//=============================== Title's View ================================
+//=============================== Title's View ================================ 
   var TitleView = Backbone.View.extend({
     tagName: 'li',
-    events: {  
+    initialize: function() {
+      addMyClick(this, 'a.ml20',  this.viewPaper);
+      addMyClick(this, '.star',   this.clickStar);
+      addMyClick(this, '.tag-color',  this.clickColor);
     },
     template: _.template($('#title-template').html()),
     render: function() {
@@ -274,6 +297,15 @@ $(function(){
       // append content
       this.$el.append(this.template(json));
       return this;
+    },
+    viewPaper: function() {
+      alert('viewPaper: this is ' + this);
+    },
+    clickStar: function() {
+      alert('clickStar: this is ' + this);
+    },
+    clickColor: function() {
+      alert('clickColor: this is ' + this);
     }
   });
   var TitlesView = Backbone.View.extend({
@@ -301,15 +333,18 @@ $(function(){
 //=============================== Folder's view ===============================
   var FolderView = Backbone.View.extend({
     tagName: 'li',
-    className: 'folder',
+    className: 'folder one-column',
     events: {
     },
     template: _.template($('#folder-template').html()),
     initialize: function() {
-      // view to display titles in this folder
-      this.titles       = new TitlesView({
-                                collection: this.collection,//MetadataList
-                                folder: this});
+      // View to display titles in this folder
+      this.titles   = new TitlesView({
+                              collection: this.collection,//MetadataList
+                              folder: this });
+      // Handle upload event
+      this.uploader = new Uploader(this);
+
       this.bind('resize', this.onResize);
     },
     getName: function() {
@@ -334,17 +369,21 @@ $(function(){
         overflowHidden: false
       });
       //setTimeout(200, function(){alert(200)});
-      return this;        
+      //
+//      this.uploader.init();
+      return this;
     },
     resize: function() {
       // height of window
-      //var windowH = $(window).height();
+      var maxContentH = $(window).height() - 84 - 56,
       // height of content in folder
-      var size = this.$el.find('.papers .titles > ul > li').length;
-      var folderContentH = 48+size*46;
+          size = this.$el.find('.papers .titles > ul > li').length,
+          folderContentH = 48+size*46;
       // pick the 
       //console.debug(folderContentH);
-      this.$el.find('.papers').height(folderContentH);
+      this.$el.find('.papers').height(
+          maxContentH < folderContentH? maxContentH : folderContentH);
+      this.scroller.refresh();
     }
   });
   var FoldersView = Backbone.View.extend({
@@ -366,6 +405,7 @@ $(function(){
       });
       // render & insert new folder before '+'
       folder.render().$el.insertBefore(this.$el.find('.add-folder'));
+      folder.uploader.init();
       this.items.push(folder);
     },
     addAll: function() {
@@ -379,7 +419,7 @@ $(function(){
           numFoldersPerScreen = Math.round(wrapperWidth / this.optimalSize),
           folderMargin  = 0,
           folderWidth   = ( wrapperWidth - 2 * folderMargin * numFolders ) / numFoldersPerScreen;
-      this.$el.find('.folder').css({
+      $('.one-column').css({
         width: folderWidth + 'px', 
         margin: '0 ' + folderMargin/16 + 'em'
       });
@@ -392,6 +432,7 @@ $(function(){
       this.n = numFoldersPerScreen;
       this.w  = folderWidth;
       this.W = wrapperWidth; 
+      this.updateOpacity(0);
     },
     updateOpacity: function(x) {
       var that = this;
@@ -407,11 +448,50 @@ $(function(){
           // 0 < p < 1  => partial overflow     => opacity = 1-p
           // p > 1      => completed overflow   => opacity = 0
           p = (l < 0) ? -l/w : 
-              (l > W) ? (l-W)/w : 0;
+              (l > W) ? (l-W)/w : 0,
+          o = (p < 1) ? (1 - p) : 0,
+          q = 0.2,
+          o = q + (1-q)*o;
         //console.debug(['x', x, 'w', w, 'W', W, 'l', l, 'p', p].join(','));
-        item.$el.css('opacity', ( (p < 1) ? (1 - p) : 0 ) + '' );
+        item.$el.css('opacity', o + '' );
       });
     }
+  });
+//================================ Ajax Uploader ==============================
+  function Uploader(folder) {
+    var id      = folder.model.get('id');
+    // folder view that this uploader belongs to
+    this.folder = folder;
+    // plupload do the real work
+    window.uploader = this.uploader = new plupload.Uploader({
+        runtimes : 'html5,flash,html4',
+        browse_button : 'uploader-' + id,
+        //drop_element: 'papers-'+id,
+        container: 'papers-'+id,
+        max_file_size : '10mb',
+        url : '/metadata',
+        flash_swf_url : 'plupload/plupload.flash.swf',
+        filters : [
+            {title : "PDF files", extensions : "pdf"}
+        ]
+    });  
+  }
+  // Extend Events object
+  _.extend(Uploader.prototype, Backbone.Events, {
+    // Init 
+    init : function() {
+      var that = this;
+      that.uploader.init();
+      uploader.bind('FilesAdded', function(up, files) {
+        $.each(files, function(i, file) {
+          manager.metadataList.add({
+            title: file.name, 
+            tags:[that.folder.getName()]
+          });
+          that.folder.resize();
+        });
+      });
+    },
   }); 
 //=============================== Manager's view ==============================
   var Manager = Backbone.View.extend({
@@ -468,6 +548,7 @@ $(function(){
   });
   var FriendView = Backbone.View.extend({
     tagName: 'li',
+    className: 'friend',
     template: _.template($("#friend-template").html()),
     render: function() {
       this.$el.html(this.template(this.model.toJSON()));
@@ -475,7 +556,7 @@ $(function(){
     }
   });
   var FriendsView = Backbone.View.extend({
-    el: ".users-myfriends > ul",
+    el: ".friends > .wrapper > ul",
     events: {
     },
     initialize: function() {
@@ -484,7 +565,7 @@ $(function(){
     },
     addOne: function(friend) {
       var view = new FriendView({model: friend});
-      $(".users-myfriends > ul").append(view.render().el);
+      $('.friends > .wrapper > ul').append(view.render().el);
     },
     addAll: function() {
       this.collection.each(this.addOne);

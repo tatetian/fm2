@@ -8,7 +8,149 @@ html, body {
   width: 100%; 
   height:100%; 
   overflow:   hidden; 
+  background: url(/assets/desk.png);
 }
+.topbar {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  padding: 0 5.5%;
+  height: 56px;
+  //background: url(/assets/desk.png), url(/assets/new/light.png)  no-repeat center center; 
+  background: url(/assets/new/light.png) top center no-repeat,  
+              url(/assets/desk.png); 
+  background-size: cover, auto;
+  box-shadow: inset 2px 0px 100px rgba(0,0,0,0.4); 
+  z-index: 5000;
+}
+.one-column { height: 100%; float: left;}
+.topbar > .one-column > .wrapper { margin: 3px auto; width: 94%; height: 50px; position: relative;}
+  .my-head {
+    position: absolute;
+    left: 0px;
+    top: 2px;
+    width: 48px;
+    height: 48px;
+  }
+  .my-head > img {
+    height: 100%;
+    width: 100%;
+    border-radius: 8px;
+  }
+  .my-info {
+    position: absolute;
+    top: 0px;
+    left: 4.25em;
+    right: 1em;
+    height: 16px;
+  }
+    .my-info > div { 
+      width: 33.3%; 
+      height: 100%; 
+      float: left; 
+      text-align: left; 
+      font-size: 16px; 
+      line-height: 1.25; 
+    }
+    .my-info-name {
+    
+    }
+    .my-info-papers { 
+      box-sizing: border-box;
+      padding-left: 24px;
+      background-size: 17px 16px;
+      background: url(/assets/new/box.png) no-repeat left center; 
+    }
+    .my-info-friends {
+      box-sizing: border-box;
+      padding-left: 32px;
+      background-size: 25px 16px;
+      background: url(/assets/new/friends.png) no-repeat left center; 
+    }
+  .my-search {
+    position: absolute;
+    top: 14px;
+    left: 3.5em;
+    right: 3px;
+    height: 38px;
+  }
+  .my-search-corner {
+    position: absolute;
+    top: 0px;
+    height: 38px;
+    width: 20px; 
+    background: url(/assets/new/search-corner.png) no-repeat left center;
+    background-size: 20px 38px;
+  }
+  .my-search-corner.left {
+    left: 0px;
+    transform: scale(-1.0, 1);
+    -webkit-transform: scale(-1.0, 1);
+    -ms-transform: scale(-1.0, 1);
+    -o-transform: scale(-1.0, 1);
+    -moz-webkit-transform: scale(-1.0, 1);
+  }
+  .my-search-corner.right {
+    right: 0px;
+  }
+  .my-search-body {
+    background: url(/assets/new/search-body.png) repeat-x center center;
+    background-size: 7px 38px; 
+    position: absolute;
+    top: 0px;
+    left: 20px;
+    right: 20px;
+    height: 100%;
+  }
+  .my-search-body > input {
+    border: 0;
+    outline: 0;
+    background: transparent;
+    width: 100%;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-top: 10px;
+    padding-left: 16px;
+  }
+  .my-search-icon {
+    position: absolute;
+    top: 11px;
+    left: 15px;
+    width: 17px;
+    height: 17px;
+    background: url(/assets/new/search.png) no-repeat center center;
+    background-size: 17px 17px;
+  }
+.friends > .wrapper > ul{
+  width: 2000px;
+  height: 100%;
+}
+  .friend {
+    float: left;
+    position: relative;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+  }
+  .friend > img {
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    top: 0px;
+    left: 7px;
+    border-radius: 6px;
+  }
+  .friend-name {
+    position: absolute;
+    top: 36px;
+    left: 0px;
+    width: 100%;
+    height: 14px;
+    font-size: 12px;
+    line-height: 1.6666666667;
+    text-align: center;
+  }
 .users{
   position:   absolute;
   z-index:    $users-z-index;
@@ -49,13 +191,18 @@ html, body {
 /*top --end!!templates*/
 
 .tag-nav{ position:absolute;top:0px; bottom:0px;  width:100%;height:100%; overflow: hidden;}
-    .index-upload {position:relative;   cursor: pointer; width:100%;}
-        .index-upload form input { display:block; margin:0 auto; overflow:hidden;  }
-        .index-upload form input.upload{ width:100%; height:3em; font-size:1em;text-indent:-10000em; background:url(/assets/new/upload-bg.png) center no-repeat; background-size:100% 100%;border:0px;   cursor: pointer; }
+    .index-upload {position:relative; cursor: pointer; width:100%; background:url(/assets/new/upload-bg.png) no-repeat center center; background-size:100% 100%; height: 3em;}
+        .index-upload input { display:block; overflow:hidden; width:100%; height: 100%; font-size:1em; text-indent:-10000em; }
     .papers{position:absolute; bottom:84px; width:100%; height: 320px;}
     .papers > ul{position:absolute; top:0px; width:100%; }
     .tag-nav li { width:100%; position:relative;height:3em; margin:0px; margin-top:-2px; background:url(/assets/new/tag-list-bg.png) no-repeat center top; background-size:100% 100%;}
-    .tag-nav li > div > a { padding: 0.3em 2.5em; display:block;  line-height:1.2em; font-size:1em;height:2.4em; text-align: left; font-family:"arial";  color: #707070; word-wrap:break-word; overflow:hidden; text-shadow:0px 1px 1px rgba(0,0,0,0.3);}
+    .tag-nav li .title {  width: 100%; overflow:hidden; height: 36px; padding: 0.3em 0;}
+    .tag-nav li .title > a {
+      display: block;
+      padding: 0em 2.5em;
+      word-wrap:break-word; line-height:1.2em; font-size:1em; text-align: left; font-family:"arial";  color: #707070;    
+      text-shadow:0px 1px 1px rgba(0,0,0,0.3);
+    }
     .tag-nav li .tag-color{height:2.5em; width:2.375em; position:absolute;float:right; top:-0.3em;right: 0px; }
     .tag-nav li .tag-color img{height:100%; width:100%; }
     .tag-nav li .star { top:0.8em; height:1.375em; width:1.375em; position:absolute; float:left; font-size:1em; margin: 0 0.5em; }
@@ -95,11 +242,10 @@ html, body {
 #tinymask{position:absolute; display:none; top:0; left:0; height:100%; width:100%; background:#000000; z-index:1500;}
 #tinycontent{background:#ffffff; font-size:1em;}
 
-.desktop { position: absolute; left: 180px; top: 0px; right: 0px; height: 100%; ; overflow: hidden;
+.desktop { position: absolute; left: 0px; top: 56px; right: 0px; bottom: 0px ; overflow: hidden;
   background: url(/assets/bg-light.png) top center no-repeat,  
-              url(/assets/bg-shadow.png) bottom no-repeat, 
-              url(/assets/desk.png); 
-  background-size: auto,cover,auto;
+              url(/assets/bg-shadow.png) bottom no-repeat; 
+  background-size: auto,cover;
   box-shadow: inset 2px 0px 100px rgba(0,0,0,0.4); 
 }
 .folders-wrapper { width: 89%; height: 100%; margin: 0 auto; }
