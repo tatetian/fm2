@@ -1,6 +1,6 @@
 module RenrenHelper
   def current_user
-    @current_user ||= user_from_remember_token
+    @current_user ||= User.first # user_from_remember_token
   end
   def current_user?(user)
     user == user_from_remember_token

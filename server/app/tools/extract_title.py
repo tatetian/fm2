@@ -9,9 +9,12 @@ import json
 
 def process(json_str):
   # load the json
-  json_object = json.loads(json_str)
+  try:
+    json_object = json.loads(json_str)
+  except:
+    return json_str
   if not json_object.has_key('pages') or len(json_object['pages']) == 0:
-    return json_object
+    return json_str
   # assume the title is on the first page
   first_page = json_object['pages'][0]
   blocks = first_page['blocks']
@@ -28,7 +31,7 @@ def process(json_str):
   else:
     json_object['title'] = ""
   json_object['authors'] = []
-  return json_object
+  return json.dumps(json_object)
 
 def _find_largest_font_pos(blocks):
   max_bi = -1     # block index of max font
@@ -62,6 +65,6 @@ def _extract_lines(blocks, bi, li, max_size):
   return title
 
 if __name__ == '__main__':
-  json_str    = sys.stdin.read()        # input
-  json_object = process(json_str)       # extract title from json
-  print json.dumps(json_object)  # output
+  json_str      = sys.stdin.read()        # input
+  new_json_str  = process(json_str)      # extract title from json
+  print new_json_str                    # output

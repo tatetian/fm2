@@ -123,7 +123,7 @@ class User < ActiveRecord::Base
     keywords ||= ""
     
     sql="SELECT `metadata`.`id`,IFNULL(metadata.title,papers.title) as title,IFNULL(metadata.authors,papers.authors) as authors ,IFNULL(metadata.date,papers.date) as date,metadata.docid,metadata.created_at,metadata.paper_id FROM `metadata`,papers,`collections`,tags where  `metadata`.`id` = `collections`.`metadata_id` and `metadata`.`paper_id`=papers.id and tag_id=tags.id and tags.id ="+tag.id.to_s+" AND  (IFNULL(metadata.title,papers.title) LIKE ('%"+keywords+"%') OR IFNULL(metadata.authors,papers.authors) LIKE('%"+keywords+"%') ) order by metadata.created_at desc"
-    @result=Metadata.find_by_sql(sql+" LIMIT "+start.to_s+","+(start+limit).to_s) 
+    @result=Metadata.find_by_sql(sql)#+" LIMIT "+start.to_s+","+(start+limit).to_s) 
     entries = 
       #tag.docs.offset(start)
       #        .limit(limit)
