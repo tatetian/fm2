@@ -198,7 +198,7 @@ html, body {
 /*top --end!!templates*/
 
 .tag-nav{ position:absolute;top:0px; bottom:0px;  width:100%;height:100%; overflow: hidden;}
-    .index-upload {position:relative; cursor: pointer; width:100%; background:url(/assets/new/upload-bg.png) no-repeat center center; background-size:100% 100%; height: 3em;}
+    .index-upload {position:relative; width:100%; background:url(/assets/new/upload-bg.png) no-repeat center center; background-size:100% 100%; height: 3em;}
         .index-upload input { display:block; overflow:hidden; width:100%; height: 100%; font-size:1em; text-indent:-10000em; }
     .papers{position:absolute; bottom:84px; width:100%; height: 320px;}
     .papers > ul{position:absolute; top:0px; width:100%; }
@@ -210,10 +210,47 @@ html, body {
       word-wrap:break-word; line-height:1.2em; font-size:1em; text-align: left; font-family:"arial";  color: #707070;    
       text-shadow:0px 1px 1px rgba(0,0,0,0.3);
     }
-    .tag-nav li .tag-color{height:2.5em; width:2.375em; position:absolute;float:right; top:-0.3em;right: 0px; }
-    .tag-nav li .tag-color img{height:100%; width:100%; }
-    .tag-nav li .star { top:0.8em; height:1.375em; width:1.375em; position:absolute; float:left; font-size:1em; margin: 0 0.5em; }
-    .tag-nav li .star img {height:100%; width:100%; }
+    .tag-color{
+      height: 2.5em; 
+      width: 2.375em; 
+      position:absolute;
+      top:-0.3em;
+      right: 0px; 
+      overflow: hidden;
+      display: block;
+      background-size: 400% 100%;
+      background-image: url(/assets/new/tag-color.png);
+      background-repeat: no-repeat;
+    }
+    .tag-color-grey {
+      background-position: 0 0;
+    }
+    .tag-color-green {
+      background-position: -38px 0;
+    }
+    .tag-color-blue {
+      background-position: -76px 0;
+    }
+    .tag-color-red {
+      background-position: -114px 0;
+    }
+    .tag-nav li .star {
+      top:0.8em; 
+      height:1.375em; 
+      width:1.375em; 
+      position:absolute; 
+      font-size:1em; 
+      margin: 0 0.5em; 
+      background-image: url(/assets/new/star-bg.png);
+      background-repeat: no-repeat;
+      background-size: 200% 100%;
+    }
+    .star-yellow {
+      background-position: 0px 0px;
+    }
+    .star-white {
+      background-position: -1.375em 0px;
+    }
     .more-bg{ width:100%;height:148px; position: absolute; bottom: -146px;}
     .more-bg img{height:100%; position: relative; width:100%; }
 .recent-box{ position:absolute; bottom:0px;  width:100%; height:96px; background:url(/assets/new/tag-box.png) no-repeat center top; background-size: 100% 100%;}

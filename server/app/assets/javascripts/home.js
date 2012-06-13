@@ -281,6 +281,9 @@ $(function(){
 
       this.model.bind('change', this.change, this);
     },
+    events: {
+    // 'longTap .title': 'viewPaper'
+    },
     template: _.template($('#title-template').html()),
     render: function() {
       // model
@@ -290,10 +293,15 @@ $(function(){
         json.yellow_or_white = 'yellow';
       else
         json.yellow_or_white = 'white';
-      if(Math.random() < 0.5)
-        json.colorid = 1;
+      var color_random = Math.random();
+      if(color_random < 0.5)
+        json.color = 'grey';
+      else if(color_random < 0.6666666)
+        json.color = 'green';
+      else if(color_random < 0./833333)
+        json.color = 'red'
       else
-        json.colorid = 2;
+        json.color = 'blue'
       // append content
       this.$el.append(this.template(json));
       return this;
@@ -381,8 +389,7 @@ $(function(){
         vScrollbar: false,
         useTransition: true,
         //momentum: false,
-        overflowHidden: false,
-        force2D: true
+        overflowHidden: false
       });
       //setTimeout(200, function(){alert(200)});
       //
