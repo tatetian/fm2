@@ -263,7 +263,8 @@ $(function(){
     defaults: function() {
       return {
         docid: 'null',
-        progress: -1
+        progress: -1,
+        color: 'grey'
       };
     }
   });
