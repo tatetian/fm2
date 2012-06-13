@@ -79,6 +79,9 @@ var m = Math,
 			hideScrollbar: isIDevice,
 			fadeScrollbar: isIDevice && has3d,
 			scrollbarClass: '',
+      
+      //translate3d or not
+			force2D: false,
 
 			// Zoom
 			zoom: false,
@@ -117,6 +120,11 @@ var m = Math,
     // Hide overflow?
     if(that.options.overflowHidden)
 		  that.wrapper.style.overflow = 'hidden';
+
+    // Force 2D
+    that.trnOpen = 'translate' + (has3d&&!that.options.force2D ? '3d(' : '(');
+    that.trnClose = has3d&&!that.options.force2D ? ',0)' : ')';
+
 
 		// Set starting position
 		that.x = that.options.x;

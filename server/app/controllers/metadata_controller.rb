@@ -109,6 +109,10 @@ class MetadataController < ApplicationController
         else
           @metadata = Metadata.new(docid: hash,title: nil, publication: nil,authors: nil,date: nil, abstract:nil, paper_id: @paper.id)
           if @metadata.save
+              # if specified tag for the uploaded doc
+              if params[:tag] != nil
+                user.attach_tag @metadata.id, params[:tag]
+              end
               flash[:success] = "Upload Success!"
               response = { 
                   :id     => @metadata.id,
@@ -119,8 +123,8 @@ class MetadataController < ApplicationController
                   :created_at => @metadata.created_at
               }
               json = ActiveSupport::JSON.encode response
-              #render :json => json
-              redirect_to :controller => 'home', :action => 'index'
+              render :json => json
+              #redirect_to :controller => 'home', :action => 'index'
               # save PDF
               final_dir = Rails.root.join 'public','uploads',hash
               FileUtils.mv(tmp_dir, final_dir)

@@ -249,13 +249,9 @@ $(function(){
   var Tag = Backbone.Model.extend({
     defaults: function() {
       return {
-        name: "未命名",
+        name: "新建文件夹",
+        id: "fake-id-1"
       };
-    },
-    initialize: function() {
-      if (!this.get("name")) {
-        this.set({"name": this.defaults().name});
-      }
     } 
   });
   var TagList = Backbone.Collection.extend({
@@ -349,6 +345,7 @@ $(function(){
     tagName: 'li',
     className: 'folder one-column',
     events: {
+      'dblclick .recent-box > h1': 'renameFolder'
     },
     template: _.template($('#folder-template').html()),
     initialize: function() {
@@ -363,6 +360,10 @@ $(function(){
     },
     getName: function() {
       return this.model.get('name');
+    },
+    renameFolder: function(e) {
+     // alert(1);
+      window.E = e;
     },
     render: function() {
       // render folder dom
@@ -380,7 +381,8 @@ $(function(){
         vScrollbar: false,
         useTransition: true,
         //momentum: false,
-        overflowHidden: false
+        overflowHidden: false,
+        force2D: true
       });
       //setTimeout(200, function(){alert(200)});
       //
@@ -406,12 +408,19 @@ $(function(){
     initialize: function() {
       var that = this;
       this.metadataList = this.options.metadataList;
-      this.collection.bind('add', this.addOne, this);
-      this.collection.bind('reset', this.addAll, this);
+      this.collection.bind('add', this.addFolder, this);
+      this.collection.bind('reset', this.resetFolders, this);
       this.items = new Array();
       $(window).resize(function() { that.resize(); });
+
+      addMyClick(this, '.add-tag > a',  this.newFolder);
     },
-    addOne: function(model, options) {
+    newFolder: function() {
+      var newFolderModel = new Tag();
+      this.collection.add(newFolderModel, {beforeLast: true});
+      this.resize();
+    },
+    addFolder: function(model, that, options) {
       // Add a new folder given its model
       var folder = new FolderView({
         model:      model,
@@ -420,10 +429,19 @@ $(function(){
       // render & insert new folder before '+'
       folder.render().$el.insertBefore(this.$el.find('.add-folder'));
       folder.uploader.init();
-      this.items.push(folder);
+      // add / new
+      if(options.beforeLast && this.items.length > 0) {
+        var last = this.items[this.items.length-1];
+        this.items[this.items.length-1] = folder;
+        this.items.push(last);
+      }
+      else {
+        this.items.push(folder);
+      }
     },
-    addAll: function() {
-      this.collection.each(this.addOne, this);
+    resetFolders: function() {
+      this.items.length = 0;  // empty the array
+      this.collection.each(this.addFolder, this);
       this.items.push({$el: this.$el.find('.add-folder'), resize: function() {}});
       this.resize();
     },
@@ -444,8 +462,11 @@ $(function(){
       this.N   = numFolders;
       this.n = numFoldersPerScreen;
       this.w  = folderWidth;
-      this.W = wrapperWidth; 
-      this.updateOpacity(0);
+      this.W = wrapperWidth;
+      if(manager.scroller)  {
+        manager.scroller.refresh();
+        this.updateOpacity(manager.scroller.x);
+      }
     },
     updateOpacity: function(x) {
       var that = this;
@@ -482,7 +503,7 @@ $(function(){
         //drop_element: 'papers-'+id,
         container: 'papers-'+id,
         max_file_size : '10mb',
-        url : '/metadata',
+        url : '/metadata?tag='+folder.getName(),
         flash_swf_url : 'plupload/plupload.flash.swf',
         filters : [
             {title : "PDF files", extensions : "pdf"}
@@ -515,10 +536,14 @@ $(function(){
         metadata.set('progress', Math.round(file.percent) );
         metadata.change();
       });
-      uploader.bind('FileUploaded', function(up, file) {
-        console.debug([file.id, file.percent].join(','));
-        var metadata = manager.metadataList.get(file.id);
+      uploader.bind('FileUploaded', function(up, file, result) {
+        var response = JSON.parse(result.response),
+            metadata = manager.metadataList.get(file.id);
+        window.response =response;
         metadata.set('progress', -1 );
+        metadata.set('id', response.id);
+        metadata.set('docid', response.docid);
+        metadata.set('title', response.title);
         metadata.change();
       });
     },
@@ -531,39 +556,48 @@ $(function(){
       // models
       this.tagList = new TagList();
       this.metadataList = new MetadataList();
+      // debug
+      window.metadataList = this.metadataList;
       // init sub views
       this.folders = new FoldersView({
         collection: this.tagList, 
         metadataList: this.metadataList
       });
-      // fetch
-      this.tagList.fetch();
-      this.metadataList.fetch({
+      // fetch 
+      this.tagList.fetch({
         success: function() {
-//          that.tagList.length
-          //debug
-          that.scroller = new iScroll('my-folders-wrapper',{
-            vScroll:false,
-            fadeScrollbar:true,
-            hideScrollbar:true,
-            lockDirection:true,
-            hScrollbar: false,
-            bounce: true,
-            bounceLock: true,
-            useTransition: true,
-            snap: 'li',
-            //momentum: false,
-            overflowHidden: false,
-            onPos: function(step) {
-//              console.debug('onPos');
+          this.metadataList.fetch({
+            success: function() {
+    //          that.tagList.length
+              //debug
+              that.scroller = new iScroll('my-folders-wrapper',{
+                vScroll:false,
+                fadeScrollbar:true,
+                hideScrollbar:true,
+                lockDirection:true,
+                hScrollbar: false,
+                bounce: true,
+                bounceLock: true,
+                useTransition: true,
+                snap: 'li',
+                //momentum: false,
+                overflowHidden: false,
+                onPos: function(step) {
+    //              console.debug('onPos');
 
-             that.folders.updateOpacity(that.scroller.x);
+                 that.folders.updateOpacity(that.scroller.x);
+                }
+                //force2D: true
+              });
             }
-            //force2D: true
           });
-
-          window.scroller = that.scroller;
         }
+      });
+      // Search bar
+      $('.my-search input[type=search]').on('search', function(e) {
+        var keywords = e.target.value;
+        that.metadataList.url = '/metadata?keywords=' + keywords;
+        that.metadataList.fetch();
       });
     },
     render: function() {
