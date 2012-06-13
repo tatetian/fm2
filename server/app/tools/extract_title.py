@@ -15,13 +15,13 @@ def process(json_str):
   # assume the title is on the first page
   first_page = json_object['pages'][0]
   blocks = first_page['blocks']
-  try:
-    # assume the title is the lines with largest font
-    bi, li, size = _find_largest_font_pos(blocks)
-    # extract the string
-    title = _extract_lines(blocks, bi, li, size)
-  except:
-    title = None
+  #try:
+  # assume the title is the lines with largest font
+  bi, li, size = _find_largest_font_pos(blocks)
+  # extract the string
+  title = _extract_lines(blocks, bi, li, size)
+  #except:
+  #  title = None
   # set title
   if title != None:
     json_object['title'] = title
