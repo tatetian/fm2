@@ -11,7 +11,7 @@ class RenrenController < ApplicationController
         access_token =  client.get_token({
             :client_id => api_key,
             :client_secret => api_secret,
-            :redirect_uri => "http://localhost:3000/renren/login",
+            :redirect_uri => "http://www.feastmind.com/renren/login",
             :code => params[:code],
             :grant_type=> "authorization_code"
         })
@@ -39,7 +39,7 @@ class RenrenController < ApplicationController
         end
         
         sign_in user
-        
+         
         add_friends user        
 
         redirect_to "/home"         

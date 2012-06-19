@@ -15,6 +15,7 @@ width:100%;
 .multi-image img{
 }
 #wholewrapper{
+  margin: 0 auto;
 }
 #hwrapper{
     float:left;
@@ -264,7 +265,7 @@ z-index:100;
 position:absolute;
 right:-200px;
 top:280px;
-z-index:999;d
+z-index:999;
 }
 
 .note-myself li{
@@ -285,19 +286,19 @@ position:relative;
 top:25px;
 right:5px;
 max-width:220px;
-min-height:60px
+min-height:60px;
 padding:3px;
 border-radius:5px;
 background-color:rgba(255,0,0,0.3);
 box-shadow:inset 2px 2px 8px rgba(0,0,0,0.3);
 border:1px solid  rgba(255,255,255,0.4);
 }
-.note-myself li .username{font-size;16px; color:#630; float:left; }
-.note-myself li .date{font-size;12px; color:#fff;; float:right; }
+.note-myself li .username{font-size:16px; color:#630; float:left; }
+.note-myself li .date{font-size:12px; color:#fff;; float:right; }
 .note-myself li p{clear:both; font-size:12px; text-indent:2em; color:#09c;}
 
-.note-myfriends li .username{font-size;16px; color:#630; float:left; }
-.note-myfriends li .date{font-size;12px; color:#FFF;; float:right; }
+.note-myfriends li .username{font-size:16px; color:#630; float:left; }
+.note-myfriends li .date{font-size:12px; color:#FFF;; float:right; }
 .note-myfriends li p{clear:both; font-size:12px; text-indent:2em; color:#000;}
 
 .myimg{
