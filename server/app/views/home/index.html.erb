@@ -63,17 +63,19 @@
     <div class="cb"></div>
   </div>
   <div class="recent-box">
-    <h1 class="recent-box-title"><%%= name %></h1>
+    <!-- Set undraggable as true so that we make sure 
+        iScroll ignores this element   -->
+    <div><%%= name %></div>
   </div>
 </script>
 <script type="text/template" id="title-template">
-  <div style="position: relative; width: 87.5%; height: 100%; margin: 0 5.5% 0 7%;">
+  <div style="position: relative; width: 87.5%; height: 100%; margin: 0 5.5% 0 7%;" data-id="<%%= id%>">
     <%% if(progress < 0) { %>
       <span class="star star-<%%= yellow_or_white %>"></span>
       <%% if(isIDevice) { %>
-          <div class="title"><a class="ml20" href="/fulltext/<%%= docid %>" target="_blank" id="detail<%%= id %>" data-id="<%%= id%>"><%%= title %></a></div>
+          <div class="title"><a class="ml20" href="/fulltext/<%%= docid %>" target="_blank" id="detail<%%= id %>" ><%%= title %></a></div>
       <%% } else { %>
-          <div class="title"><a class="ml20" href='#' data-href="/fulltext/<%%= docid %>" id="detail<%%= id %>" data-id="<%%= id%>"><%%= title %></a></div>
+          <div class="title"><a class="ml20" href='#' data-href="/fulltext/<%%= docid %>" id="detail<%%= id %>"><%%= title %></a></div>
       <%% } %>
       <span class="tag-color tag-color-<%%= color %>"></span>
     <%% } else { %>

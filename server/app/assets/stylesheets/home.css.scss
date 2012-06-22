@@ -254,7 +254,7 @@ html, body {
     .more-bg{ width:100%;height:148px; position: absolute; bottom: -146px;}
     .more-bg img{height:100%; position: relative; width:100%; }
 .recent-box{ position:absolute; bottom:0px;  width:100%; height:96px; background:url(/assets/new/tag-box.png) no-repeat center top; background-size: 100% 100%;}
-    .recent-box-title{position: absolute; width:89%; left: 5.5%; margin: 0 auto;top:55px; text-align:center; font-family:"黑体"; font-size:20px; font-weight:200; color:#630 ;}
+    .recent-box > div {position: absolute; width:89%; left: 5.5%; margin: 0 auto;top:55px; text-align:center; font-family:"黑体"; font-size:20px; font-weight:200; color:#630 ; line-height: 150%; }
     .tag-more a{ display:block;width:100%; text-align:center; position:relative; top:30px;}
     .tag-more a img{ width:28px;height:6px;}
 

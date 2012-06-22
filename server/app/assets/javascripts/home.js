@@ -233,8 +233,8 @@ $(function(){
 // Add a cutom click event to specific element of a view
 // The default click event is not useful since it can't distinguish between 
 // a drag click and a single click
-  function addMyClick(view, selector, callback) {
-    if(!view.events) view.events = {};
+  function addFmClick(view, selector, callback) {
+    view.events = view.events || {};
     var x, y;
     view.events['mousedown ' + selector] = function(e) {
       x = e.screenX;
@@ -242,7 +242,7 @@ $(function(){
     };
     view.events['mouseup ' + selector] = function(e) {
       if (x == e.screenX && y == e.screenY)
-        callback.apply(this);
+        callback.call(this, e);
     };
   }
 //================================== Tag's model ==============================
@@ -252,8 +252,10 @@ $(function(){
         name: "新建文件夹",
         id: "fake-id-1"
       };
-    } 
+    }
   });
+  // debug
+  window.Tag = Tag;
   var TagList = Backbone.Collection.extend({
     model: Tag,
     url: '/tags'
@@ -266,34 +268,81 @@ $(function(){
         progress: -1,
         color: 'grey'
       };
+    },
+    setStar: function(starred) {
+      if(starred)
+        this.attachTag('__starred');
+      else
+        this.detachTag('__starred');
+    },
+    attachTag: function(tagName) {
+      var tags  = this.get('tags').splice(0),
+          pos   = tags.indexOf(tagName);
+      // Push new tag if not exists
+      if (pos < 0) tags.push(tagName); 
+      // Update model
+      this.set('tags', tags);
+      // Ajax
+      this.syncTag('POST', tagName, this.get('id'));
+    },
+    detachTag: function(tagName) {
+      var tags  = this.get('tags').splice(0),
+          pos   = tags.indexOf(tagName);
+      // Delete the tag if exists
+      if(pos >= 0) tags.splice(pos, 1);
+      // Update model
+      this.set('tags', tags);
+      // Ajax
+      this.syncTag('DELETE', tagName, this.get('id'));
+    },
+    syncTag: function(method, tagName, metadata_id) { 
+      var params = {
+        url: '/metadata/' + metadata_id + '/tags/' + 
+            ( method=='DELETE' ? tagName : ''),
+        type: method,
+        contentType: 'application/json',
+        data: JSON.stringify({
+          name: tagName,
+          metadata_id: metadata_id
+        }),
+        dataType: 'json',
+        processData: false
+      },  options = {};
+      $.ajax(_.extend(params, options));
+    },
+    // Custom sync function that handles tags update differently
+    sync: function(method, model, options) {
+      Backbone.sync.call(this, method, model, options);
     }
   });
   var MetadataList = Backbone.Collection.extend({
     model: Metadata,
-    url: '/metadata?tags=All'
+    url: '/metadata'
   });
 //=============================== Title's View ================================ 
   var TitleView = Backbone.View.extend({
     tagName: 'li',
     initialize: function() {
-      addMyClick(this, 'a.ml20',  this.viewPaper);
-      addMyClick(this, '.star',   this.clickStar);
-      addMyClick(this, '.tag-color',  this.clickColor);
+      addFmClick(this, 'a.ml20',  this.viewPaper);
+      addFmClick(this, '.star',   this.clickStar);
+      addFmClick(this, '.tag-color',  this.clickColor);
 
-      this.model.bind('change', this.change, this);
+      this.model.on('change', this.render, this);
     },
     events: {
     // 'longTap .title': 'viewPaper'
     },
     template: _.template($('#title-template').html()),
     render: function() {
-      // model
+      console.debug('render');
+      // Clear element
+      this.$el.empty(); 
+      // Get model
       var json = this.model.toJSON();
-      // fake color
-      if(Math.random() > 0.5)
-        json.yellow_or_white = 'yellow';
-      else
+      if(json.tags.indexOf('__starred') < 0)
         json.yellow_or_white = 'white';
+      else
+        json.yellow_or_white = 'yellow';
       var color_random = Math.random();
       if(color_random < 0.5)
         json.color = 'grey';
@@ -303,7 +352,7 @@ $(function(){
         json.color = 'red'
       else
         json.color = 'blue'
-      // append content
+      // New element
       this.$el.append(this.template(json));
       return this;
     },
@@ -311,15 +360,17 @@ $(function(){
   //    alert('viewPaper: this is ' + this);
       window.open('/fulltext/' + this.model.get('docid'), '_newtab');
     },
-    clickStar: function() {
-      alert('clickStar: this is ' + this);
+    clickStar: function(e) {
+      var $t      = $(e.target),
+          starred = $t.hasClass('star-yellow')  ? true  : 
+                    $t.hasClass('star-white')   ? false : null,
+          metadata_id = $t.parent().data('id'),
+          metadata  = manager.metadataList.get(metadata_id);
+      metadata.setStar(!starred);
+      window.metadata = metadata;
     },
     clickColor: function() {
       alert('clickColor: this is ' + this);
-    },
-    change: function() {
-      var json = this.model.toJSON();
-      this.$el.empty().append(this.template(json));        
     }
   });
   var TitlesView = Backbone.View.extend({
@@ -354,7 +405,8 @@ $(function(){
     tagName: 'li',
     className: 'folder one-column',
     events: {
-      'dblclick .recent-box > h1': 'renameFolder'
+      'dblclick .recent-box > div': 'beforeRenameFolder',
+      'blur .recent-box > div': 'afterRenameFolder'
     },
     template: _.template($('#folder-template').html()),
     initialize: function() {
@@ -370,9 +422,21 @@ $(function(){
     getName: function() {
       return this.model.get('name');
     },
-    renameFolder: function(e) {
-     // alert(1);
-      window.E = e;
+    beforeRenameFolder: function(e) {
+//      e.target.contentEditable = true;  
+      console.debug('before');
+      var $folderTitle  = $(e.target),
+          $folder       = $folderTitle.parent();
+      $folder.attr('contenteditable', 'true');
+      $folderTitle.addClass('undraggable');
+      $folderTitle.focus();
+    },
+    afterRenameFolder: function(e) {
+      console.debug('after');
+      var $folderTitle  = $(e.target),
+          $folder       = $folderTitle.parent();
+      $folder.removeAttr('contentEditable');
+//      t.className = 'undraggable';
     },
     render: function() {
       // render folder dom
@@ -390,7 +454,13 @@ $(function(){
         vScrollbar: false,
         useTransition: true,
         //momentum: false,
-        overflowHidden: false
+        overflowHidden: false,
+        onBeforeScrollStart: function(e) {
+          // prevent default behavriou like text selection, image dragging
+          e.preventDefault();
+          // not stop scroll handler
+          return false;
+        }
       });
       //setTimeout(200, function(){alert(200)});
       //
@@ -421,7 +491,7 @@ $(function(){
       this.items = new Array();
       $(window).resize(function() { that.resize(); });
 
-      addMyClick(this, '.add-tag > a',  this.newFolder);
+      addFmClick(this, '.add-tag > a',  this.newFolder);
     },
     newFolder: function() {
       var newFolderModel = new Tag();
@@ -429,6 +499,11 @@ $(function(){
       this.resize();
     },
     addFolder: function(model, that, options) {
+      // Some tags are not intended to be used as folders
+      // The name of invisible tags are prefixed with '__' 
+      // e.g. __starred
+      if (model.get('name').indexOf('__') == 0)
+        return;
       // Add a new folder given its model
       var folder = new FolderView({
         model:      model,

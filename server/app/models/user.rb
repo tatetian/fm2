@@ -209,7 +209,7 @@ class User < ActiveRecord::Base
     # create a tag if not exists
     if tag == nil
       tag = create_tag tag_name
-      tag = Tag.find_by_id tag.id
+      #tag = Tag.find_by_id tag.id
     end
     # create a new collection
     collection = tag.collections.create :metadata_id => metadata_id 
@@ -218,7 +218,7 @@ class User < ActiveRecord::Base
       :metadata_id => collection.metadata_id }
   end
   
-   def detach_tag metadata_id, tag_name
+  def detach_tag metadata_id, tag_name
     tag = self.tags.find_by_name tag_name
     return nil if tag == nil
     Collection.delete_all :tag_id => tag.id, :metadata_id => metadata_id

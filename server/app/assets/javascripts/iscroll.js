@@ -99,7 +99,14 @@ var m = Math,
 
 			// Events
 			onRefresh: null,
-			onBeforeScrollStart: function (e) { e.preventDefault(); },
+			onBeforeScrollStart: function (e) { 
+        // Prevent browser default behaviour like text selection, drag image
+        e.preventDefault(); 
+        // Whether to stop hanlding the scroll event
+        //  true  --> stop
+        //  false --> continue
+        return false; 
+      },
 			onScrollStart: null,
 			onBeforeScrollMove: null,
 			onScrollMove: null,
@@ -335,7 +342,10 @@ iScroll.prototype = {
 
 		if (!that.enabled) return;
 
-		if (that.options.onBeforeScrollStart) that.options.onBeforeScrollStart.call(that, e);
+    // Modified by Hongliang Tian
+    // if onBeforeScrollStart returns true, return immediately
+		if (that.options.onBeforeScrollStart && that.options.onBeforeScrollStart.call(that, e) )
+      return;
 
 		if (that.options.useTransition || that.options.zoom) that._transitionTime(0);
 

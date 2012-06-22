@@ -11,8 +11,6 @@ Server::Application.routes.draw do
 
   get "metadatas/new"
 
-  get "tags/new"
-
   get "users/new"
 
   get "papers/new"
@@ -21,7 +19,7 @@ Server::Application.routes.draw do
   
   get "renren/login", :controller=>"renren",:action=>"login"
 
-  get "tags" , :controller => "users", :action=>"getTags"
+  resources :tags
   
   match 'reader' => 'reader#index'
   match 'fulltext/:docid' => 'fulltext#index'
