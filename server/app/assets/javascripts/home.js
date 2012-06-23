@@ -500,10 +500,11 @@ $(function(){
       // iscroll
       var scrollerEle = this.$el.find('.papers')[0];
       this.scroller = new iScroll(scrollerEle,{
-        hideScrollbar:true,
+        hideScrollbar: true,
+        fadeScrollbar: true,
         lockDirection:true,
         overflowHidden: false,
-        vScrollbar: false,
+        vScrollbar: true,
         useTransition: true,
         //momentum: false,
         overflowHidden: false,
@@ -582,7 +583,7 @@ $(function(){
     },
     resize: function(e) {
       var wrapperWidth  = this.$el.width(),
-          numFolders    = this.collection.size() + 1,
+          numFolders    = this._getNumFolders() + 1,
           numFoldersPerScreen = Math.round(wrapperWidth / this.optimalSize),
           folderMargin  = 0,
           folderWidth   = ( wrapperWidth - 2 * folderMargin * numFolders ) / numFoldersPerScreen;
@@ -602,6 +603,17 @@ $(function(){
         manager.scroller.refresh();
         this.updateOpacity(manager.scroller.x);
       }
+    },
+    // Get the number of folders
+    //   This function ignore tags that are not intended to be used as folder
+    _getNumFolders: function() {
+      var count = 0;
+      this.collection.forEach(function(tag) {
+        // If the name of tag doesn't start with '__', count increases
+        if(tag.get('name').indexOf('__') != 0)
+          ++count;
+      });
+      return count;
     },
     updateOpacity: function(x) {
       var that = this;
@@ -710,11 +722,12 @@ $(function(){
                 fadeScrollbar:true,
                 hideScrollbar:true,
                 lockDirection:true,
-                hScrollbar: false,
+                hScrollbar: true,
                 bounce: true,
                 bounceLock: true,
                 useTransition: true,
                 snap: 'li',
+                snapThreshold: 100, 
                 //momentum: false,
                 overflowHidden: false,
                 onPos: function(step) {
@@ -793,7 +806,7 @@ $(function(){
   });
 //=============================================================================
   var manager = new Manager();
-
+  window.manager = manager;
   var myFriends = new FriendList(); 
   var friendsView = new FriendsView({collection: myFriends});
   var myinfoView = new MyInfoView({

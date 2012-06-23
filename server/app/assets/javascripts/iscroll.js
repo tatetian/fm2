@@ -234,8 +234,10 @@ iScroll.prototype = {
 			// Create the scrollbar wrapper
 			bar = doc.createElement('div');
 
+      // Modified by Hongliang Tian
+      //  right: 6%
 			if (that.options.scrollbarClass) bar.className = that.options.scrollbarClass + dir.toUpperCase();
-			else bar.style.cssText = 'position:absolute;z-index:100;' + (dir == 'h' ? 'height:7px;bottom:1px;left:2px;right:' + (that.vScrollbar ? '7' : '2') + 'px' : 'width:7px;bottom:' + (that.hScrollbar ? '7' : '2') + 'px;top:2px;right:1px');
+			else bar.style.cssText = 'position:absolute;z-index:10000;' + (dir == 'h' ? 'height:7px;bottom:2px;left:2px;right:' + (that.vScrollbar ? '7' : '2') + 'px' : 'width:7px;bottom:' + (that.hScrollbar ? '7' : '2') + 'px;top:2px;right:6%;');
 
 			bar.style.cssText += ';pointer-events:none;-' + vendor + '-transition-property:opacity;-' + vendor + '-transition-duration:' + (that.options.fadeScrollbar ? '350ms' : '0') + ';overflow:hidden;opacity:' + (that.options.hideScrollbar ? '0' : '1');
 
@@ -245,7 +247,10 @@ iScroll.prototype = {
 			// Create the scrollbar indicator
 			bar = doc.createElement('div');
 			if (!that.options.scrollbarClass) {
-				bar.style.cssText = 'position:absolute;z-index:100;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.9);-' + vendor + '-background-clip:padding-box;-' + vendor + '-box-sizing:border-box;' + (dir == 'h' ? 'height:100%' : 'width:100%') + ';-' + vendor + '-border-radius:3px;border-radius:3px';
+        // Modified by Hongliang Tian
+        //    border: none
+        //    background: rgba(0, 0, 0, 0.4)
+				bar.style.cssText = 'position:absolute;z-index:10000;background:rgba(40,40,40,.45);border:none;-' + vendor + '-background-clip:padding-box;-' + vendor + '-box-sizing:border-box;' + (dir == 'h' ? 'height:100%' : 'width:100%') + ';-' + vendor + '-border-radius:3px;border-radius:3px';
 			}
 			bar.style.cssText += ';pointer-events:none;-' + vendor + '-transition-property:-' + vendor + '-transform;-' + vendor + '-transition-timing-function:cubic-bezier(0.33,0.66,0.66,1);-' + vendor + '-transition-duration:0;-' + vendor + '-transform:' + trnOpen + '0,0' + trnClose;
 			if (that.options.useTransition) bar.style.cssText += ';-' + vendor + '-transition-timing-function:cubic-bezier(0.33,0.66,0.66,1)';
