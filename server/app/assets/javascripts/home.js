@@ -283,7 +283,7 @@ $(function(){
       // Update model
       this.set('tags', tags);
       // Ajax
-      this.syncTag('POST', tagName, this.get('id'));
+      this._syncTag('POST', tagName, this.get('id'));
     },
     detachTag: function(tagName) {
       var tags  = this.get('tags').splice(0),
@@ -293,9 +293,9 @@ $(function(){
       // Update model
       this.set('tags', tags);
       // Ajax
-      this.syncTag('DELETE', tagName, this.get('id'));
+      this._syncTag('DELETE', tagName, this.get('id'));
     },
-    syncTag: function(method, tagName, metadata_id) { 
+    _syncTag: function(method, tagName, metadata_id) { 
       var params = {
         url: '/metadata/' + metadata_id + '/tags/' + 
             ( method=='DELETE' ? tagName : ''),
@@ -309,6 +309,56 @@ $(function(){
         processData: false
       },  options = {};
       $.ajax(_.extend(params, options));
+    },
+    setColor: function(color) {
+      console.debug(this.get('tags').join());
+      var tags  = this.get('tags').splice(0), // clone the array
+          pos   = this._getColorTagPos(tags),
+          colorTag  = '__color_' + color;
+      // Switch color
+      if(pos < 0) {
+        // Add color tag
+        tags.push(colorTag);
+        // Sync with server
+        this._syncTag('POST', colorTag, this.get('id'));
+      }
+      else {
+        // Sync with server
+        this._syncTag('POST', colorTag, this.get('id'));
+        this._syncTag('DELETE', tags[pos], this.get('id'));
+        // Replace old color in model
+        tags[pos] = colorTag;
+      }
+      console.debug('setColor(' + color + ')');
+      window.metadata = this;
+      // Update model
+      this.set('tags', tags);
+    },
+    getColor: function() {
+      var tags  = this.get('tags'),
+          pos   = this._getColorTagPos(tags),
+          colorTagName = pos >= 0 ? tags[pos] : null, 
+          prefix = '__color_',
+          color = !!colorTagName ? colorTagName.substring(prefix.length) :
+                                  'grey';
+      console.debug('getColor() == ' + color );
+      return color;
+    },
+    _getColorTagPos: function(tags) {
+      var prefix  = '__color_',
+          pos     = -1;
+      _.find(tags, function(tagName, index) {
+        console.debug('tag:'+tagName+';index='+index);
+        if(tagName.indexOf(prefix) == 0) {
+          pos = index;
+          console.debug('return true');
+          return true;
+        }
+        console.debug('return false');
+        return false;
+      }) ;
+      console.debug('__getColorTagPos() == ' + pos);
+      return pos;
     },
     // Custom sync function that handles tags update differently
     sync: function(method, model, options) {
@@ -334,7 +384,7 @@ $(function(){
     },
     template: _.template($('#title-template').html()),
     render: function() {
-      console.debug('render');
+      console.debug('title render');
       // Clear element
       this.$el.empty(); 
       // Get model
@@ -343,15 +393,7 @@ $(function(){
         json.yellow_or_white = 'white';
       else
         json.yellow_or_white = 'yellow';
-      var color_random = Math.random();
-      if(color_random < 0.5)
-        json.color = 'grey';
-      else if(color_random < 0.6666666)
-        json.color = 'green';
-      else if(color_random < 0./833333)
-        json.color = 'red'
-      else
-        json.color = 'blue'
+      json.color = this.model.getColor();
       // New element
       this.$el.append(this.template(json));
       return this;
@@ -367,10 +409,20 @@ $(function(){
           metadata_id = $t.parent().data('id'),
           metadata  = manager.metadataList.get(metadata_id);
       metadata.setStar(!starred);
-      window.metadata = metadata;
     },
-    clickColor: function() {
-      alert('clickColor: this is ' + this);
+    clickColor: function(e) {
+      var $t      = $(e.target),
+          color   = $t.data('color'),
+          nextColor   = this.nextColor(color),
+          metadata_id = $t.parent().data('id'),
+          metadata  = manager.metadataList.get(metadata_id);
+      console.debug('clickColor');
+      metadata.setColor(nextColor);
+    },
+    nextColor: function(color) {
+      return color == 'grey'  ? 'green' :
+             color == 'green' ? 'blue'  :
+             color == 'blue'  ? 'red'   :   'grey';
     }
   });
   var TitlesView = Backbone.View.extend({
