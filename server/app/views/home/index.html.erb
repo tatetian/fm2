@@ -19,8 +19,8 @@
         <div class="my-head"><img src="<%= @headurl %>"/></div>
         <div class="my-info">
           <div class="my-info-name"><%= @name %></div>
-          <div class="my-info-papers">1<%= @papersnum %></div>
-          <div class="my-info-friends">2<%= @friendsnum %></div>
+          <div class="my-info-papers">0</div>
+          <div class="my-info-friends">0</div>
         </div>
         <div class="my-search">
           <div class="my-search-corner left"></div>
@@ -93,6 +93,11 @@
 </script>
 <script type="text/template" id="friend-template">
   <img src="<%%= headurl %>"/><div class="friend-name"><%%= name %></div>
+</script>
+<script type="text/template" id="my-info-template">
+  <div class="my-info-name"><%= @name %></div>
+  <div class="my-info-papers"><%%= papersNum %></div>
+  <div class="my-info-friends"><%%= friendsNum %></div>
 </script>
 <script>
     isIDevice = (/iphone|ipad/gi).test(navigator.appVersion);

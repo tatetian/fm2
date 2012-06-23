@@ -738,8 +738,6 @@ $(function(){
     render: function() {
     }
   });
-  var manager = new Manager();
-  window.manager = manager;
 //=========================== Friend Model & View ============================+
   var Friend = Backbone.Model.extend({
   });
@@ -772,8 +770,38 @@ $(function(){
       this.collection.each(this.addOne);
     }
   });
+//==============================MyInfoView====================================
+  var MyInfoView = Backbone.View.extend({
+    el: ".my-info",
+    initialize: function() {
+      this.friends  = this.options.friends;
+      this.papers   = this.options.papers;
+
+      this.friends.on('reset',  this.render,  this);
+      this.papers .on('reset',  this.render,  this)
+                  .on('add',    this.render,  this)
+                  .on('remove', this.render,  this);
+    },
+    template: _.template($('#my-info-template').html()),
+    render: function() {
+      var json = {
+        friendsNum: this.friends.size(),
+        papersNum:  this.papers.size()
+      };
+      this.$el.html(this.template(json));
+    }
+  });
+//=============================================================================
+  var manager = new Manager();
+
   var myFriends = new FriendList(); 
   var friendsView = new FriendsView({collection: myFriends});
+  var myinfoView = new MyInfoView({
+    friends: myFriends, 
+    papers: manager.metadataList
+  });
+
   friendsView.render();
+  myinfoView.render();
   myFriends.fetch();
 });
