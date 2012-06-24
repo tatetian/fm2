@@ -457,8 +457,6 @@ $(function(){
     tagName: 'li',
     className: 'folder one-column',
     events: {
-      'dblclick .recent-box > div': 'beforeRenameFolder',
-      'blur .recent-box > div': 'afterRenameFolder'
     },
     template: _.template($('#folder-template').html()),
     initialize: function() {
@@ -494,6 +492,8 @@ $(function(){
       // render folder dom
       var json      = this.model.toJSON();
       this.$el.html(this.template(json));
+      this.$('.recent-box > div').on('dblclick',  this.beforeRenameFolder, this)
+                                 .on('blur',      this.afterRenameFolder,  this);
       // append titles to this folder
       var $titles   = this.titles.render().$el;
       this.$el.find('.titles').append($titles);
@@ -507,13 +507,7 @@ $(function(){
         vScrollbar: true,
         useTransition: true,
         //momentum: false,
-        overflowHidden: false,
-        onBeforeScrollStart: function(e) {
-          // prevent default behavriou like text selection, image dragging
-          e.preventDefault();
-          // not stop scroll handler
-          return false;
-        }
+        overflowHidden: false
       });
       //setTimeout(200, function(){alert(200)});
       //
@@ -535,7 +529,7 @@ $(function(){
   });
   var FoldersView = Backbone.View.extend({
     el: '.folders-wrapper',
-    optimalSize: 380,       /* optimal size for one folder */
+    optimalSize: 400,       /* optimal size for one folder */
     initialize: function() {
       var that = this;
       this.metadataList = this.options.metadataList;
@@ -734,8 +728,18 @@ $(function(){
     //              console.debug('onPos');
 
                  that.folders.updateOpacity(that.scroller.x);
+                },
+                //force2D: true,
+                onBeforeScrollStart: function(e) {
+                  window.E = e;
+                  if(e.target.className == 'undraggable')
+                    return true;
+                  console.debug('scroll start prevent default');
+                  // prevent default behavriou like text selection, image dragging
+                  e.preventDefault();
+                  // not stop scroll handler
+                  return false;
                 }
-                //force2D: true
               });
             }
           });

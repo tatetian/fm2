@@ -9,7 +9,7 @@ html, body {
   height:100%; 
   overflow:   hidden; 
   background: url(/assets/desk.png);
-  font-family: "微软雅黑" "黑体";
+  font-family: "arial" "微软雅黑";
 }
 .topbar {
   position: absolute;
@@ -27,7 +27,7 @@ html, body {
               inset 0px -4px 5px 1px rgba(255, 199, 139, 0.55),
               0px 5px 10px 2px rgba(248, 126, 97, 0.1);
 }
-.topbar > .wrapper  { width: 89%; margin: 0 auto; }
+.topbar > .wrapper  { width: 89%; margin: 0 auto;color:#783d1d; }
 .one-column { height: 100%; float: left;  }
 //.topbar > .one-column:first-child { margin-left: 5.5%; }
 .topbar .one-column > .wrapper { margin: 3px auto; width: 94%; height: 50px; position: relative;}
@@ -59,6 +59,7 @@ html, body {
       line-height: 1.25; 
     }
     .my-info-name {
+    
     
     }
     .my-info-papers { 
@@ -174,7 +175,7 @@ html, body {
     position:relative;
     font-size:  1em;
     color:      #fff;
-    font-family:"arial" "黑体"; 
+    
     box-shadow: 0px 1px rgba(0,0,0,0.8),
                 0px 2px rgba(255,255,255,0.15);
   }
@@ -194,21 +195,21 @@ html, body {
     .users-myfriends li {height:56px; width:180px;  position:relative; box-shadow:0px 1px rgba(0,0,0,0.8),0px 2px rgba(255,255,255,0.15);  }
     .users-myfriends li.clicked {height:56px; width:180px;  background:url(/assets/new/left-bar-list.png) no-repeat; background-size:180px 56px;}
     .users-myfriends li img { display:inline-block;  height:35px;width:35px; margin:8px;position:relative; left:8px;}
-    .users-myfriends li span{ display:block; position:absolute; left:70px; top:16px; color: white; font-family: "arial" "黑体";}
+    .users-myfriends li span{ display:block; position:absolute; left:70px; top:16px; color: white; font-family: "arial" "微软雅黑";}
 /*top --end!!templates*/
 
 .tag-nav{ position:absolute;top:0px; bottom:0px;  width:100%;height:100%; overflow: hidden;}
-    .index-upload {position:relative; width:100%; background:url(/assets/new/upload-bg.png) no-repeat center center; background-size:100% 100%; height: 3em;}
+    .index-upload {position:relative; width:100%; background:url(/assets/new/upload-bg.png) no-repeat center center; background-size:100% 100%; height: 3em; opacity: 0.7;}
         .index-upload input { display:block; overflow:hidden; width:100%; height: 100%; font-size:1em; text-indent:-10000em; }
     .papers{position:absolute; bottom:84px; width:100%; height: 320px;}
     .papers > ul{position:absolute; top:0px; width:100%; }
     .tag-nav li { width:100%; position:relative;height:3em; margin:0px; margin-top:-2px; background:url(/assets/new/tag-list-bg.png) no-repeat center top; background-size:100% 100%;}
-    .tag-nav li .title {  width: 100%; overflow:hidden; height: 36px; padding: 0.3em 0;}
+    .tag-nav li .title {  width: 100%; overflow:hidden; height: 36px; padding: 4px 0;}
     .tag-nav li .title > a {
       display: block;
-      padding: 0em 2.5em;
-      word-wrap:break-word; line-height:1.2em; font-size:1em; text-align: left; font-family:"arial";  color: #707070;    
-      text-shadow:0px 1px 1px rgba(0,0,0,0.3);
+      padding: 0.3em 2.5em ;
+      word-wrap:break-word; line-height:1.2em; font-size:0.9em; text-align: center;  color: #494848;   font-weight:600; 
+     text-shadow:1px 1px 1px rgba(0,0,0,0.2);
     }
     .tag-color{
       height: 2.5em; 
@@ -254,7 +255,7 @@ html, body {
     .more-bg{ width:100%;height:148px; position: absolute; bottom: -146px;}
     .more-bg img{height:100%; position: relative; width:100%; }
 .recent-box{ position:absolute; bottom:0px;  width:100%; height:96px; background:url(/assets/new/tag-box.png) no-repeat center top; background-size: 100% 100%;}
-    .recent-box > div {position: absolute; width:89%; left: 5.5%; margin: 0 auto;top:55px; text-align:center; font-family:"黑体"; font-size:20px; font-weight:200; color:#630 ; line-height: 150%; }
+    .recent-box > div {position: absolute; width:89%; left: 5.5%; margin: 0 auto;top:52px; text-align:center;  font-size:20px; font-weight:200; color:#630 ; line-height: 150%; }
     .tag-more a{ display:block;width:100%; text-align:center; position:relative; top:30px;}
     .tag-more a img{ width:28px;height:6px;}
 
@@ -289,14 +290,14 @@ html, body {
   background: url(/assets/bg-light.png) top center no-repeat,  
               url(/assets/bg-shadow.png) bottom no-repeat; 
   background-size: auto,cover;
-  box-shadow: inset 2px 0px 100px rgba(0,0,0,0.4); 
+  box-shadow: inset 2px 0px 100px rgba(68,21,4,0.5); 
 }
 .folders-wrapper { width: 89%; height: 100%; margin: 0 auto; }
 .folders { float: left; width: 100%; height: 100%; overflow: hidden; } /* the width will be determined at runtime*/
 .folders > ul { height: 100%; width: 100%; display: block; float: left; width: 100%; height: 100%;}
 .folder { display: block; float:left; height:100%; width: 47.5%; position: relative;}
 
-.add-tag { position:absolute; bottom:0px; width: 100%; height:96px; background:url(/assets/new/tagadd-box.png) no-repeat center bottom; background-size: 90% 90%; }
+.add-tag { position:absolute; bottom:0px; width: 100%; height:96px; background:url(/assets/new/tagadd-box.png) no-repeat center bottom; background-size: 90% 90%; opacity: 0.7;}
 .add-tag img{ position: absolute; top: 50%; left: 50%; margin-left:-15px; width:29px; height: 31px;}
 .iscroll-scrollbar {
   border: none;

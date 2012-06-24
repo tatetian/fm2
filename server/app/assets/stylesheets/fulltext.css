@@ -11,8 +11,13 @@ width:100%;
   overflow:hidden;
   /* 16px is the base font size of everything in viewport*/
   font-size: 16px;
+ background: url(/assets/bg-light.png) top center no-repeat,  
+              url(/assets/bg-shadow.png) bottom no-repeat; 
+  background-size: auto,cover;
+  box-shadow: inset 2px 0px 100px rgba(68,21,4,0.5);
 }
 .multi-image img{
+box-shadow:4px 0px 10px rgba(0,0,0,0.15),-4px 0px 10px rgba(0,0,0,0.15),0px 4px 10px rgba(0,0,0,0.15),0px -4px 10px rgba(0,0,0,0.15);
 }
 #wholewrapper{
   margin: 0 auto;
@@ -73,13 +78,12 @@ height:38px;
 }
 .note-bar{
   position:absolute;
+  border-top: 10px solid #81d7ff;
   top:0px;
   left:0px;
   height:145px;
   width:260px;
   display:none;
-  background-color:green;
-  border-radius: 0.5em;
   z-index: 35;
 }
 .text{
@@ -185,7 +189,6 @@ textarea {
 }
 .note-area {
   position:relative;
-  
   line-height:25px;
   border-radius:5px;
   border:1px solid #000;
@@ -199,22 +202,15 @@ width:100%;
 background:url(/assets/reading-bottom-bg.png) repeat-x;
 overflow:hidden;
 }
-.bottom-toolbar .wrapper{
-position:relative;
-float:left;
-left:50%;
-}
-.bottom-toolbar span{
-margin-top:5px;
-position:relative;
-float:left;
-left:-50%;  
-}
+
 .line{
 position:relative;
+display:block;
 top:10px;
+margin-left:200px;
+margin-right:200px;
 height:10px;
-width:650px;
+width:auto;
 background-color:#fff;
 border-radius:5px;
 box-shadow: inset 2px 2px 5px rgba(0,0,0,0.4);
@@ -239,22 +235,34 @@ z-index:100;
 background:url(/assets/reading-pagination-icon.png) no-repeat;
 }
 .zoom1,.zoom2,.arrow1,.arrow2{
+float:left;
 display:block;
 width:45px;
 height:25px;
 cursor:pointer;
 }
+.zoom{
+position:absolute;
+float:left;
+top:5px;
+left:5%;
+}
+.arrow{
+top:5px;
+position:absolute;
+float:right;
+right:5%;
+}
 .zoom1,.zoom2{
-margin-right:25px;
+margin-right:10px;
 }
 .arrow1,.arrow2{
-margin-left:45px;
+margin-left:10px;
 }
 .zoom1{background:url(/assets/reading-zoom1-icon.png) no-repeat;}
 .zoom2{background:url(/assets/reading-zoom2-icon.png) no-repeat;}
 .arrow1{background:url(/assets/reading-arrow1-icon.png) no-repeat;}
 .arrow2{background:url(/assets/reading-arrow2-icon.png) no-repeat;}
-
 .note-myself{
 position:absolute;
 left:0px;
