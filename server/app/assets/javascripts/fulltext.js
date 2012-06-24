@@ -135,7 +135,6 @@ $(function(){
         $('#notes-'+this.currentPage).hide();
         this.trigger("changePage", pageNum, this.currentPage);
         this.currentPage = pageNum;
-        $(".progress").css('left', pageNum*650/this.getNumPages()+'px');
         $('#notes-'+this.currentPage).show();
       }
     },
@@ -449,7 +448,14 @@ $(function(){
       // this.docid & this.numPages
       this.docid = this.options.docid;
       this.numPages = this.options.numPages; 
-      $(".progress").width(650/this.numPages);
+      var unit = $(".line").width()/this.numPages;
+      $(".pscroller").width(unit*(this.numPages*2-1));
+      $(".progress").width(unit);
+      for(var i = 0; i< this.numPages-1; i++)
+            $('<strong class="transparent"></strong>').insertBefore(".progress");
+      for(var i = 0; i< this.numPages-1; i++)
+            $(".pscroller").append('<strong class="transparent"></strong>');
+      $(".transparent").width(unit);
       this.currentPage = 0;
       // init 
       this.updateDimensions();
@@ -562,7 +568,6 @@ $(function(){
         pages[i] = pv;
       }
       that.pages = pages;
-      
       // show default page
       if(this.numPages > 0)
         pages[0].show();
@@ -594,12 +599,31 @@ $(function(){
                 clip.repos2(((sa.l+sa.r)/2-54)*reader.scale+$(".multi-image").offset(),(sa.t-50)*reader.scale+that.scroller.y);
         }
       });
+      var deltaX = $("#wholewrapper").width()/2 - $("#container").width()/2;
+      if(deltaX >0)
+          this.scroller.scrollTo(-deltaX, 0, 0);
       //
+      this.progressbar = new iScroll('line',{
+          snap: 'strong',
+          lockDirection:false,
+          vScroll: false,
+          hScrollbar: false,
+          overflowHidden: false,
+          bounce:false,
+          x: -$(".line").width()/this.numPages*(this.numPages-1),
+          onTouchEnd: function(){
+               //alert(this.currPageX);
+               reader.fulltext.setCurrentPage(that.numPages-this.currPageX-1);
+                reader.zoom(reader.scale);
+                reader.viewport.scroller.enable();
+          }
+      });
+      this.progressbar.currPageX = this.numPages-1;
       notes.fetch({
         success: function(){
               for(var i = 1; i<  that.numPages; i++){
                   $('#notes-'+i).hide();
-                  $()
+                  //$("#highlights-"+i).hide();
               }
               $("#wholewrapper").height(Math.max(reader.fulltext.getHeight()*reader.scale,$("#notes-"+reader.fulltext.getCurrentPage()).height()));
               that.scroller.refresh();
@@ -820,22 +844,22 @@ window.bb = this.boundingBox;
     pre: function() {
       var pageNum = this.fulltext.getCurrentPage();
       this.fulltext.setCurrentPage(pageNum-1);
+      this.viewport.progressbar.scrollToPage('next',0,0);
       this.zoom(this.scale);
-      $(".note-bar").css({display:"none"});
-      $(".float-bar").css({display:"none"});
-      clip.hide();
       this.viewport.scroller.enable();
     },
     next: function() {
       var pageNum = this.fulltext.getCurrentPage();
       this.fulltext.setCurrentPage(pageNum+1);
+      this.viewport.progressbar.scrollToPage('prev',0,0);
       this.zoom(this.scale);
-      $(".note-bar").css({display:"none"});
-      $(".float-bar").css({display:"none"});
-      clip.hide();
       this.viewport.scroller.enable();
     },
     zoom : function(scale){
+        $(".note-bar").css({display:"none"});
+        $(".float-bar").css({display:"none"});
+        clip.hide();
+        ft.unselect();
        var img = this.viewport.pages[this.fulltext.getCurrentPage()].$el.find("img");
        if(scale-this.maxZoom <= 0.00000001 && scale - this.minZoom >= -0.00000001){
           img.width(this.fulltext.getWidth()*this.scale);
@@ -846,9 +870,16 @@ window.bb = this.boundingBox;
           this.adjNote();
           $("#wholewrapper").width(this.fulltext.getWidth()*this.scale+520);
           this.viewport.scroller.refresh();
+          var deltaX = $("#wholewrapper").width()/2 - $("#container").width()/2;
+          if(deltaX >0)
+              this.viewport.scroller.scrollTo(-deltaX, 0, 0);
        }
     },
     zoomOut: function() {
+      $(".note-bar").css({display:"none"});
+      $(".float-bar").css({display:"none"});
+      clip.hide();
+      ft.unselect();
       var img = this.viewport.pages[this.fulltext.getCurrentPage()].$el.find("img");
       if(this.scale<this.maxZoom && this.scale - this.minZoom >= -0.00000001){
           this.scale += 0.1;
@@ -860,9 +891,16 @@ window.bb = this.boundingBox;
           this.adjNote();
           $("#wholewrapper").width(this.fulltext.getWidth()*this.scale+520);
           this.viewport.scroller.refresh();
+          var deltaX = $("#wholewrapper").width()/2 - $("#container").width()/2;
+          if(deltaX >0)
+              this.viewport.scroller.scrollTo(-deltaX, 0, 0);
       }
     },
     zoomIn: function() {
+      $(".note-bar").css({display:"none"});
+      $(".float-bar").css({display:"none"});
+      clip.hide();
+      ft.unselect();
       var img = this.viewport.pages[this.fulltext.getCurrentPage()].$el.find("img");
       if(this.scale-this.maxZoom <= 0.00000001 && this.scale > this.minZoom){
             this.scale -= 0.1;
@@ -875,6 +913,9 @@ window.bb = this.boundingBox;
           this.adjNote();
           $("#wholewrapper").width(this.fulltext.getWidth()*this.scale+520);
             this.viewport.scroller.refresh();
+            var deltaX = $("#wholewrapper").width()/2 - $("#container").width()/2;
+            if(deltaX >0)
+              this.viewport.scroller.scrollTo(-deltaX, 0, 0);
       }
     },
     adjNote: function() {
@@ -954,4 +995,16 @@ window.bb = this.boundingBox;
   } );
   
   $(".float-bar").hide();
+  var width = document.documentElement.clientWidth;
+  var height = document.documentElement.clientHeight;
+  $(window).resize(function(){
+      $("#container").height(document.documentElement.clientHeight-$(".bottom-toolbar").height());
+      reader.viewport.scroller.refresh();
+      var deltaX = $("#wholewrapper").width()/2 - $("#container").width()/2;
+      if(deltaX >0){
+              reader.viewport.scroller.scrollTo(reader.viewport.scroller.x+(document.documentElement.clientWidth-width)/2,reader.viewport.scroller.y, 0);
+      }
+      width = document.documentElement.clientWidth;
+      height = document.documentElement.clientHeight;
+  });
 });
