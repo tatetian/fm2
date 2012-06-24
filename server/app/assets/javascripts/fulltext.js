@@ -451,6 +451,7 @@ $(function(){
       var unit = $(".line").width()/this.numPages;
       $(".pscroller").width(unit*(this.numPages*2-1));
       $(".progress").width(unit);
+      $(".progress::after").attr("data-content",1);
       for(var i = 0; i< this.numPages-1; i++)
             $('<strong class="transparent"></strong>').insertBefore(".progress");
       for(var i = 0; i< this.numPages-1; i++)
@@ -611,11 +612,22 @@ $(function(){
           overflowHidden: false,
           bounce:false,
           x: -$(".line").width()/this.numPages*(this.numPages-1),
+          onScrollStart: function(){
+              $(".progress").addClass("change");
+              $(".progress").attr("data-content",reader.fulltext.getCurrentPage()+1);
+          },
+          onScrollMove: function(){
+              $(".progress").attr("data-content",that.numPages-Math.round(-this.x/$(".line").width()*that.numPages));
+          },
           onTouchEnd: function(){
                //alert(this.currPageX);
                reader.fulltext.setCurrentPage(that.numPages-this.currPageX-1);
+                $(".progress").attr("data-content",reader.fulltext.getCurrentPage()+1);
                 reader.zoom(reader.scale);
                 reader.viewport.scroller.enable();
+                setTimeout(function(){
+                     $(".progress").removeClass("change");
+                },5000);                
           }
       });
       this.progressbar.currPageX = this.numPages-1;
@@ -843,15 +855,21 @@ window.bb = this.boundingBox;
     },
     pre: function() {
       var pageNum = this.fulltext.getCurrentPage();
+      if(pageNum<=0) pageNum == 1;
+      else 
+          this.viewport.progressbar.scrollToPage('next',0,0);
       this.fulltext.setCurrentPage(pageNum-1);
-      this.viewport.progressbar.scrollToPage('next',0,0);
+      $('.progress').attr('data-content',this.fulltext.getCurrentPage()+1);
       this.zoom(this.scale);
       this.viewport.scroller.enable();
     },
     next: function() {
       var pageNum = this.fulltext.getCurrentPage();
+      if(pageNum>this.fulltext.getNumPages()-2) pageNum == this.fulltext.getNumPages()-2;
+      else
+        this.viewport.progressbar.scrollToPage('prev',0,0);
       this.fulltext.setCurrentPage(pageNum+1);
-      this.viewport.progressbar.scrollToPage('prev',0,0);
+      $('.progress').attr('data-content',this.fulltext.getCurrentPage()+1);
       this.zoom(this.scale);
       this.viewport.scroller.enable();
     },
@@ -997,6 +1015,7 @@ window.bb = this.boundingBox;
   $(".float-bar").hide();
   var width = document.documentElement.clientWidth;
   var height = document.documentElement.clientHeight;
+  var scheight = $(".line").width();
   $(window).resize(function(){
       $("#container").height(document.documentElement.clientHeight-$(".bottom-toolbar").height());
       reader.viewport.scroller.refresh();
@@ -1006,5 +1025,14 @@ window.bb = this.boundingBox;
       }
       width = document.documentElement.clientWidth;
       height = document.documentElement.clientHeight;
+      var unit = $(".line").width()/reader.viewport.numPages;
+      $(".pscroller").width(unit*(reader.viewport.numPages*2-1));
+      $(".progress").width(unit);
+      $(".transparent").width(unit);
+      reader.viewport.progressbar.refresh();
+      //alert(unit*(reader.viewport.numPages-window.ft.getCurrentPage()-1));
+      reader.viewport.currPageX = window.ft.getCurrentPage();
+      reader.viewport.progressbar.scrollTo(-unit*(reader.viewport.numPages-window.ft.getCurrentPage()-1),0,0);
+      scheight = $(".line").width();
   });
 });

@@ -1052,6 +1052,7 @@ iScroll.prototype = {
 		}
 
 		that.scrollTo(x, y, time);
+		if (that.options.onTouchEnd) that.options.onTouchEnd.call(that);
 	},
 
 	disable: function () {
