@@ -215,8 +215,25 @@ background-color:#fff;
 border-radius:5px;
 box-shadow: inset 2px 2px 5px rgba(0,0,0,0.4);
 }
-.progress{
+.pscroller{
 position:absolute;
+height:30px;
+width:650px;
+border-radius:5px;
+text-align:center;
+top:-10px;
+left:2px;
+}
+.transparent{
+margin-top:10px;
+float:left;
+height:10px;
+width:10px;
+opacity:1;
+}
+.progress{
+margin-top:10px;
+float:left;
 height:10px;
 width:10px;
 background-color:#999999;
