@@ -477,22 +477,27 @@ $(function(){
       console.debug('before');
       var $folderTitle  = $(e.target),
           $folder       = $folderTitle.parent();
-      $folder.attr('contenteditable', 'true');
-      $folderTitle.addClass('undraggable');
-      $folderTitle.focus();
+      $folderTitle//.attr('contenteditable', 'true')
+//                  .addClass('undraggable')
+                  .focus();
+//      delete e.target.contentEditable;
     },
     afterRenameFolder: function(e) {
       console.debug('after');
       var $folderTitle  = $(e.target),
           $folder       = $folderTitle.parent();
-      $folder.removeAttr('contentEditable');
-//      t.className = 'undraggable';
+      //$folderTitle.removeAttr('contentEditable');
+     //             .removeClass('double-clicked');
+      
+      var t = e.target;
+      t.className = 'to-be-undraggable';
+      t.removeAttribute('contentEditable');
     },
     render: function() {
       // render folder dom
       var json      = this.model.toJSON();
       this.$el.html(this.template(json));
-      this.$('.recent-box > div').on('dblclick',  this.beforeRenameFolder, this)
+      this.$('.recent-box > div')//.on('dblclick',  this.beforeRenameFolder, this)
                                  .on('blur',      this.afterRenameFolder,  this);
       // append titles to this folder
       var $titles   = this.titles.render().$el;
@@ -709,6 +714,7 @@ $(function(){
         success: function() {
           this.metadataList.fetch({
             success: function() {
+              var target = null;
     //          that.tagList.length
               //debug
               that.scroller = new iScroll('my-folders-wrapper',{
@@ -730,17 +736,56 @@ $(function(){
                  that.folders.updateOpacity(that.scroller.x);
                 },
                 //force2D: true,
+                //  return true means drag is disabled
+                //  return false means drag is enabled
                 onBeforeScrollStart: function(e) {
-                  window.E = e;
-                  if(e.target.className == 'undraggable')
+                  var t = e.target;
+                                    //
+                                    //
+                  console.debug('onBeforeSCrollstart()');
+                  window.t1= target; window.t2 =t;
+                  if (target && target != t) {
+                    target.className = 'to-be-undraggable';
+                    target.removeAttribute('contentEditable');
+                    $(target).blur();
+                    target = null;
+                   // $(window).focus();
+                    return false;
+                  }
+                  // First click 
+                  //  'to-be-undraggable' --> 'undraggable'
+                  //  response to drag
+                  if(t.className == 'to-be-undraggable') {
+                    t.className = 'undraggable';
+                    t.contentEditable = 'true';
+
+                    setTimeout(function() {
+                      if(t.className != 'double-clicked') {
+                        t.className = 'to-be-undraggable';
+                        t.removeAttribute('contentEditable');
+                      }
+                    }, 250);
+                    e.preventDefault();
+                    return false;
+                  }
+                  // Second click within 250ms after first click
+                  //  default behaviour of a content-editable element
+                  else if(t.className == 'undraggable') {
+                    target = t;
+                    t.className = 'double-clicked';
+                    t.contentEditable = 'true';
                     return true;
-                  console.debug('scroll start prevent default');
-                  // prevent default behavriou like text selection, image dragging
-                  e.preventDefault();
-                  // not stop scroll handler
-                  return false;
+                  }
+                  else if(t.className == 'double-clicked') {
+                    window.target = target;
+                    return true;
+                  }
+                  else {
+                    e.preventDefault();
+                    return false;
+                  }
                 }
-              });
+             });
             }
           });
         }

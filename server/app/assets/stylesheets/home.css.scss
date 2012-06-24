@@ -207,8 +207,8 @@ html, body {
     .tag-nav li .title {  width: 100%; overflow:hidden; height: 36px; padding: 4px 0;}
     .tag-nav li .title > a {
       display: block;
-      padding: 0.3em 2.5em ;
-      word-wrap:break-word; line-height:1.2em; font-size:0.9em; text-align: center;  color: #494848;   font-weight:600; 
+      padding: 0.3em 2.8em ;
+      word-wrap:break-word; line-height:1.2em; font-size:0.9em; text-align: left;  color: #494848;   font-weight:600; 
      text-shadow:1px 1px 1px rgba(0,0,0,0.2);
     }
     .tag-color{
@@ -241,7 +241,7 @@ html, body {
       width:1.375em; 
       position:absolute; 
       font-size:1em; 
-      margin: 0 0.5em; 
+      margin: 0 0.65em; 
       background-image: url(/assets/new/star-bg.png);
       background-repeat: no-repeat;
       background-size: 200% 100%;
@@ -254,7 +254,7 @@ html, body {
     }
     .more-bg{ width:100%;height:148px; position: absolute; bottom: -146px;}
     .more-bg img{height:100%; position: relative; width:100%; }
-.recent-box{ position:absolute; bottom:0px;  width:100%; height:96px; background:url(/assets/new/tag-box.png) no-repeat center top; background-size: 100% 100%;}
+.recent-box{ position:absolute; bottom:0px;  width:100%; height:96px; background:url(/assets/new/tag-box.png) no-repeat center top; background-size: 100% 100%; white-space: nowrap; }
     .recent-box > div {position: absolute; width:89%; left: 5.5%; margin: 0 auto;top:52px; text-align:center;  font-size:20px; font-weight:200; color:#630 ; line-height: 150%; }
     .tag-more a{ display:block;width:100%; text-align:center; position:relative; top:30px;}
     .tag-more a img{ width:28px;height:6px;}

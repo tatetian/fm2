@@ -351,6 +351,7 @@ iScroll.prototype = {
     // if onBeforeScrollStart returns true, return immediately
 		if (that.options.onBeforeScrollStart && that.options.onBeforeScrollStart.call(that, e) )
       return;
+    
 
 		if (that.options.useTransition || that.options.zoom) that._transitionTime(0);
 
