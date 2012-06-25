@@ -288,6 +288,10 @@ $(function(){
         return tag.get('name').toLowerCase() == name;
       });
       return (res != undefined);
+    },
+    // Sort tag list by a to z
+    comparator: function(tag) {
+      return tag.get('name');
     }
   });
 //=============================== Metadata's model ============================
