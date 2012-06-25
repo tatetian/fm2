@@ -542,8 +542,9 @@ $(function(){
         var t = e.target;
         t.className = 'to-be-undraggable';
         t.removeAttribute('contentEditable');
-        that.model.set('name', t.innerHTML);
-        that.model.save();
+        if( that.model.set('name', t.innerHTML) ) {
+          that.model.save();
+        }
       });
       // append titles to this folder
       var $titles   = this.titles.render().$el;

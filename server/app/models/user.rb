@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
     end
   end
   def has_paper? paper
-      tag = tags.find_by_name("All")
+      tag = tags.find_by_name("__all")
       tag.metadatas.each do |m|
             if m.paper.id == paper.id
                   return m
@@ -70,7 +70,7 @@ class User < ActiveRecord::Base
       nil
   end
   def papers
-      tag = tags.find_by_name("All")
+      tag = tags.find_by_name("__all")
       result = tag.metadatas.map{
                     |m|
                     d = m.paper
@@ -92,7 +92,7 @@ class User < ActiveRecord::Base
   end
 
   def collect!(metadata)
-    tag = self.tags.find_by_name "All"
+    tag = self.tags.find_by_name "__all"
     tag.collections.create!(metadata_id: metadata.id)
   end
 
@@ -107,7 +107,7 @@ class User < ActiveRecord::Base
   end
 
   def list_all_metadatas(params={})
-    params[:tag] = "All"
+    params[:tag] = "__all"
     search_metadatas params 
   end
   
@@ -144,14 +144,14 @@ class User < ActiveRecord::Base
   def has_metadata?(params)
     if params.has_key?(:metadata_id)
       metadata_id = params[:metadata_id]
-      if self.tags.find_by_name("All").metadatas.find_by_id(metadata_id) != nil
+      if self.tags.find_by_name("__all").metadatas.find_by_id(metadata_id) != nil
         return true
       else
         return false
       end
     elsif params.has_key?(:docid)
       docid = params[:docid]
-      if self.tags.find_by_name("All").metadatas.find_by_docid(docid) != nil
+      if self.tags.find_by_name("__all").metadatas.find_by_docid(docid) != nil
         return true
       else
         return false
@@ -165,7 +165,7 @@ class User < ActiveRecord::Base
       metadata_id = params[:metadata_id]
       {
         :metadata_id   => metadata_id,
-        :content  => self.tags.find_by_name("All")
+        :content  => self.tags.find_by_name("__all")
                               .metadatas.find_by_id(metadata_id).paper.content
       }
     elsif params.has_key?(:docid)

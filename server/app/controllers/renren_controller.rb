@@ -32,7 +32,7 @@ class RenrenController < ApplicationController
         user = User.find_by_uid(@ru[0]["uid"].to_s)
         if user==nil
             user = User.create(:uid=>@ru[0]["uid"].to_s,:name=>@ru[0]["name"],:remember_token=>access_token.token,:headurl=>@ru[0]["tinyurl"])
-            Tag.create :name => "All", :user_id =>  user.id
+            Tag.create :name => "__all", :user_id =>  user.id
         else
             user.remember_token=access_token.token
             user.save

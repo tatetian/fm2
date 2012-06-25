@@ -13,7 +13,7 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     if @user.save
       sign_in @user
-      Tag.create :name => "All", :user_id =>  @user.id
+      Tag.create :name => "__all", :user_id =>  @user.id
       flash[:success] = "Welcome to the Sample App!"
       redirect_to "/manager"
     else

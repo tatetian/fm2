@@ -113,6 +113,7 @@ class MetadataController < ApplicationController
               if params[:tag] != nil
                 user.attach_tag @metadata.id, params[:tag]
               end
+              user.attach_tag @metadata.id, '__all'
               flash[:success] = "Upload Success!"
               response = { 
                   :id     => @metadata.id,
