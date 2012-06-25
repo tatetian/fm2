@@ -3,6 +3,7 @@ background:url(/assets/desk.png);
 height:100%;
 width:100%;
   overflow: hidden;
+font-family:"arial" "微软雅黑" ;
 }
 #container{
   height:100%;
@@ -78,17 +79,45 @@ height:38px;
 }
 .note-bar{
   position:absolute;
-  border-top: 10px solid #81d7ff;
+  border-top:10px solid #81d7ff;
   top:0px;
   left:0px;
   height:145px;
   width:260px;
   display:none;
   z-index: 35;
+  box-shadow:0px 2px 4px rgba(0,0,0,0.3);
+  background:url(/assets/text-line.png) 10px 0px,-webkit-linear-gradient( bottom ,#d5ccb4,#fff,#e7e5d8);
+
+}
+.note-bar .note-info{
+padding:5px;
+border-bottom:1px solid #d5e2de;
+}
+
+.note-bar .note-info span{
+color:#8d772b;
+font-size:1em;
+padding:0px 5px;
+}
+.note-bar .text-area{
+margin-top:5px;
+width:100%;
+height:100%;
+text-indent:2em;
+
+}
+.note-me{
+font-size:1.2em;
 }
 .text{
- margin:10px 10px 3px 10px;
+width:100%;
+background-color:transparent;
+border:none;
 }
+
+
+
 .conf-btn{
 display:block;
 border:1px solid;
@@ -99,14 +128,18 @@ float:right;
 margin-right:10px;
 }
 .cancel-btn{
+position:absolute;
 display:block;
-border:1px solid;
-width:35px;
-overflow:hidden;
-height:30px;
+height:18px;
+width:18px;
 float:right;
-margin-right:10px;
+top:5px;
+right:10px;
+background:url(/assets/cancle-btn.png) no-repeat;
+text-indent:-9999px;
+overflow:hidden;
 }
+
 .selection-bar {
   position: absolute;
   background-color: #28f;
@@ -158,6 +191,7 @@ textarea {
   width: 260px;
   //overflow:hidden;
   float:left;
+ 
 }
 .note-pane ul{
   position:relative;
@@ -191,8 +225,15 @@ textarea {
   position:relative;
   line-height:25px;
   border-radius:5px;
-  border:1px solid #000;
   margin:3px 5px;
+  border-top:10px solid #81d7ff;
+  height:145px;
+  width:260px;
+  box-shadow:0px 2px 4px rgba(0,0,0,0.3);
+  background:url(/assets/text-line.png) 10px 0px,-webkit-linear-gradient( bottom ,#d5ccb4,#fff,#e7e5d8);
+  text-indent:2em;
+  text-align:baseline;
+
 }
 .bottom-toolbar{
 position:absolute;	
@@ -200,7 +241,7 @@ height:35px;
 bottom:0px;
 width:100%;
 background:url(/assets/reading-bottom-bg.png) repeat-x;
-overflow:hidden;
+overflow:visible;
 }
 
 .line{
@@ -224,6 +265,21 @@ text-align:center;
 top:-10px;
 left:2px;
 }
+
+.progress::after{
+content:"1";
+display:block;
+float:right;
+width:32px; 
+height:35px;
+margin-top:-35px;
+margin-right:40px;
+color:#000;
+text-align:center;
+
+background:url(/assets/reading-pagination-icon.png) no-repeat;
+
+}
 .transparent{
 margin-top:10px;
 float:left;
@@ -232,6 +288,7 @@ width:10px;
 opacity:1;
 }
 .progress{
+position:relative;
 margin-top:10px;
 float:left;
 height:10px;
@@ -239,18 +296,9 @@ width:10px;
 background-color:#999999;
 border-radius:5px;
 text-align:center;
+overflow:visible;
 }
-.pagination{
-position:absolute;
-width:30px; 
-height:31px;
-top:-35px;
-left:10px;
-color:#000;
-text-align:center;
-z-index:100;
-background:url(/assets/reading-pagination-icon.png) no-repeat;
-}
+
 .zoom1,.zoom2,.arrow1,.arrow2{
 float:left;
 display:block;
