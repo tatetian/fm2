@@ -247,18 +247,48 @@ $(function(){
   }
 //================================== Tag's model ==============================
   var Tag = Backbone.Model.extend({
-    defaults: function() {
-      return {
-        name: "新建文件夹",
-        id: "fake-id-1"
-      };
+    initialize: function() {
+      if(!this.get('name'))
+        this.set('name', this._getDefaultName());
+    },
+    // Validate data before set and save
+    // if anything wrong, return something;
+    // otherwise nothing returned
+    validate: function(attrs) {
+      if(attrs.name && !this._isNameValid(attrs.name))
+        return 'tag name is not valid';
+    },
+    // Validate the name of a tag
+    _isNameValid: function(name) {
+      return true;
+    },
+    // Get a default name for a new tag
+    _getDefaultName: function() {        
+      var defaultName = '新建文件夹',
+          index = 0,
+          name = defaultName;
+      // Make sure this tag name is unique
+      if(this.collection) {
+        while( this.collection.isNameExisting(name) ) {
+          ++ index;
+          name = defaultName + index;
+        }
+      }
+      else
+        alert('null collection');
+      return name;
     }
   });
-  // debug
-  window.Tag = Tag;
   var TagList = Backbone.Collection.extend({
     model: Tag,
-    url: '/tags'
+    url: '/tags',
+    isNameExisting: function(name) {
+      name = name.toLowerCase();
+      var res = this.find(function(tag) {
+        return tag.get('name').toLowerCase() == name;
+      });
+      return (res != undefined);
+    }
   });
 //=============================== Metadata's model ============================
   var Metadata = Backbone.Model.extend({
@@ -460,6 +490,7 @@ $(function(){
     },
     template: _.template($('#folder-template').html()),
     initialize: function() {
+      this.id       = this.model.id || this.model.cid;
       // View to display titles in this folder
       this.titles   = new TitlesView({
                               collection: this.collection,//MetadataList
@@ -489,16 +520,27 @@ $(function(){
       //$folderTitle.removeAttr('contentEditable');
      //             .removeClass('double-clicked');
       
+      alert(1);
       var t = e.target;
       t.className = 'to-be-undraggable';
       t.removeAttribute('contentEditable');
+      this.model.set('name', t.innerHTML);
+      this.model.save();
     },
     render: function() {
+      var that = this;
       // render folder dom
       var json      = this.model.toJSON();
+      // For newly added folder, id can be undefined
+      json.id = this.id;
       this.$el.html(this.template(json));
-      this.$('.recent-box > div')//.on('dblclick',  this.beforeRenameFolder, this)
-                                 .on('blur',      this.afterRenameFolder,  this);
+      this.$('.recent-box > div').on('blur', function(e) {
+        var t = e.target;
+        t.className = 'to-be-undraggable';
+        t.removeAttribute('contentEditable');
+        that.model.set('name', t.innerHTML);
+        that.model.save();
+      });
       // append titles to this folder
       var $titles   = this.titles.render().$el;
       this.$el.find('.titles').append($titles);
@@ -546,8 +588,8 @@ $(function(){
       addFmClick(this, '.add-tag > a',  this.newFolder);
     },
     newFolder: function() {
-      var newFolderModel = new Tag();
-      this.collection.add(newFolderModel, {beforeLast: true});
+//      var newFolderModel = new Tag({}, {collection: this.collection});
+      this.collection.create({}, {beforeLast: true});
       this.resize();
     },
     addFolder: function(model, that, options) {
@@ -639,7 +681,7 @@ $(function(){
   });
 //================================ Ajax Uploader ==============================
   function Uploader(folder) {
-    var id      = folder.model.get('id');
+    var id      = folder.id;
     // folder view that this uploader belongs to
     this.folder = folder;
     // plupload do the real work

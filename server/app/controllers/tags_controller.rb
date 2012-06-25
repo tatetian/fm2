@@ -35,8 +35,11 @@ class TagsController < ApplicationController
     _respond_tag_request tag 
   end
 
+  # Rename a tag
+  #   PUT /tags/<id>/
+  #   Request payload in JSON: {"name": <name>}
   def update
-    tag = curent_user.rename_tag params[:id], params[:name]
+    tag = current_user.rename_tag params[:id], params[:name]
     _respond_tag_request tag
   end
 
