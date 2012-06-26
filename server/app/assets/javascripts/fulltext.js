@@ -1,4 +1,5 @@
 //== require ZeroClipboard.js
+//== require jquery.autosize.js
 $(function(){
 // reader
 // next, pre, go-to 
@@ -598,6 +599,14 @@ $(function(){
             var sa = that.boundingBox;
             if(sa!=null)
                 clip.repos2(((sa.l+sa.r)/2-54)*reader.scale+$(".multi-image").offset(),(sa.t-50)*reader.scale+that.scroller.y);
+        },
+        onBeforeScrollStart: function(e) {
+          var t = e.target;
+          if(t.tagName!="TEXTAREA") {
+              e.preventDefault();
+              return false;
+          }
+          return true;
         }
       });
       var deltaX = $("#wholewrapper").width()/2 - $("#container").width()/2;
@@ -792,9 +801,16 @@ window.bb = this.boundingBox;
       window.bb = this.boundingBox;
       $("#notes-"+this.currentPage).append($(".note-bar").remove());
       $(".note-bar").css({display:"block",top:sa.t+'px'});
+      var t = new Date();
+      var month = t.getMonth()+1;
+      var date = t.getDate();
+      $(".note-date").html((month<10?'0'+month:month) +'/'+(date<10?'0'+date:date)+'/'+t.getFullYear());
+      var hour = t.getHours();
+      var minute = t.getMinutes();
+      $(".note-time").html((hour<10?'0'+hour:hour)+':'+(minute<10?'0'+minute:minute));
       $("#wholewrapper").height(Math.max($("#wholewrapper").height(), parseInt($(".note-bar").css("top").replace('px',''))+$(".note-bar").height()));
       this.scroller.refresh();
-      $(".text").focus();
+      //$(".text").focus();
     }
   });
   //================================ Reader ===================================
@@ -1037,5 +1053,6 @@ window.bb = this.boundingBox;
       reader.viewport.currPageX = window.ft.getCurrentPage();
       reader.viewport.progressbar.scrollTo(-unit*(reader.viewport.numPages-window.ft.getCurrentPage()-1),0,0);
       scheight = $(".line").width();
-  });
+  });  
+  $("textarea").autosize('text');
 });

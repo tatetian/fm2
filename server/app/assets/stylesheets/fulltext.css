@@ -82,7 +82,6 @@ height:38px;
   border-top:10px solid #81d7ff;
   top:0px;
   left:0px;
-  height:145px;
   width:260px;
   display:none;
   z-index: 35;
@@ -100,16 +99,15 @@ font-size:1em;
 padding:0px 5px;
 }
 .note-bar .text-area{
-margin-top:5px;
 width:100%;
-height:100%;
-text-indent:2em;
 }
 .note-me{
 font-size:1.2em;
 }
 .text{
-width:100%;
+display: block;
+width: 100%;
+line-height: 31px;
 background-color:transparent;
 border:none;
 }
@@ -124,6 +122,7 @@ overflow:hidden;
 height:30px;
 float:right;
 margin-right:10px;
+cursor:pointer;
 }
 .cancel-btn{
 position:absolute;
@@ -136,6 +135,7 @@ right:10px;
 background:url(/assets/cancle-btn.png) no-repeat;
 text-indent:-9999px;
 overflow:hidden;
+cursor:pointer;
 }
 
 .selection-bar {
@@ -221,17 +221,16 @@ textarea {
 }
 .note-area {
   position:relative;
-  line-height:25px;
+  line-height:31px;
   border-radius:5px;
   margin:3px 5px;
   border-top:10px solid #81d7ff;
-  height:145px;
+  //height:145px;
   width:260px;
   box-shadow:0px 2px 4px rgba(0,0,0,0.3);
   background:url(/assets/text-line.png) 10px 0px,-webkit-linear-gradient( bottom ,#d5ccb4,#fff,#e7e5d8);
-  text-indent:2em;
   text-align:baseline;
-
+  padding:0 5px;
 }
 .bottom-toolbar{
 position:absolute;	
@@ -279,21 +278,6 @@ z-index:1000;
 background:url(/assets/reading-pagination-icon.png)  no-repeat;
 
 }
-
-.progress::after{
-content:"1";
-display:block;
-float:right;
-width:32px; 
-height:35px;
-margin-top:-35px;
-margin-right:40px;
-color:#000;
-text-align:center;
-
-background:url(/assets/reading-pagination-icon.png) no-repeat;
-
-}
 .transparent{
 margin-top:10px;
 float:left;
@@ -325,12 +309,14 @@ position:absolute;
 float:left;
 top:5px;
 left:5%;
+z-index:100;
 }
 .arrow{
 top:5px;
 position:absolute;
 float:right;
 right:5%;
+z-index:100;
 }
 .zoom1,.zoom2{
 margin-right:10px;
