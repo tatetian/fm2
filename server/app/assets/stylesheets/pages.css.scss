@@ -2,9 +2,9 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 html {width:100%; height:100%; }
-html,body{position:relative; background:url(/assets/bg-light.png) top center no-repeat ,  url(/assets/bg-shadow.png) bottom no-repeat , url(/assets/desk.png); -webkit-background-size: auto,cover,auto;  box-shadow:inset 2px 0px 100px rgba(0,0,0,0.4); width:100%; height:100%; overflow:hidden; }
-.index-logo { width:546px  ; height:132px  ; margin:50px  auto 10px ; text-indent:-1000em; overflow:hidden; background:url(/assets/new/logo.png) no-repeat; -webkit-background-size:567px 96px  ;}
-.index-slogan{width:540px  ; height:192px  ; margin:0  auto 50px ; text-indent:-1000em; overflow:hidden; background:url(/assets/new/slogan.png) no-repeat; -webkit-background-size:540px 192px  ;  }
+html,body{position:relative; background:url(/assets/bg-light.png) top center no-repeat ,  url(/assets/bg-shadow.png) bottom no-repeat , url(/assets/desk.png); background-size: auto,cover,auto;  box-shadow:inset 2px 0px 100px rgba(0,0,0,0.4); width:100%; height:100%; overflow:hidden; }
+.index-logo { width:546px  ; height:132px  ; margin:50px  auto 10px ; text-indent:-1000em; overflow:hidden; background:url(/assets/new/logo.png) no-repeat; background-size:567px 96px  ;}
+.index-slogan{width:540px  ; height:192px  ; margin:0  auto 50px ; text-indent:-1000em; overflow:hidden; background:url(/assets/new/slogan.png) no-repeat; background-size:540px 192px  ;  }
 .renrenlogin{ width:187.5px; height:36.5px; margin:20px auto; }
 .renrenlogin form { height:100%; width:100%;}
-.renrenlogin a {border:0px; display:block; width: 100%; height: 100%; background:url(/assets/new/renrenlogin.png) no-repeat; -webkit-background-size:100% 100% ; text-indent:-1000em;}
+.renrenlogin a {border:0px; display:block; width: 100%; height: 100%; background:url(/assets/new/renrenlogin.png) no-repeat; background-size:100% 100% ; text-indent:-1000em;}
