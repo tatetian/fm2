@@ -603,6 +603,7 @@ $(function(){
       var deltaX = $("#wholewrapper").width()/2 - $("#container").width()/2;
       if(deltaX >0)
           this.scroller.scrollTo(-deltaX, 0, 0);
+      
       //
       this.progressbar = new iScroll('line',{
           snap: 'strong',
@@ -613,6 +614,7 @@ $(function(){
           bounce:false,
           x: -$(".line").width()/this.numPages*(this.numPages-1),
           onScrollStart: function(){
+              if(that.timer!=null) clearTimeout(that.timer);
               $(".progress").addClass("change");
               $(".progress").attr("data-content",reader.fulltext.getCurrentPage()+1);
           },
@@ -625,9 +627,10 @@ $(function(){
                 $(".progress").attr("data-content",reader.fulltext.getCurrentPage()+1);
                 reader.zoom(reader.scale);
                 reader.viewport.scroller.enable();
-                setTimeout(function(){
+                if(that.timer!=null) clearTimeout(that.timer);
+                that.timer = setTimeout(function(){
                      $(".progress").removeClass("change");
-                },5000);                
+                },1000);                
           }
       });
       this.progressbar.currPageX = this.numPages-1;

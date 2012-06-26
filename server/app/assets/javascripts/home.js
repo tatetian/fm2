@@ -247,18 +247,52 @@ $(function(){
   }
 //================================== Tag's model ==============================
   var Tag = Backbone.Model.extend({
-    defaults: function() {
-      return {
-        name: "新建文件夹",
-        id: "fake-id-1"
-      };
+    initialize: function() {
+      if(!this.get('name'))
+        this.set('name', this._getDefaultName());
+    },
+    // Validate data before set and save
+    // if anything wrong, return something;
+    // otherwise nothing returned
+    validate: function(attrs) {
+      if(attrs.name && !this._isNameValid(attrs.name))
+        return 'tag name is not valid';
+    },
+    // Validate the name of a tag
+    _isNameValid: function(name) {
+      return true;
+    },
+    // Get a default name for a new tag
+    _getDefaultName: function() {        
+      var defaultName = '新建文件夹',
+          index = 0,
+          name = defaultName;
+      // Make sure this tag name is unique
+      if(this.collection) {
+        while( this.collection.isNameExisting(name) ) {
+          ++ index;
+          name = defaultName + index;
+        }
+      }
+      else
+        alert('null collection');
+      return name;
     }
   });
-  // debug
-  window.Tag = Tag;
   var TagList = Backbone.Collection.extend({
     model: Tag,
-    url: '/tags'
+    url: '/tags',
+    isNameExisting: function(name) {
+      name = name.toLowerCase();
+      var res = this.find(function(tag) {
+        return tag.get('name').toLowerCase() == name;
+      });
+      return (res != undefined);
+    },
+    // Sort tag list by a to z
+    comparator: function(tag) {
+      return tag.get('name');
+    }
   });
 //=============================== Metadata's model ============================
   var Metadata = Backbone.Model.extend({
@@ -460,6 +494,7 @@ $(function(){
     },
     template: _.template($('#folder-template').html()),
     initialize: function() {
+      this.id       = this.model.id || this.model.cid;
       // View to display titles in this folder
       this.titles   = new TitlesView({
                               collection: this.collection,//MetadataList
@@ -477,23 +512,40 @@ $(function(){
       console.debug('before');
       var $folderTitle  = $(e.target),
           $folder       = $folderTitle.parent();
-      $folder.attr('contenteditable', 'true');
-      $folderTitle.addClass('undraggable');
-      $folderTitle.focus();
+      $folderTitle//.attr('contenteditable', 'true')
+//                  .addClass('undraggable')
+                  .focus();
+//      delete e.target.contentEditable;
     },
     afterRenameFolder: function(e) {
       console.debug('after');
       var $folderTitle  = $(e.target),
           $folder       = $folderTitle.parent();
-      $folder.removeAttr('contentEditable');
-//      t.className = 'undraggable';
+      //$folderTitle.removeAttr('contentEditable');
+     //             .removeClass('double-clicked');
+      
+      alert(1);
+      var t = e.target;
+      t.className = 'to-be-undraggable';
+      t.removeAttribute('contentEditable');
+      this.model.set('name', t.innerHTML);
+      this.model.save();
     },
     render: function() {
+      var that = this;
       // render folder dom
       var json      = this.model.toJSON();
+      // For newly added folder, id can be undefined
+      json.id = this.id;
       this.$el.html(this.template(json));
-      this.$('.recent-box > div').on('dblclick',  this.beforeRenameFolder, this)
-                                 .on('blur',      this.afterRenameFolder,  this);
+      this.$('.recent-box > div').on('blur', function(e) {
+        var t = e.target;
+        t.className = 'to-be-undraggable';
+        t.removeAttribute('contentEditable');
+        if( that.model.set('name', t.innerHTML) ) {
+          that.model.save();
+        }
+      });
       // append titles to this folder
       var $titles   = this.titles.render().$el;
       this.$el.find('.titles').append($titles);
@@ -541,8 +593,8 @@ $(function(){
       addFmClick(this, '.add-tag > a',  this.newFolder);
     },
     newFolder: function() {
-      var newFolderModel = new Tag();
-      this.collection.add(newFolderModel, {beforeLast: true});
+//      var newFolderModel = new Tag({}, {collection: this.collection});
+      this.collection.create({}, {beforeLast: true});
       this.resize();
     },
     addFolder: function(model, that, options) {
@@ -634,7 +686,7 @@ $(function(){
   });
 //================================ Ajax Uploader ==============================
   function Uploader(folder) {
-    var id      = folder.model.get('id');
+    var id      = folder.id;
     // folder view that this uploader belongs to
     this.folder = folder;
     // plupload do the real work
@@ -709,6 +761,7 @@ $(function(){
         success: function() {
           this.metadataList.fetch({
             success: function() {
+              var target = null;
     //          that.tagList.length
               //debug
               that.scroller = new iScroll('my-folders-wrapper',{
@@ -730,17 +783,56 @@ $(function(){
                  that.folders.updateOpacity(that.scroller.x);
                 },
                 //force2D: true,
+                //  return true means drag is disabled
+                //  return false means drag is enabled
                 onBeforeScrollStart: function(e) {
-                  window.E = e;
-                  if(e.target.className == 'undraggable')
+                  var t = e.target;
+                                    //
+                                    //
+                  console.debug('onBeforeSCrollstart()');
+                  window.t1= target; window.t2 =t;
+                  if (target && target != t) {
+                    target.className = 'to-be-undraggable';
+                    target.removeAttribute('contentEditable');
+                    $(target).blur();
+                    target = null;
+                   // $(window).focus();
+                    return false;
+                  }
+                  // First click 
+                  //  'to-be-undraggable' --> 'undraggable'
+                  //  response to drag
+                  if(t.className == 'to-be-undraggable') {
+                    t.className = 'undraggable';
+                    t.contentEditable = 'true';
+
+                    setTimeout(function() {
+                      if(t.className != 'double-clicked') {
+                        t.className = 'to-be-undraggable';
+                        t.removeAttribute('contentEditable');
+                      }
+                    }, 250);
+                    e.preventDefault();
+                    return false;
+                  }
+                  // Second click within 250ms after first click
+                  //  default behaviour of a content-editable element
+                  else if(t.className == 'undraggable') {
+                    target = t;
+                    t.className = 'double-clicked';
+                    t.contentEditable = 'true';
                     return true;
-                  console.debug('scroll start prevent default');
-                  // prevent default behavriou like text selection, image dragging
-                  e.preventDefault();
-                  // not stop scroll handler
-                  return false;
+                  }
+                  else if(t.className == 'double-clicked') {
+                    window.target = target;
+                    return true;
+                  }
+                  else {
+                    e.preventDefault();
+                    return false;
+                  }
                 }
-              });
+             });
             }
           });
         }

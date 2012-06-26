@@ -87,8 +87,7 @@ height:38px;
   display:none;
   z-index: 35;
   box-shadow:0px 2px 4px rgba(0,0,0,0.3);
-  background:-webkit-linear-gradient( bottom ,#d5ccb4,#fff,#e7e5d8);
-
+  background:url(/assets/text-line.png) 10px 0px,-webkit-linear-gradient( bottom ,#d5ccb4,#fff,#e7e5d8);
 }
 .note-bar .note-info{
 padding:5px;
@@ -101,14 +100,18 @@ font-size:1em;
 padding:0px 5px;
 }
 .note-bar .text-area{
-width:80%;
-margin-left:10%;
-margin-right:10%;
+margin-top:5px;
+width:100%;
+height:100%;
+text-indent:2em;
 }
 .note-me{
 font-size:1.2em;
 }
 .text{
+width:100%;
+background-color:transparent;
+border:none;
 }
 
 
@@ -186,6 +189,7 @@ textarea {
   width: 260px;
   //overflow:hidden;
   float:left;
+ 
 }
 .note-pane ul{
   position:relative;
@@ -219,8 +223,15 @@ textarea {
   position:relative;
   line-height:25px;
   border-radius:5px;
-  border:1px solid #000;
   margin:3px 5px;
+  border-top:10px solid #81d7ff;
+  height:145px;
+  width:260px;
+  box-shadow:0px 2px 4px rgba(0,0,0,0.3);
+  background:url(/assets/text-line.png) 10px 0px,-webkit-linear-gradient( bottom ,#d5ccb4,#fff,#e7e5d8);
+  text-indent:2em;
+  text-align:baseline;
+
 }
 .bottom-toolbar{
 position:absolute;	
@@ -266,6 +277,21 @@ text-align:center;
 text-indent:-2px;
 z-index:1000;
 background:url(/assets/reading-pagination-icon.png)  no-repeat;
+
+}
+
+.progress::after{
+content:"1";
+display:block;
+float:right;
+width:32px; 
+height:35px;
+margin-top:-35px;
+margin-right:40px;
+color:#000;
+text-align:center;
+
+background:url(/assets/reading-pagination-icon.png) no-repeat;
 
 }
 .transparent{

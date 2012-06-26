@@ -35,8 +35,11 @@ class TagsController < ApplicationController
     _respond_tag_request tag 
   end
 
+  # Rename a tag
+  #   PUT /tags/<id>/
+  #   Request payload in JSON: {"name": <name>}
   def update
-    tag = curent_user.rename_tag params[:id], params[:name]
+    tag = current_user.rename_tag params[:id], params[:name]
     _respond_tag_request tag
   end
 
@@ -47,16 +50,15 @@ class TagsController < ApplicationController
         respond_to do |format| 
             format.html { head :no_content }
             format.json {
-              response = { :tag => tag }
-              json = ActiveSupport::JSON.encode response
-              render :json => json
+              tag_json = ActiveSupport::JSON.encode tag
+              render :json => tag_json
             }
         end        
     else
         respond_to do |format| 
             format.html { head :no_content }
             format.json { 
-              response = { :error => true, :tag => tag }
+              response = { :error => true }
               json = ActiveSupport::JSON.encode response
               render :json => json
             }
