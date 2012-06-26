@@ -8,7 +8,6 @@ html, body {
   width: 100%; 
   height:100%; 
   overflow:   hidden; 
-  background: url(/assets/desk.png);
   font-family: "arial" "微软雅黑";
 }
 .topbar {
@@ -23,9 +22,9 @@ html, body {
   background-size: cover, auto;
   box-shadow: inset 2px 0px 100px rgba(0,0,0,0.4); 
   z-index: 5000;
-  box-shadow: 0px 0px 30px 5px rgba(93, 13, 9, 0.47), 
-              inset 0px -4px 5px 1px rgba(255, 199, 139, 0.55),
-              0px 5px 10px 2px rgba(248, 126, 97, 0.1);
+  box-shadow: 0px 0px 30px 5px rgba(1, 40, 67, 0.9), 
+              inset 0px -4px 5px 1px rgba(80, 47, 11, 0.7),
+              0px 5px 15px 2px rgba(248, 126, 97, 0.19);
 }
 .topbar > .wrapper  { width: 89%; margin: 0 auto;color:#783d1d;  position:relative;}
 .one-column { height: 100%; float: left;  }
@@ -431,10 +430,11 @@ border:none;
 #tinycontent{background:#ffffff; font-size:1em;}
 
 .desktop { position: absolute; left: 0px; top: 56px; right: 0px; bottom: 0px ; overflow: hidden;
-  background: url(/assets/bg-light.png) top center no-repeat,  
-              url(/assets/bg-shadow.png) bottom no-repeat; 
-  background-size: auto,cover;
-  box-shadow: inset 2px 0px 100px rgba(68,21,4,0.5); 
+/*  background: url(/assets/bg-light.png) top center no-repeat,  
+              url(/assets/bg-shadow.png) bottom no-repeat; */
+  background-size: cover;
+/*  box-shadow: inset 2px 0px 100px rgba(68,21,4,0.5); */
+  background: url(/assets/new/ios-bg.png) no-repeat center;
 }
 .folders-wrapper { width: 89%; height: 100%; margin: 0 auto; }
 .folders { float: left; width: 100%; height: 100%; overflow: hidden; } /* the width will be determined at runtime*/
