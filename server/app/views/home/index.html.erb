@@ -36,6 +36,31 @@
         </ul>
       </div>
     </div>
+    
+    <div class="icon setting">
+      setting
+    </div>
+    <div class="icon drawer-shadow">
+      shadow    
+    </div>  
+  </div>
+</div>
+<div class="edit-topbar">
+  <p>已经选择<span>3</span>文章<span>0</span>个文件夹</p>
+
+  <div class="edit-btn">
+    <span class="edit-del">delete</span>
+  </div>
+
+  <form  class=" " >
+    <input  class="del-confirm" type="button" value="确定删除" />
+    <input  class="del-cancle" type="button" value="cancle"  />
+  </form>
+</div>
+<div class="drawer">
+  <div class="icon edit">
+  </div>
+  <div class="icon logout">
   </div>
 </div>
 <div class="desktop">
@@ -49,11 +74,11 @@
     </div>
   </div>
 </div>
-<script type="template" id="folder-template">
+<script type="text/template" id="folder-template">
   <div class="tag-nav">
     <div id="papers-<%%= id %>" class="papers">
       <ul>
-        <div id="uploader-<%%= id %>"class="index-upload">
+        <div id="uploader-<%%= id %>" class="index-upload">
         </div>
         <div class="titles">
         </div>
@@ -66,10 +91,13 @@
     <!-- Set undraggable as true so that we make sure 
         iScroll ignores this element   -->
     <div class="to-be-undraggable"><%%= name %></div>
+    <div class="box-edit" >
+    <span class="box-del"> delete</span>
+    </div>
   </div>
 </script>
 <script type="text/template" id="title-template">
-  <div style="position: relative; width: 87.5%; height: 100%; margin: 0 5.5% 0 7%;" data-id="<%%= id%>">
+  <div style="position: relative; width: 87.5%; height: 100%; margin: 0 5.5% 0 7%;" data-id="<%%= id %>">
     <%% if(progress < 0) { %>
       <span class="star star-<%%= yellow_or_white %>"></span>
       <%% if(isIDevice) { %>

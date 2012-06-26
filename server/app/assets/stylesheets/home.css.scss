@@ -27,7 +27,7 @@ html, body {
               inset 0px -4px 5px 1px rgba(255, 199, 139, 0.55),
               0px 5px 10px 2px rgba(248, 126, 97, 0.1);
 }
-.topbar > .wrapper  { width: 89%; margin: 0 auto;color:#783d1d; }
+.topbar > .wrapper  { width: 89%; margin: 0 auto;color:#783d1d;  position:relative;}
 .one-column { height: 100%; float: left;  }
 //.topbar > .one-column:first-child { margin-left: 5.5%; }
 .topbar .one-column > .wrapper { margin: 3px auto; width: 94%; height: 50px; position: relative;}
@@ -196,6 +196,139 @@ html, body {
     .users-myfriends li.clicked {height:56px; width:180px;  background:url(/assets/new/left-bar-list.png) no-repeat; background-size:180px 56px;}
     .users-myfriends li img { display:inline-block;  height:35px;width:35px; margin:8px;position:relative; left:8px;}
     .users-myfriends li span{ display:block; position:absolute; left:70px; top:16px; color: white; font-family: "arial" "微软雅黑";}
+
+
+.topbar .icon{
+  text-indent:-9999em;
+  overflow:hidden;
+}
+.topbar .setting{
+  position:absolute;
+  width:32px;
+  height:32px;
+  float:right;
+  top:10px;
+  right:16px;
+  background:url(/assets/new/gear.png) no-repeat;
+  background-size:cover;
+  z-index:1000;
+  opacity:1;  
+}
+.topbar .drawer-shadow{
+  position:absolute;
+  width:80px;
+  height:10px;
+  float:right;
+  bottom:-10px;
+  right:0;
+  background:url(/assets/new/drawer-shadow.png) no-repeat;
+  background-size:cover;
+  z-index:1000;  
+}
+
+.drawer{
+  position:absolute;
+  width:80px;
+  height:190px;
+  float:right;
+  top:16px;
+  right:0px;
+  background:url(/assets/new/drawer.png) no-repeat;
+  background-size:cover;
+  z-index:1;  
+}
+.drawer .edit{
+  position:relative;
+  width:28px;
+  height:28px;
+  top:50px;
+  left:32px;
+  background:url(/assets/new/edit.png) no-repeat; 
+}
+
+.drawer .logout{
+  position:relative;
+  width:24px;
+  height:36px;
+  top:70px;
+  left:35px;
+  background:url(/assets/new/logout.png) no-repeat; 
+}
+.edit-topbar{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 56px;
+  background: rgba(82,32,17,0.85); 
+  background-size: cover, auto;
+  box-shadow: inset 2px 0px 100px rgba(0,0,0,0.4); 
+  z-index: 6000;
+  box-shadow: 0px 0px 30px 5px rgba(93, 13, 9, 0.47), 
+          
+              0px 5px 10px 2px rgba(248, 126, 97, 0.1);
+  display:auto;
+}
+.edit-topbar p{
+position:relative;
+left:10%;
+line-height:56px;
+height:56px;
+font-size:16px ;
+font-family:"SinHei" ;
+color:#fff;
+letter-spacing:2px;
+}
+.edit-topbar p span{
+color:red;
+font-family:"arial";
+font-size:20px;
+font-weight:600px; 
+}
+
+.edit-topbar .edit-btn{
+position:absolute;
+height:40px;
+width:50px;
+left:0px;
+right:0px;
+margin:0 auto;
+top:8px;
+color:#fff;
+background:url(/assets/new/garbage-menu.png) no-repeat;
+text-indent:-9999em;
+}
+
+
+.edit-topbar form{
+position:absolute;
+float:right;
+right:20px;
+top:13px;
+height:30px;
+width:120px;
+}
+.edit-topbar .del-confirm{
+display:block;
+float:left;
+padding:3px;
+border-radius:3px;
+border:none;
+
+}
+.edit-topbar .del-cancle{
+position:relative;
+top:2px;
+display:block;
+float:right;
+text-indent:-999em;
+width:20px;
+height:20px;
+background:url(/assets/new/cross-icon.png) no-repeat;
+border:none;
+
+}
+
 /*top --end!!templates*/
 
 .tag-nav{ position:absolute;top:0px; bottom:0px;  width:100%;height:100%; overflow: hidden;}
@@ -256,6 +389,17 @@ html, body {
     .more-bg img{height:100%; position: relative; width:100%; }
 .recent-box{ position:absolute; bottom:0px;  width:100%; height:96px; background:url(/assets/new/tag-box.png) no-repeat center top; background-size: 100% 100%; white-space: nowrap; }
     .recent-box > div {position: absolute; width:89%; left: 5.5%; margin: 0 auto;top:52px; text-align:center;  font-size:20px; font-weight:200; color:#630 ; line-height: 150%; }
+    .recent-box .box-del{
+     position:absolute;
+     width:20px;
+     height:24px;
+     background:url(/assets/new/garbage.png) no-repeat;
+     left:25%;
+    
+     text-indent:-9999em;
+     
+     
+     }
     .tag-more a{ display:block;width:100%; text-align:center; position:relative; top:30px;}
     .tag-more a img{ width:28px;height:6px;}
 
