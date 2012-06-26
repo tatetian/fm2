@@ -77,7 +77,8 @@ class MetadataController < ApplicationController
         # doc hash
         hash = _doc_hash(tmp_pdf_file)         
         # parse file
-        doc_text = %x[app/tools/pdf2json #{tmp_pdf_file}] 
+        pdf2json = Rails.root.join 'app/tools/pdf2json'
+        doc_text = %x[#{pdf2json} #{tmp_pdf_file}] 
         # save text
         tmp_text_file = [tmp_dir, "text.json"].join("/")
         File.open(tmp_text_file, 'wb') do |file|
@@ -135,7 +136,8 @@ class MetadataController < ApplicationController
               user.add_log! log
               # save png
               #%x[app/tools/pdf2png "#{tmp_pdf_file}" 150 "#{tmp_dir}"]
-              Process.spawn 'app/tools/pdf2png', (final_dir.to_s + "/uploaded.pdf"), "150", final_dir.to_s
+              pdf2png = Rails.root.join 'app/tools/pdf2png'
+              Process.spawn pdf2png.to_s, (final_dir.to_s + "/uploaded.pdf"), "150", final_dir.to_s
           else
             render :json => '{"error":"failed3"}'
           end
