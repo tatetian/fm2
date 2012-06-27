@@ -900,6 +900,51 @@ $(function(){
       this.$el.html(this.template(json));
     }
   });
+//==============================Deleting Mode==================================
+  var Drawer = Backbone.View.extend({
+    el: ".drawer",
+    opened: false,
+    initialize: function() {
+      var that = this;
+      that.editTopbar = new EditTopbar();
+      // Open drawer
+      $('.topbar .setting').click(function() {
+        that.opened ? that.close() : that.open();
+      });
+      // Click edit button
+      this.initButton('.edit', function() {
+        that.editTopbar.show();
+        that.close();
+      });
+      // Click logout button
+      this.initButton('.logout', function() {
+      });
+    },
+    initButton: function(selector, callback) {
+      this.$(selector).click(callback);
+    },
+    open: function() {
+      this.$el.addClass('open');
+    },
+    close: function() {
+      this.$el.removeClass('open');
+    }
+  });
+  var EditTopbar = Backbone.View.extend({
+    el: '.edit-topbar',
+    initialize: function() {
+      var that = this;
+      that.$('.del-cancle').click(function() {
+        that.hide();
+      });
+    },
+    show: function() {
+      this.$el.addClass('show');
+    },
+    hide: function() {
+      this.$el.removeClass('show');      
+    }
+  });
 //=============================================================================
   var manager = new Manager();
   window.manager = manager;
@@ -909,7 +954,7 @@ $(function(){
     friends: myFriends, 
     papers: manager.metadataList
   });
-
+  var drawer = new Drawer();
   friendsView.render();
   myinfoView.render();
   myFriends.fetch();

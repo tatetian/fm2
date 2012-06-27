@@ -33,9 +33,9 @@ html, body {
   .my-head {
     position: absolute;
     left: 0px;
-    top: 2px;
-    width: 46px;
-    height: 46px;
+    top: 5px;
+    width: 40px;
+    height: 40px;
   }
   .my-head > img {
     height: 100%;
@@ -197,9 +197,10 @@ html, body {
     .users-myfriends li span{ display:block; position:absolute; left:70px; top:16px; color: white; font-family: "arial" "微软雅黑";}
 
 
-.topbar .icon{
+.icon{
   text-indent:-9999em;
   overflow:hidden;
+  cursor: pointer;
 }
 .topbar .setting{
   position:absolute;
@@ -218,7 +219,7 @@ html, body {
   width:80px;
   height:10px;
   float:right;
-  bottom:-10px;
+  top:56px;
   right:0;
   background:url(/assets/new/drawer-shadow.png) no-repeat;
   background-size:cover;
@@ -230,11 +231,18 @@ html, body {
   width:80px;
   height:190px;
   float:right;
-  top:16px;
-  right:0px;
+  top:-110px;
+  right:5.5%;
   background:url(/assets/new/drawer.png) no-repeat;
   background-size:cover;
   z-index:1;  
+  -webkit-transition: top 400ms ease-in-out;
+  -moz-transition: top 400ms ease-in-out;
+  -o-transition: top 400ms ease-in-out;
+  transition: top 400ms ease-in-out;
+}
+.drawer.open {
+  top: 16px;
 }
 .drawer .edit{
   position:relative;
@@ -242,6 +250,9 @@ html, body {
   height:28px;
   top:50px;
   left:32px;
+  background:url(/assets/new/edit.png) no-repeat; 
+}
+.drawer .edit .active{
   background:url(/assets/new/edit.png) no-repeat; 
 }
 
@@ -259,18 +270,27 @@ html, body {
   left: 0px;
   width: 100%;
   height: 56px;
-  background: rgba(82,32,17,0.85); 
+  background: rgba(82,32,17,0.85);
+  background: rgba(0,0,0,0.8); 
+ 
   background-size: cover, auto;
   box-shadow: inset 2px 0px 100px rgba(0,0,0,0.4); 
   z-index: 6000;
-  box-shadow: 0px 0px 30px 5px rgba(93, 13, 9, 0.47), 
+  display: none;
+  opacity: 0;
+  -webkit-transition: opacity 400ms linear;
+  /**box-shadow: 0px 0px 30px 5px rgba(93, 13, 9, 0.47), 
           
               0px 5px 10px 2px rgba(248, 126, 97, 0.1);
-  display:auto;
+  display:auto;*/
+}
+.edit-topbar.show {
+  display: block;
+  opacity: 1;
 }
 .edit-topbar p{
 position:relative;
-left:10%;
+left:5.5%;
 line-height:56px;
 height:56px;
 font-size:16px ;
@@ -302,10 +322,10 @@ text-indent:-9999em;
 .edit-topbar form{
 position:absolute;
 float:right;
-right:20px;
+right:5.5%;
 top:13px;
 height:30px;
-width:120px;
+width:130px;
 }
 .edit-topbar .del-confirm{
 display:block;
@@ -320,6 +340,7 @@ position:relative;
 top:2px;
 display:block;
 float:right;
+right:20px;
 text-indent:-999em;
 width:20px;
 height:20px;
@@ -393,7 +414,7 @@ border:none;
      width:20px;
      height:24px;
      background:url(/assets/new/garbage.png) no-repeat;
-     left:25%;
+     left:5%;
     
      text-indent:-9999em;
      

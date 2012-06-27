@@ -237,7 +237,7 @@ iScroll.prototype = {
       // Modified by Hongliang Tian
       //  right: 6%
 			if (that.options.scrollbarClass) bar.className = that.options.scrollbarClass + dir.toUpperCase();
-			else bar.style.cssText = 'position:absolute;z-index:10000;' + (dir == 'h' ? 'height:5px;bottom:4px;left:2px;right:' + (that.vScrollbar ? '7' : '2') + 'px' : 'width:5px;bottom:' + (that.hScrollbar ? '7' : '2') + 'px;top:2px;right:6%;');
+			else bar.style.cssText = 'position:absolute;z-index:10000;' + (dir == 'h' ? 'height:5px;bottom:4px;left:2px;right:' + (that.vScrollbar ? '7' : '2') + 'px' : 'width:5px;bottom:' + (that.hScrollbar ? '7' : '2') + 'px;top:2px;right:6%;margin-right: 5px;');
 
 			bar.style.cssText += ';pointer-events:none;-' + vendor + '-transition-property:opacity;-' + vendor + '-transition-duration:' + (that.options.fadeScrollbar ? '350ms' : '0') + ';overflow:hidden;opacity:' + (that.options.hideScrollbar ? '0' : '1');
 
@@ -250,7 +250,7 @@ iScroll.prototype = {
         // Modified by Hongliang Tian
         //    border: none
         //    background: rgba(0, 0, 0, 0.4)
-				bar.style.cssText = 'position:absolute;z-index:10000;background:rgba(40,40,40,.45);border:none;-' + vendor + '-background-clip:padding-box;-' + vendor + '-box-sizing:border-box;' + (dir == 'h' ? 'height:100%' : 'width:100%') + ';-' + vendor + '-border-radius:3px;border-radius:3px';
+				bar.style.cssText = 'position:absolute;z-index:10000;background:rgba(40,40,40,0.55);border:none;-' + vendor + '-background-clip:padding-box;-' + vendor + '-box-sizing:border-box;' + (dir == 'h' ? 'height:100%' : 'width:100%') + ';-' + vendor + '-border-radius:3px;border-radius:3px';
 			}
 			bar.style.cssText += ';pointer-events:none;-' + vendor + '-transition-property:-' + vendor + '-transform;-' + vendor + '-transition-timing-function:cubic-bezier(0.33,0.66,0.66,1);-' + vendor + '-transition-duration:0;-' + vendor + '-transform:' + trnOpen + '0,0' + trnClose;
 			if (that.options.useTransition) bar.style.cssText += ';-' + vendor + '-transition-timing-function:cubic-bezier(0.33,0.66,0.66,1)';
