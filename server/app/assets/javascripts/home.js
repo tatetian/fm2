@@ -244,6 +244,9 @@ $(function(){
       if (x == e.screenX && y == e.screenY)
         callback.call(this, e);
     };
+    view.$el.on('fmClick', selector, function(e) {
+      callback.call(view, e);
+    });
   }
 //================================== Tag's model ==============================
   var Tag = Backbone.Model.extend({
@@ -407,11 +410,19 @@ $(function(){
   var TitleView = Backbone.View.extend({
     tagName: 'li',
     initialize: function() {
+      this.titles = this.options.titles;
+
       addFmClick(this, 'a.ml20',  this.viewPaper);
-      addFmClick(this, '.star',   this.clickStar);
+      addFmClick(this, '.star',   this.clickLeftBtn);
       addFmClick(this, '.tag-color',  this.clickColor);
 
       this.model.on('change', this.render, this);
+      
+      this.model.on('remove', function() {
+        this.remove();
+        this.model.destroy();
+        this.titles.folder.resize();
+      }, this);
     },
     events: {
     // 'longTap .title': 'viewPaper'
@@ -435,6 +446,29 @@ $(function(){
     viewPaper: function() {
   //    alert('viewPaper: this is ' + this);
       window.open('/fulltext/' + this.model.get('docid'), '_newtab');
+    },
+    clickLeftBtn: function(e) {
+      if(editor.opened)
+        return this.clickBin(e);
+      else
+        return this.clickStar(e);
+    },
+    clickBin: function(e) {
+      var del = e.data ? e.data.del : undefined ; 
+      if(del == undefined) {
+        this.$el.hasClass('clicked') ?
+          del = false :
+          del = true ;
+      }
+      if(del == true) {
+        this.$el.addClass('clicked');
+        editor.papers.add(this.model);
+      }
+      else {
+        this.$el.removeClass('clicked');
+        editor.papers.remove(this.model, {silent: true});
+        editor.render();
+      }
     },
     clickStar: function(e) {
       var $t      = $(e.target),
@@ -470,7 +504,7 @@ $(function(){
       var json = model.toJSON();
       var folderName = this.folder.getName();
       if(json.tags.indexOf(folderName) >= 0) {
-        var titleView = new TitleView({model: model}),
+        var titleView = new TitleView({model: model, titles: this}),
             newEl     = titleView.render().el;
         if(options != undefined && options.at == 0)
           this.$el.prepend(newEl);
@@ -491,6 +525,19 @@ $(function(){
     tagName: 'li',
     className: 'folder one-column',
     events: {
+      'click .box-del': function() {
+        this.$el.toggleClass('clicked');
+        var del = this.$el.hasClass('clicked');
+        this.$('.star').trigger('fmClick', {
+          del: del
+        });
+        if(del) 
+          editor.folders.add(this.model);
+        else {
+          editor.folders.remove(this.model, {silent: true});
+          editor.render();
+        }
+      }
     },
     template: _.template($('#folder-template').html()),
     initialize: function() {
@@ -501,35 +548,19 @@ $(function(){
                               folder: this });
       // Handle upload event
       this.uploader = new Uploader(this);
-
-      this.bind('resize', this.onResize);
+      //
+      this.model.on('remove', function() {
+        this.remove();
+        this.model.destroy();
+        var items = manager.folders.items,
+            pos   = items.indexOf(this);
+        if(pos >= 0)
+          items.splice(pos, 1);
+        manager.folders.resize();
+      }, this);
     },
     getName: function() {
       return this.model.get('name');
-    },
-    beforeRenameFolder: function(e) {
-//      e.target.contentEditable = true;  
-      console.debug('before');
-      var $folderTitle  = $(e.target),
-          $folder       = $folderTitle.parent();
-      $folderTitle//.attr('contenteditable', 'true')
-//                  .addClass('undraggable')
-                  .focus();
-//      delete e.target.contentEditable;
-    },
-    afterRenameFolder: function(e) {
-      console.debug('after');
-      var $folderTitle  = $(e.target),
-          $folder       = $folderTitle.parent();
-      //$folderTitle.removeAttr('contentEditable');
-     //             .removeClass('double-clicked');
-      
-      alert(1);
-      var t = e.target;
-      t.className = 'to-be-undraggable';
-      t.removeAttribute('contentEditable');
-      this.model.set('name', t.innerHTML);
-      this.model.save();
     },
     render: function() {
       var that = this;
@@ -582,13 +613,24 @@ $(function(){
   var FoldersView = Backbone.View.extend({
     el: '.folders-wrapper',
     optimalSize: 400,       /* optimal size for one folder */
+    mode: 'normal',
     initialize: function() {
       var that = this;
       this.metadataList = this.options.metadataList;
       this.collection.bind('add', this.addFolder, this);
       this.collection.bind('reset', this.resetFolders, this);
       this.items = new Array();
-      $(window).resize(function() { that.resize(); });
+
+      var lastW, lastH;
+      $(window).resize(function() { 
+        var w = $(window).width(),
+            h = $(window).height();
+        if(lastW != w || lastH != h) {
+          lastW = w;
+          lastH = h;
+          that.resize(); 
+        }
+      });
 
       addFmClick(this, '.add-tag > a',  this.newFolder);
     },
@@ -906,14 +948,13 @@ $(function(){
     opened: false,
     initialize: function() {
       var that = this;
-      that.editTopbar = new EditTopbar();
       // Open drawer
       $('.topbar .setting').click(function() {
         that.opened ? that.close() : that.open();
       });
       // Click edit button
       this.initButton('.edit', function() {
-        that.editTopbar.show();
+        editor.open();
         that.close();
       });
       // Click logout button
@@ -924,25 +965,71 @@ $(function(){
       this.$(selector).click(callback);
     },
     open: function() {
+      this.opened = true;
       this.$el.addClass('open');
     },
     close: function() {
+      this.opened = false;
       this.$el.removeClass('open');
     }
   });
-  var EditTopbar = Backbone.View.extend({
+  var Editor = Backbone.View.extend({
     el: '.edit-topbar',
+    opened: false,
+    template: _.template($('#delete-info-template').html()),
+    folders: new TagList(),
+    papers: new MetadataList(),
     initialize: function() {
       var that = this;
-      that.$('.del-cancle').click(function() {
-        that.hide();
+      that.$('.del-cancel').click(function() {
+        that.close();
       });
+      that.$('.del-confirm').click(function() {
+        manager.metadataList.remove(that.papers.models);
+//        that.papers.models.forEach(function(metadata) {
+//          metadata.destroy();
+        //});
+        manager.tagList.remove(that.folders.models);
+        that.close();
+      });
+      // Listen to event that updates counter
+      this.folders.bind('add',    this.render, this)
+                  .bind('remove', this.render, this)
+                  .bind('reset',  this.render, this);
+      this.papers .bind('add',    this.render, this)
+                  .bind('remove', this.render, this)
+                  .bind('reset',  this.render, this);
     },
-    show: function() {
+    papersNum: 0,
+    foldersNum: 0,
+    render: function() {
+      var json = {
+        papersNum: this.papers.size(),
+        foldersNum: this.folders.size()
+      };
+      this.$('p').html(this.template(json));
+      return this.$el;
+    },
+    open: function() {
+      // Remember the status
+      this.opened = true;
+      // Reset collections
+      this.folders.reset();
+      this.papers.reset();
+      // Render element
+      this.render();
+      // Show UI of editor
       this.$el.addClass('show');
+      // Show folders in edit mode
+      manager.folders.$el.addClass('deletable');
     },
-    hide: function() {
-      this.$el.removeClass('show');      
+    close: function() {
+      // Remember the status
+      this.opened = false;
+      // Hide UI of editor
+      this.$el.removeClass('show');
+      // Show folders in normal mode
+      manager.folders.$el.removeClass('deletable');
     }
   });
 //=============================================================================
@@ -955,6 +1042,7 @@ $(function(){
     papers: manager.metadataList
   });
   var drawer = new Drawer();
+  var editor = new Editor();
   friendsView.render();
   myinfoView.render();
   myFriends.fetch();

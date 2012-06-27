@@ -1,5 +1,7 @@
 body{
-background:url(/assets/desk.png);
+background: url(/assets/new/ios-bg.png) no-repeat center;
+background-size:cover;
+/***background:url(/assets/desk.png);***/
 height:100%;
 width:100%;
   overflow: hidden;
@@ -12,10 +14,10 @@ font-family:"arial" "微软雅黑" ;
   overflow:hidden;
   /* 16px is the base font size of everything in viewport*/
   font-size: 16px;
- background: url(/assets/bg-light.png) top center no-repeat,  
-              url(/assets/bg-shadow.png) bottom no-repeat; 
+ /***background: url(/assets/bg-light.png) top center no-repeat,  
+              url(/assets/bg-shadow.png) bottom no-repeat; ***/
   background-size: auto,cover;
-  box-shadow: inset 2px 0px 100px rgba(68,21,4,0.5);
+  /**box-shadow: inset 2px 0px 100px rgba(68,21,4,0.5);****/
 }
 .multi-image img{
 box-shadow:4px 0px 10px rgba(0,0,0,0.15),-4px 0px 10px rgba(0,0,0,0.15),0px 4px 10px rgba(0,0,0,0.15),0px -4px 10px rgba(0,0,0,0.15);
@@ -87,6 +89,7 @@ height:38px;
   z-index: 35;
   box-shadow:0px 2px 4px rgba(0,0,0,0.3);
   background:url(/assets/text-line.png) 10px 0px,-webkit-linear-gradient( bottom ,#d5ccb4,#fff,#e7e5d8);
+  
 }
 .note-bar .note-info{
 padding:5px;
@@ -116,13 +119,16 @@ border:none;
 
 .conf-btn{
 display:block;
-border:1px solid;
-width:35px;
+width:30px;
 overflow:hidden;
-height:30px;
 float:right;
-margin-right:10px;
+font-size:0.8em;
+padding:3px;
+margin:5px 10px;
 cursor:pointer;
+color:grey;
+border-radius:3px;
+background-color:#81d7ff;
 }
 .cancel-btn{
 position:absolute;
@@ -221,25 +227,40 @@ textarea {
 }
 .note-area {
   position:relative;
-  line-height:31px;
+  line-height:24px;
   border-radius:5px;
   margin:3px 5px;
   border-top:10px solid #81d7ff;
   //height:145px;
   width:260px;
   box-shadow:0px 2px 4px rgba(0,0,0,0.3);
-  background:url(/assets/text-line.png) 10px 0px,-webkit-linear-gradient( bottom ,#d5ccb4,#fff,#e7e5d8);
+  background:url(/assets/text-line.png) 10px 0px,-webkit-linear-gradient( bottom ,#d5ccb4,#fff,#e7e5d8) ;
+  -webkit-background-size:4px 24px,100% 100%;
   text-align:baseline;
   padding:0 5px;
+  font-size:0.8em;
 }
 .bottom-toolbar{
 position:absolute;	
 height:35px;
 bottom:0px;
 width:100%;
+overflow:visible;
+background-color:rgba(255,255,255,0);
+}
+.toolbar-wrapper{
+position:absolute;	
+height:35px;
+top:30px;
+width:100%;
 background:url(/assets/reading-bottom-bg.png) repeat-x;
 overflow:visible;
+-webkit-transition:top 400ms ease-in-out;
 }
+.bottom-toolbar:hover .toolbar-wrapper{
+top:0px;
+}
+
 
 .line{
 position:relative;

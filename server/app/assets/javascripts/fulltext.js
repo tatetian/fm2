@@ -575,7 +575,7 @@ $(function(){
         pages[0].show();
       // render viewport
       $('#hwrapper').width(reader.fulltext.getWidth()/16+'em');
-      $('#container').height(($(window).height()-35)/16+'em');
+      $('#container').height(($(window).height())/16+'em');
        $("#wholewrapper").width(reader.fulltext.getWidth()*reader.scale+520);
       //$('#wholewrapper').width( $('#hwrapper').width+2* $('.note-pane').width+'px');
       //$('#hwrapper').css({'margin-left': $('.note-pane').width+'px'});
@@ -1035,8 +1035,19 @@ window.bb = this.boundingBox;
   var width = document.documentElement.clientWidth;
   var height = document.documentElement.clientHeight;
   var scheight = $(".line").width();
+
+
+  var lastW, lastH;
   $(window).resize(function(){
-      $("#container").height(document.documentElement.clientHeight-$(".bottom-toolbar").height());
+      var w = $(window).width(),
+          h = $(window).height();
+      if(lastW == w && lastH == h) {
+        return;
+      }
+      lastW = w;
+      lastH = h;
+
+      $("#container").height(document.documentElement.clientHeight);
       reader.viewport.scroller.refresh();
       var deltaX = $("#wholewrapper").width()/2 - $("#container").width()/2;
       if(deltaX >0){

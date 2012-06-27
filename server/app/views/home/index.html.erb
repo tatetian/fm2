@@ -46,7 +46,7 @@
   </div>
 </div>
 <div class="edit-topbar">
-  <p>已经选择<span>3</span>文章<span>0</span>个文件夹</p>
+  <p></p>
 
   <div class="edit-btn">
     <span class="edit-del">delete</span>
@@ -54,7 +54,7 @@
 
   <form  class=" " >
     <input  class="del-confirm" type="button" value="确定删除" />
-    <input  class="del-cancle" type="button" value="cancle"  />
+    <input  class="del-cancel" type="button" value="cancel"  />
   </form>
 </div>
 <div class="drawer">
@@ -126,6 +126,9 @@
   <div class="my-info-name"><%= @name %></div>
   <div class="my-info-papers"><%%= papersNum %></div>
   <div class="my-info-friends"><%%= friendsNum %></div>
+</script>
+<script type="text/template" id="delete-info-template">
+  <p>已经选择<span><%%= papersNum %></span>篇文献和<span><%%= foldersNum %></span>个文件夹</p>
 </script>
 <script>
     isIDevice = (/iphone|ipad/gi).test(navigator.appVersion);
