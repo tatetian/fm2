@@ -7,6 +7,7 @@ class FulltextController < ApplicationController
       @paper_id = paper.id
       user = current_user
       @user_id = user.id
+      @name = user.name
       @headurl = user.headurl
       #redirect_to home_path, notice: "You don't have this paper." unless current_user.has_metadata? params
   end 
