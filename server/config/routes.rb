@@ -27,7 +27,7 @@ Server::Application.routes.draw do
 
   match 'renren/logout', :controller=> 'renren', :action=>"logout"
   
-  match '/signout', to: 'renren#destroy', via: :delete
+  match '/signout', to: 'renren#logout', via: :delete
   
   resources :renren, only: [:destroy]
 
