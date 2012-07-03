@@ -959,6 +959,13 @@ $(function(){
       });
       // Click logout button
       this.initButton('.logout', function() {
+          $.ajax({
+                url:"/signout",
+                type: "delete",
+                success: function() {
+                    location.href = "/";
+                }
+            });
       });
     },
     initButton: function(selector, callback) {
