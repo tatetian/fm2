@@ -161,6 +161,6 @@ class MetadataController < ApplicationController
         require 'digest/sha1'
         Digest::SHA1.hexdigest(File.read(f)).to_s
 
-        Random.rand(2**31-1).to_s
+        #Random.rand(2**31-1).to_s
       end
 end
