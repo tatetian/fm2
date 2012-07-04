@@ -445,7 +445,8 @@ $(function(){
     },
     viewPaper: function() {
   //    alert('viewPaper: this is ' + this);
-      window.open('/fulltext/' + this.model.get('docid'), '_newtab');
+      var id = this.model.get('docid');
+      window.open('/fulltext/' + id, '_newtab_'+id);
     },
     clickLeftBtn: function(e) {
       if(editor.opened)
