@@ -52,24 +52,50 @@ class MetadataController < ApplicationController
       end
     end
 
+    # To create a metadata, the user must
+    #   upload the file
+    # or
+    #   give a SHA-1 hash that corresponds to an existing file on server
     def create
-      # Save file into temp folder
-      uploaded_io = params[:file]
-      #   Make a temp dir
-      require 'uuidtools'
-      tmp_dir     = UUIDTools::UUID.timestamp_create.to_s + "-" + UUIDTools::UUID.random_create.to_s
-      tmp_dir     = Rails.root.join 'public', 'uploads', 'tmp', tmp_dir
-      Dir.mkdir   tmp_dir
-      #   Save the uploaded file to temp dir
-      tmp_file_name = [tmp_dir, "uploaded.pdf"].join("/")
-      tmp_file    = File.open(tmp_file_name, 'wb')
-      tmp_file.write(uploaded_io.read)
-      tmp_file.close
-      # Cal hash of doc
-      hash = _doc_hash(tmp_file_name)         
-      # Get current user
+      # At least one parameter must be given
+      if params[:sha1] == nil and params[:file] == nil
+        render :json => {}
+        return
+      end
+
+      # Init variables
+      #   The SHA-1 value calculated by the client
+      sha1        = params[:sha1]
+      #   Given SHA-1 hash value, ignore params[:file]
+      uploaded_io = ( sha1 != nil ? nil : params[:file] )
+      #   Get current user
       user = current_user
-      @paper = Paper.find_by_docid hash
+      
+      if sha1 == nil
+        # Save file into temp folder
+        #   Make a temp dir
+        require 'uuidtools'
+        tmp_dir     = UUIDTools::UUID.timestamp_create.to_s + "-" + UUIDTools::UUID.random_create.to_s
+        tmp_dir     = Rails.root.join 'public', 'uploads', 'tmp', tmp_dir
+        Dir.mkdir   tmp_dir
+        #   Save the uploaded file to temp dir
+        tmp_file_name = [tmp_dir, "uploaded.pdf"].join("/")
+        tmp_file    = File.open(tmp_file_name, 'wb')
+        tmp_file.write(uploaded_io.read)
+        tmp_file.close
+        # Cal hash of doc
+        hash = Paper.calculate_uuid tmp_file_name
+        @paper = Paper.find_by_docid hash
+      else
+        @paper = Paper.find_by_sha1 sha1
+        # Can't find a corresponding paper
+        # This should not happen
+        if @paper == nil
+          render :json => {}
+          return
+        end
+      end
+
       new_upload = false
       # If the paper has not uploaded to server before
       #   Paper is the unique representation for a paper uplaoded
@@ -107,7 +133,21 @@ class MetadataController < ApplicationController
       end
       # If the user has uploaded the same PDF before
       if user.has_metadata? :docid=> hash
-        render :json => '{"error":"The same PDF have been uploaded by this user before"}'
+        @metadata = Metadata.find_by_docid hash
+        if params[:tag] != nil
+          user.attach_tag @metadata.id, params[:tag]
+        end
+        response = { 
+            :id     => @metadata.id,
+            :docid  => @paper.docid, 
+            :title  => @paper.title, 
+            :authors => @paper.authors, 
+            :date   => @paper.date,
+            :created_at => @metadata.created_at,
+            :new    => new_upload
+        }
+        json = ActiveSupport::JSON.encode response
+        render :json => json
         return 
       # Else this is the first time that the user uploads the file
       else
@@ -152,31 +192,4 @@ class MetadataController < ApplicationController
         }
       end
     end
-  private 
-      def _doc_hash(f)
-        # Use SHA-1 to calculate a hash for the file
-        # e.g. "74e10ff37b568e76c5166ce8b0eddf2abfdcbac9"
-        require 'digest/sha1'
-        sha1 = Digest::SHA1.hexdigest(File.read(f)).to_s
-        # Truncate SHA-1 to UUID
-        #   SHA-1 is 160-bit, UUID is 128-bit
-        #   So we want the first 32 HEX digits (128/4=32)
-        #   Although this uuid is same as version 5 UUID in essence, 
-        #   they are not equal.
-        # e.g. "74e10ff37b568e76c5166ce8b0eddf2a"
-        uuid = sha1[0...32]
-        # Get bytes representation of uuid
-        # e.g. "t\xE1\x0F\xF3{V\x8Ev\xC5\x16l\xE8\xB0\xED\xDF*"
-        bytes = [uuid].pack("H*")
-        # Encode the bytes of uuid in Base64 encoding for shorter representation
-        # e.g. "dOEP83tWjnbFFmzosO3fKg=="
-        require "base64"
-        base64 = Base64.urlsafe_encode64(bytes)
-        # Discard the trailing '==' 
-        #   In base 64 encoding, the trailing '=' is padding
-        #     '==' indicates that the last group contains only 1 bytes
-        #     '=' indicates that the last group contains 2 bytes
-        # e.g. "dOEP83tWjnbFFmzosO3fKg"
-        res = base64[0...-2]
-      end
 end

@@ -1,5 +1,6 @@
 Server::Application.routes.draw do
-  get "pages/index"
+  # This for testing uuid
+  match "uuid" => "pages#index"
 
   get "read/index"
 
@@ -45,6 +46,8 @@ Server::Application.routes.draw do
        resources :comments
        resources :notes
   end
+
+  get 'paper_exists', :controller => 'papers', :action => 'exists?'
   
   match 'home'  => 'home#index'
   match 'details/:metadata_id' => 'details#index'
