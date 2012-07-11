@@ -22,7 +22,7 @@ html, body {
   background-size: cover, auto;
   box-shadow: inset 2px 0px 100px rgba(0,0,0,0.4); 
   z-index: 5000;
-  box-shadow: 0px 0px 30px 5px rgba(1, 40, 67, 0.9), 
+  box-shadow: 0px 0px 30px 5px rgba(40, 40, 40, 0.9), 
               inset 0px -4px 5px 1px rgba(80, 47, 11, 0.7),
               0px 5px 15px 2px rgba(248, 126, 97, 0.19);
 }
@@ -354,7 +354,7 @@ border:none;
 /*top --end!!templates*/
 
 .tag-nav{ position:absolute;top:0px; bottom:0px;  width:100%;height:100%; overflow: hidden;}
-    .index-upload {position:relative; width:100%; background:url(/assets/new/upload-bg.png) no-repeat center center; background-size:100% 100%; height: 3em; opacity: 0.7;}
+    .index-upload {position:relative; width:100%; background:url(/assets/new/upload-bg.png) no-repeat center center; background-size:100% 100%; height: 3em;}
     .deletable .index-upload{
      visibility:hidden;
     }
@@ -366,7 +366,7 @@ border:none;
     .tag-nav li .title > a {
       display: block;
       padding: 0.3em 2.8em ;
-      word-wrap:break-word; line-height:1.2em; font-size:0.9em; text-align: left;  color: #494848;   font-weight:800; 
+      word-wrap:break-word; line-height:1.2em; font-size:0.9em; text-align: left;  color: #343434;   font-weight:800; 
      text-shadow:1px 1px 1px rgba(0,0,0,0.2);
      
     }
@@ -485,16 +485,17 @@ border:none;
 .desktop { position: absolute; left: 0px; top: 56px; right: 0px; bottom: 0px ; overflow: hidden;
 /*  background: url(/assets/bg-light.png) top center no-repeat,  
               url(/assets/bg-shadow.png) bottom no-repeat; */
-  background-size: cover;
+/*  background-size: cover;*/
 /*  box-shadow: inset 2px 0px 100px rgba(68,21,4,0.5); */
-  background: url(/assets/new/ios-bg.png) no-repeat center;
+//  background: url(/assets/new/ios-bg.png) no-repeat center;
+    background: url(/assets/new/wood.png);
 }
 .folders-wrapper { width: 89%; height: 100%; margin: 0 auto; }
 .folders { float: left; width: 100%; height: 100%; overflow: hidden; } /* the width will be determined at runtime*/
 .folders > ul { height: 100%; width: 100%; display: block; float: left; width: 100%; height: 100%;}
 .folder { display: block; float:left; height:100%; width: 47.5%; position: relative;}
 
-.add-tag { position:absolute; bottom:0px; width: 100%; height:96px; background:url(/assets/new/tagadd-box.png) no-repeat center bottom; background-size: 90% 90%; opacity: 0.7;}
+.add-tag { position:absolute; bottom:0px; width: 100%; height:96px; background:url(/assets/new/tagadd-box.png) no-repeat center bottom; background-size: 90% 90%; }
 .add-tag img{ position: absolute; top: 50%; left: 50%; margin-left:-15px; width:29px; height: 31px;}
 .iscroll-scrollbar {
   border: none;

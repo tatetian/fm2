@@ -613,7 +613,7 @@ $(function(){
   });
   var FoldersView = Backbone.View.extend({
     el: '.folders-wrapper',
-    optimalSize: 400,       /* optimal size for one folder */
+    optimalSize: 450,       /* optimal size for one folder */
     mode: 'normal',
     initialize: function() {
       var that = this;
