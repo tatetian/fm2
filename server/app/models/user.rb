@@ -185,7 +185,8 @@ class User < ActiveRecord::Base
   end
   
   def create_tag name
-    new_tag = self.tags.create(:name=>name,:user_id=>self.id)
+    # If not exists, create it
+    new_tag = self.tags.find_or_create_by_name(name)
     { id: new_tag.id, name: new_tag.name } 
   end
 
@@ -205,15 +206,11 @@ class User < ActiveRecord::Base
   end
   
   def attach_tag metadata_id, tag_name
-    tag = self.tags.find_by_name tag_name
-    # create a tag if not exists
-    if tag == nil
-      tag = create_tag tag_name
-      #tag = Tag.find_by_id tag.id
-    end
-    # create a new collection
-    collection = tag.collections.create :metadata_id => metadata_id 
-    return nil if collection
+    # Find or create the tag
+    tag = self.tags.find_or_create_by_name(name)
+    # Create a new collection
+    collection = tag.collections.find_or_create_by_metadata_id(metadata_id)
+    return nil if collection == nil
     { :tag_id => collection.tag_id,
       :metadata_id => collection.metadata_id }
   end
