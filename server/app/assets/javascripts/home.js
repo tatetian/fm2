@@ -30,22 +30,24 @@ $(function(){
     // if anything wrong, return something;
     // otherwise nothing returned
     validate: function(attrs) {
-      if(attrs.name && !this._isNameValid(attrs.name))
+      /*if(attrs.name && !this._isNameValid(attrs.name)) {
         return 'tag name is not valid';
+      }
+      return;*/
     },
     // Validate the name of a tag
     _isNameValid: function(name) {
       return !this.collection || 
-             (this.collection && !this.collection.isNameExisting(name))
+             this.collection.isNameNew(name)
     },
     // Get a default name for a new tag
     _getDefaultName: function() {        
-      var defaultName = '新建文件夹',
+      var defaultName = 'New folder',
           index = 0,
           name = defaultName;
       // Make sure this tag name is unique
       if(this.collection) {
-        while( this.collection.isNameExisting(name) ) {
+        while( ! this.collection.isNameNew(name) ) {
           ++ index;
           name = defaultName + index;
         }
@@ -58,12 +60,12 @@ $(function(){
   var TagList = Backbone.Collection.extend({
     model: Tag,
     url: '/tags',
-    isNameExisting: function(name) {
+    isNameNew: function(name) {
       name = name.toLowerCase();
       var res = this.find(function(tag) {
-        return tag.get('name').toLowerCase() == name;
+        return !tag.isNew() && tag.get('name').toLowerCase() == name;
       });
-      return (res != undefined);
+      return (res == undefined);
     },
     // Sort tag list by a to z
     comparator: function(tag) {
@@ -193,12 +195,7 @@ $(function(){
       
       this.model.on('remove', function() {
         this.remove();
-        // Instead calling destroy, we just call save
-        // because it is removed already. 
-        //We don't want to remove it twice.
-        // The first time is not synced.
-        this.model.save();
-        // Call resize so that iScroller works correctly
+        this.model.destroy();
         this.titles.folder.resize();
       }, this);
     },
@@ -330,11 +327,7 @@ $(function(){
       //
       this.model.on('remove', function() {
         this.remove();
-        // Instead calling destroy, we just call save
-        // because it is removed already. 
-        //We don't want to remove it twice.
-        // The first time is not synced.
-        this.model.save();
+        this.model.destroy();
         var items = manager.folders.items,
             pos   = items.indexOf(this);
         if(pos >= 0)
@@ -358,6 +351,8 @@ $(function(){
         t.removeAttribute('contentEditable');
         if( that.model.set('name', t.innerHTML) ) {
           that.model.save();
+          // Let the uploader know that files should be uploaded to new folder
+          that.uploader.uploader.settings.multipart_params.tag = that.model.get('name');
         }
       });
       // append titles to this folder
@@ -521,7 +516,10 @@ $(function(){
         //drop_element: 'papers-'+id,
         container: 'papers-'+id,
         max_file_size : '10mb',
-        url : '/metadata?tag='+folder.getName(),
+        url : '/metadata',
+        multipart_params: {
+          tag: folder.getName() 
+        },
         flash_swf_url : 'plupload/plupload.flash.swf',
         filters : [
             {title : "PDF files", extensions : "pdf"}
@@ -771,14 +769,12 @@ $(function(){
     papers: new MetadataList(),
     initialize: function() {
       var that = this;
+      //this.folders
       that.$('.del-cancel').click(function() {
         that.close();
       });
       that.$('.del-confirm').click(function() {
         manager.metadataList.remove(that.papers.models);
-//        that.papers.models.forEach(function(metadata) {
-//          metadata.destroy();
-        //});
         manager.tagList.remove(that.folders.models);
         that.close();
       });
@@ -818,6 +814,8 @@ $(function(){
       this.opened = false;
       // Hide UI of editor
       this.$el.removeClass('show');
+      // Removed clicked
+      $('.clicked').removeClass('clicked');
       // Show folders in normal mode
       manager.folders.$el.removeClass('deletable');
     }

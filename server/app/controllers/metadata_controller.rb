@@ -62,7 +62,6 @@ class MetadataController < ApplicationController
         render :json => {}
         return
       end
-
       # Init variables
       #   The SHA-1 value calculated by the client
       sha1        = params[:sha1]
@@ -131,6 +130,7 @@ class MetadataController < ApplicationController
         pdf2png = Rails.root.join 'app/tools/pdf2png'
         Process.spawn pdf2png.to_s, (final_dir.to_s + "/uploaded.pdf"), "150", final_dir.to_s
       end
+
       # If the user has uploaded the same PDF before
       if user.has_metadata? :docid=> hash
         @metadata = Metadata.find_by_docid hash
@@ -144,7 +144,8 @@ class MetadataController < ApplicationController
             :authors => @paper.authors, 
             :date   => @paper.date,
             :created_at => @metadata.created_at,
-            :new    => new_upload
+            :new    => new_upload,
+            :tag    => params[:tag]
         }
         json = ActiveSupport::JSON.encode response
         render :json => json
@@ -161,7 +162,7 @@ class MetadataController < ApplicationController
             user.attach_tag @metadata.id, params[:tag]
           end
           # Attach the special '__all' tag to any paper uploaded
-          user.attach_tag @metadata.id, '__all'
+          #user.attach_tag @metadata.id, '__all'
           response = { 
               :id     => @metadata.id,
               :docid  => @paper.docid, 
@@ -169,7 +170,8 @@ class MetadataController < ApplicationController
               :authors => @paper.authors, 
               :date   => @paper.date,
               :created_at => @metadata.created_at,
-              :new    => new_upload
+              :new    => new_upload,
+              :tag    => params[:tag]
           }
           json = ActiveSupport::JSON.encode response
           render :json => json

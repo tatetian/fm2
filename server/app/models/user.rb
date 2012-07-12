@@ -207,7 +207,7 @@ class User < ActiveRecord::Base
   
   def attach_tag metadata_id, tag_name
     # Find or create the tag
-    tag = self.tags.find_or_create_by_name(name)
+    tag = self.tags.find_or_create_by_name(tag_name)
     # Create a new collection
     collection = tag.collections.find_or_create_by_metadata_id(metadata_id)
     return nil if collection == nil

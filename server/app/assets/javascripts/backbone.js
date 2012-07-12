@@ -540,6 +540,8 @@
       attrs = _.extend({}, this.attributes, attrs);
       var error = this.validate(attrs, options);
       if (!error) return true;
+
+      alert('not valid');
       if (options && options.error) {
         options.error(this, error, options);
       } else {
